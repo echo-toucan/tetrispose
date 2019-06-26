@@ -8,7 +8,6 @@ export default class Camera extends Component {
       activeCamera: true
     }
     this.getVideo = this.getVideo.bind(this)
-    // this.toggleCamera = this.toggleCamera.bind(this)
   }
   async componentDidMount() {
     if (navigator.mediaDevices.getUserMedia) {
@@ -34,27 +33,9 @@ export default class Camera extends Component {
     this.video = element
   }
 
-  // async toggleCamera() {
-  //   this.setState(prevState => {
-  //     return {
-  //       activeCamera: !prevState.activeCamera
-  //     }
-  //   })
-  //   if (navigator.mediaDevices.getUserMedia) {
-  //     try {
-  //       const stream = await navigator.mediaDevices.getUserMedia({video: true})
-  //       this.video.srcObject = stream
-  //     } catch (err) {
-  //       console.error(err)
-  //     }
-  //   }
-  // }
   render() {
     return (
       <div>
-        {/* <button type="button" onClick={this.toggleCamera}>
-          Toggle Camera
-        </button> */}
         {this.state.activeCamera ? (
           <video
             width="640"
