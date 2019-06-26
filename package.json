@@ -41,6 +41,9 @@
   "author": "Fullstack Academy of Code",
   "license": "MIT",
   "dependencies": {
+    "@tensorflow-models/posenet": "^2.1.0",
+    "@tensorflow/tfjs-converter": "^1.2.2",
+    "@tensorflow/tfjs-core": "^1.2.2",
     "axios": "^0.19.0",
     "compression": "^1.7.3",
     "connect-session-sequelize": "^6.0.0",
