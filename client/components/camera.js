@@ -5,9 +5,11 @@ export default class Camera extends Component {
   constructor() {
     super()
     this.state = {
-      activeCamera: true
+      activeCamera: true,
+      isLoading: false
     }
     this.getVideo = this.getVideo.bind(this)
+    this.startTracking = this.startTracking.bind(this)
   }
   async componentDidMount() {
     if (navigator.mediaDevices.getUserMedia) {
@@ -18,19 +20,30 @@ export default class Camera extends Component {
         console.error(err)
       }
     }
+  }
+
+  async componentDidUpdate() {
+    const timer = setTimeout(() => {
+      this.setState({isLoading: false})
+    }, 500)
     const net = await posenet.load()
     const pose = await net.estimateSinglePose(this.video, {
       flipHorizontal: false
     })
+
     console.log(
-      '----------------',
-      pose.keypoints[5],
-      '-----------------',
-      pose.keypoints[6]
+      'left wrist',
+      pose.keypoints[9].position.y,
+      'right wrist',
+      pose.keypoints[10].position.y
     )
   }
   getVideo(element) {
     this.video = element
+  }
+
+  startTracking() {
+    this.setState({isLoading: true})
   }
 
   render() {
@@ -47,6 +60,9 @@ export default class Camera extends Component {
         ) : (
           <h1>......</h1>
         )}
+        <button type="button" onClick={() => this.startTracking()}>
+          Start tracking
+        </button>
       </div>
     )
   }
