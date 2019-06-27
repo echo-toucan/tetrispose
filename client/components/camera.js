@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import * as posenet from '@tensorflow-models/posenet'
 import {gameItems} from './icons'
+import {Header} from 'semantic-ui-react'
 
 export default class Camera extends Component {
   constructor() {
@@ -84,7 +85,9 @@ export default class Camera extends Component {
             <img width="5%" src="/assets/T-shape.svg" />
           </span>
         ) : (
-          'not recognized...'
+          <Header size="large" color="red">
+            CANNOT RECOGNIZE MOVEMENT
+          </Header>
         )}
       </div>
     )
