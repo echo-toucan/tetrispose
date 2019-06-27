@@ -7,7 +7,7 @@ export default class Camera extends Component {
     this.state = {
       activeCamera: true,
       isLoading: false,
-      isAnI: false
+      isT: false
     }
     this.getVideo = this.getVideo.bind(this)
     this.startTracking = this.startTracking.bind(this)
@@ -51,11 +51,22 @@ export default class Camera extends Component {
     const hipRightX = pose.keypoints[12].position.x
     const hipRightY = pose.keypoints[12].position.y
 
-    const isAnI =
+    let currentShape = ''
+
+    const isI =
       (shoulderLeftY - wristLeftY) / (hipLeftY - shoulderLeftY) > 0.7 &&
       (shoulderRightY - wristRightY) / (hipRightY - shoulderRightY) > 0.7
-    this.setState({isAnI})
-    console.log('in detectPose')
+
+    const isT =
+      Math.abs(wristLeftY - shoulderLeftY) < 0.25 * shoulderLeftY &&
+      Math.abs(wristRightY - shoulderRightY) < 0.25 * shoulderRightY &&
+      Math.abs(elbowLeftY - shoulderLeftY) < 0.25 * shoulderLeftY &&
+      Math.abs(elbowRightY - shoulderRightY) < 0.25 * shoulderRightY &&
+      wristLeftX > elbowLeftX &&
+      wristRightX < elbowRightX
+
+    // if (currentShape)
+    this.setState({isT})
     this.detectPose()
   }
 
@@ -81,7 +92,7 @@ export default class Camera extends Component {
         ) : (
           <h1>......</h1>
         )}
-        {this.state.isAnI ? 'SHAPE: I' : 'not recognized...'}
+        {this.state.isT ? 'SHAPE: T' : 'not recognized...'}
       </div>
     )
   }
