@@ -6,7 +6,8 @@ export default class Camera extends Component {
     super()
     this.state = {
       activeCamera: true,
-      isLoading: false
+      isLoading: false,
+      isAnI: false
     }
     this.getVideo = this.getVideo.bind(this)
     this.startTracking = this.startTracking.bind(this)
@@ -31,13 +32,21 @@ export default class Camera extends Component {
       flipHorizontal: false
     })
 
-    console.log(
-      'left wrist',
-      pose.keypoints[9].position.y,
-      'right wrist',
-      pose.keypoints[10].position.y
-    )
+    const waistToShoulderL =
+      pose.keypoints[11].position.y - pose.keypoints[5].position.y
+    const waistToShoulderR =
+      pose.keypoints[12].position.y - pose.keypoints[6].position.y
+    const shoulderToWristL =
+      pose.keypoints[5].position.y - pose.keypoints[9].position.y
+    const shoulderToWristR =
+      pose.keypoints[6].position.y - pose.keypoints[10].position.y
+
+    const isAnI =
+      shoulderToWristL / waistToShoulderL > 0.7 &&
+      shoulderToWristR / waistToShoulderR > 0.7
+    this.setState({isAnI})
   }
+
   getVideo(element) {
     this.video = element
   }
@@ -63,6 +72,7 @@ export default class Camera extends Component {
         <button type="button" onClick={() => this.startTracking()}>
           Start tracking
         </button>
+        {this.state.isAnI ? 'SHAPE: I' : 'not recognized...'}
       </div>
     )
   }
