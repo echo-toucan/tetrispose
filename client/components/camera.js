@@ -21,14 +21,16 @@ export default class Camera extends Component {
         console.error(err)
       }
     }
+    try {
+      this.posenet = await posenet.load()
+      if (this.posenet) this.detectPose()
+    } catch (err) {
+      console.error(err)
+    }
   }
 
-  async componentDidUpdate() {
-    const timer = setTimeout(() => {
-      this.setState({isLoading: false})
-    }, 500)
-    const net = await posenet.load()
-    const pose = await net.estimateSinglePose(this.video, {
+  async detectPose() {
+    const pose = await this.posenet.estimateSinglePose(this.video, {
       flipHorizontal: false
     })
 
@@ -45,6 +47,8 @@ export default class Camera extends Component {
       shoulderToWristL / waistToShoulderL > 0.7 &&
       shoulderToWristR / waistToShoulderR > 0.7
     this.setState({isAnI})
+    console.log('in detectPose')
+    this.detectPose()
   }
 
   getVideo(element) {
@@ -69,9 +73,6 @@ export default class Camera extends Component {
         ) : (
           <h1>......</h1>
         )}
-        <button type="button" onClick={() => this.startTracking()}>
-          Start tracking
-        </button>
         {this.state.isAnI ? 'SHAPE: I' : 'not recognized...'}
       </div>
     )
