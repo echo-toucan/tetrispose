@@ -1,9 +1,9 @@
-import React, {Component} from 'react'
+import React, {Component, Fragment} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
-import {Menu} from 'semantic-ui-react'
+import {Menu, Container} from 'semantic-ui-react'
 
 class Navbar extends Component {
   state = {activeItem: 'home'}
@@ -12,30 +12,46 @@ class Navbar extends Component {
 
   render() {
     const {activeItem} = this.state
+    const {handleClick, isLoggedIn} = this.props
 
     return (
-      <Menu inverted>
-        <Menu.Item
-          name="home"
-          as={Link}
-          to="/"
-          active={activeItem === 'home'}
-          onClick={this.handleItemClick}
-        />
-        <Menu.Item
-          name="login"
-          active={activeItem === 'login'}
-          onClick={this.handleItemClick}
-          as={Link}
-          to="/login"
-        />
-        <Menu.Item
-          name="signup"
-          as={Link}
-          to="/signup"
-          active={activeItem === 'signout'}
-          onClick={this.handleItemClick}
-        />
+      <Menu color="purple" inverted>
+        <Container>
+          <Menu.Item
+            name="home"
+            as={Link}
+            to="/"
+            active={activeItem === 'home'}
+            onClick={this.handleItemClick}
+          />
+          {isLoggedIn ? (
+            <Menu.Item
+              name="logout"
+              as={Link}
+              to="#"
+              active={activeItem === 'logout'}
+              onClick={handleClick}
+            />
+          ) : (
+            <Fragment>
+              <Menu.Item
+                position="right"
+                name="login"
+                active={activeItem === 'login'}
+                onClick={this.handleItemClick}
+                as={Link}
+                to="/login"
+              />
+              <Menu.Item
+                name="signup"
+                as={Link}
+                to="/signup"
+                active={activeItem === 'signout'}
+                onClick={this.handleItemClick}
+              />
+            </Fragment>
+          )}
+        </Container>
       </Menu>
     )
   }
@@ -87,7 +103,7 @@ export default connect(mapState, mapDispatch)(Navbar)
 /**
  * PROP TYPES
  */
-// Navbar.propTypes = {
-//   handleClick: PropTypes.func.isRequired,
-//   isLoggedIn: PropTypes.bool.isRequired
-// }
+Navbar.propTypes = {
+  handleClick: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired
+}
