@@ -1,6 +1,11 @@
 import React, {Component} from 'react'
 import * as posenet from '@tensorflow-models/posenet'
+
 import {isI, isT} from './utility'
+
+import {gameItems} from './icons'
+import {Header} from 'semantic-ui-react'
+
 
 export default class Camera extends Component {
   constructor() {
@@ -9,6 +14,8 @@ export default class Camera extends Component {
       activeCamera: true,
       isLoading: false,
       currentShape: ''
+      isAnI: false,
+      isAT: false
     }
     this.getVideo = this.getVideo.bind(this)
     this.startTracking = this.startTracking.bind(this)
@@ -105,9 +112,25 @@ export default class Camera extends Component {
         ) : (
           <h1>......</h1>
         )}
-        {this.state.currentShape
-          ? `Shape: ${this.state.currentShape}`
-          : 'not recognized...'}
+
+//         {this.state.currentShape
+//           ? `Shape: ${this.state.currentShape}`
+//           : 'not recognized...'}
+
+        {this.state.currentShape ? (
+          <span>
+            <img width="5%" src="/assets/Line.png" />
+          </span>
+        ) : this.state.isAT ? (
+          <span>
+            <img width="5%" src="/assets/T-shape.svg" />
+          </span>
+        ) : (
+          <Header size="large" color="red">
+            CANNOT RECOGNIZE MOVEMENT
+          </Header>
+        )}
+
       </div>
     )
   }
