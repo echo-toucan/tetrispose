@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import * as posenet from '@tensorflow-models/posenet'
+import {isI, isT} from './utility'
 
 export default class Camera extends Component {
   constructor() {
@@ -7,7 +8,7 @@ export default class Camera extends Component {
     this.state = {
       activeCamera: true,
       isLoading: false,
-      isT: false
+      currentShape: ''
     }
     this.getVideo = this.getVideo.bind(this)
     this.startTracking = this.startTracking.bind(this)
@@ -51,22 +52,34 @@ export default class Camera extends Component {
     const hipRightX = pose.keypoints[12].position.x
     const hipRightY = pose.keypoints[12].position.y
 
-    let currentShape = ''
+    let currentShape =
+      isI(
+        shoulderLeftY,
+        wristLeftY,
+        hipLeftY,
+        shoulderRightY,
+        wristRightY,
+        hipRightY
+      ) ||
+      isT(
+        shoulderLeftY,
+        wristLeftY,
+        elbowLeftY,
+        shoulderRightY,
+        wristRightY,
+        elbowRightY
+        // wristLeftX,
+        // elbowLeftX,
+        // wristRightX,
+        // elbowRightX
+      )
 
-    const isI =
-      (shoulderLeftY - wristLeftY) / (hipLeftY - shoulderLeftY) > 0.7 &&
-      (shoulderRightY - wristRightY) / (hipRightY - shoulderRightY) > 0.7
+    console.log(currentShape)
 
-    const isT =
-      Math.abs(wristLeftY - shoulderLeftY) < 0.25 * shoulderLeftY &&
-      Math.abs(wristRightY - shoulderRightY) < 0.25 * shoulderRightY &&
-      Math.abs(elbowLeftY - shoulderLeftY) < 0.25 * shoulderLeftY &&
-      Math.abs(elbowRightY - shoulderRightY) < 0.25 * shoulderRightY &&
-      wristLeftX > elbowLeftX &&
-      wristRightX < elbowRightX
+    if (currentShape) {
+      this.setState({currentShape})
+    }
 
-    // if (currentShape)
-    this.setState({isT})
     this.detectPose()
   }
 
@@ -92,7 +105,9 @@ export default class Camera extends Component {
         ) : (
           <h1>......</h1>
         )}
-        {this.state.isT ? 'SHAPE: T' : 'not recognized...'}
+        {this.state.currentShape
+          ? `Shape: ${this.state.currentShape}`
+          : 'not recognized...'}
       </div>
     )
   }
