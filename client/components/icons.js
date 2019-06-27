@@ -6,5 +6,13 @@ export const gameItems = [
     activeUrl: '/assets/Line.png',
     active: true,
     width: '100%'
+  },
+  {
+    id: 2,
+    type: 'T-Shape',
+    imageUrl: '/assets/T-shape.svg',
+    activeUrl: '/assets/T-shape.svg',
+    active: true,
+    width: '100%'
   }
 ]

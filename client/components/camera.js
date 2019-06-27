@@ -8,7 +8,8 @@ export default class Camera extends Component {
     this.state = {
       activeCamera: true,
       isLoading: false,
-      isAnI: false
+      isAnI: false,
+      isAT: false
     }
     this.getVideo = this.getVideo.bind(this)
     this.startTracking = this.startTracking.bind(this)
@@ -48,7 +49,7 @@ export default class Camera extends Component {
       shoulderToWristL / waistToShoulderL > 0.7 &&
       shoulderToWristR / waistToShoulderR > 0.7
     this.setState({isAnI})
-    console.log('in detectPose')
+
     this.detectPose()
   }
 
@@ -61,8 +62,6 @@ export default class Camera extends Component {
   }
 
   render() {
-    const {gameItems} = this.props
-    console.log('-------------', gameItems)
     return (
       <div>
         {this.state.activeCamera ? (
@@ -79,6 +78,10 @@ export default class Camera extends Component {
         {this.state.isAnI ? (
           <span>
             <img width="5%" src="/assets/Line.png" />
+          </span>
+        ) : this.state.isAT ? (
+          <span>
+            <img width="5%" src="/assets/T-shape.svg" />
           </span>
         ) : (
           'not recognized...'
