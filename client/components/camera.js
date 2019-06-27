@@ -1,7 +1,11 @@
 import React, {Component} from 'react'
 import * as posenet from '@tensorflow-models/posenet'
+
+import {isI, isT} from './utility'
+
 import {gameItems} from './icons'
 import {Header} from 'semantic-ui-react'
+
 
 export default class Camera extends Component {
   constructor() {
@@ -9,6 +13,7 @@ export default class Camera extends Component {
     this.state = {
       activeCamera: true,
       isLoading: false,
+      currentShape: ''
       isAnI: false,
       isAT: false
     }
@@ -37,19 +42,50 @@ export default class Camera extends Component {
       flipHorizontal: false
     })
 
-    const waistToShoulderL =
-      pose.keypoints[11].position.y - pose.keypoints[5].position.y
-    const waistToShoulderR =
-      pose.keypoints[12].position.y - pose.keypoints[6].position.y
-    const shoulderToWristL =
-      pose.keypoints[5].position.y - pose.keypoints[9].position.y
-    const shoulderToWristR =
-      pose.keypoints[6].position.y - pose.keypoints[10].position.y
+    const shoulderLeftX = pose.keypoints[5].position.x
+    const shoulderLeftY = pose.keypoints[5].position.y
+    const shoulderRightX = pose.keypoints[6].position.x
+    const shoulderRightY = pose.keypoints[6].position.y
+    const elbowLeftX = pose.keypoints[7].position.x
+    const elbowLeftY = pose.keypoints[7].position.y
+    const elbowRightX = pose.keypoints[8].position.x
+    const elbowRightY = pose.keypoints[8].position.y
+    const wristLeftX = pose.keypoints[9].position.x
+    const wristLeftY = pose.keypoints[9].position.y
+    const wristRightX = pose.keypoints[10].position.x
+    const wristRightY = pose.keypoints[10].position.y
+    const hipLeftX = pose.keypoints[11].position.x
+    const hipLeftY = pose.keypoints[11].position.y
+    const hipRightX = pose.keypoints[12].position.x
+    const hipRightY = pose.keypoints[12].position.y
 
-    const isAnI =
-      shoulderToWristL / waistToShoulderL > 0.7 &&
-      shoulderToWristR / waistToShoulderR > 0.7
-    this.setState({isAnI})
+    let currentShape =
+      isI(
+        shoulderLeftY,
+        wristLeftY,
+        hipLeftY,
+        shoulderRightY,
+        wristRightY,
+        hipRightY
+      ) ||
+      isT(
+        shoulderLeftY,
+        wristLeftY,
+        elbowLeftY,
+        shoulderRightY,
+        wristRightY,
+        elbowRightY
+        // wristLeftX,
+        // elbowLeftX,
+        // wristRightX,
+        // elbowRightX
+      )
+
+    console.log(currentShape)
+
+    if (currentShape) {
+      this.setState({currentShape})
+    }
 
     this.detectPose()
   }
@@ -76,7 +112,12 @@ export default class Camera extends Component {
         ) : (
           <h1>......</h1>
         )}
-        {this.state.isAnI ? (
+
+//         {this.state.currentShape
+//           ? `Shape: ${this.state.currentShape}`
+//           : 'not recognized...'}
+
+        {this.state.currentShape ? (
           <span>
             <img width="5%" src="/assets/Line.png" />
           </span>
@@ -89,6 +130,7 @@ export default class Camera extends Component {
             CANNOT RECOGNIZE MOVEMENT
           </Header>
         )}
+
       </div>
     )
   }
