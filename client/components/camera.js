@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import * as posenet from '@tensorflow-models/posenet'
+import {gameItems} from './icons'
+import {Header} from 'semantic-ui-react'
 
 export default class Camera extends Component {
   constructor() {
@@ -7,7 +9,8 @@ export default class Camera extends Component {
     this.state = {
       activeCamera: true,
       isLoading: false,
-      isAnI: false
+      isAnI: false,
+      isAT: false
     }
     this.getVideo = this.getVideo.bind(this)
     this.startTracking = this.startTracking.bind(this)
@@ -47,7 +50,7 @@ export default class Camera extends Component {
       shoulderToWristL / waistToShoulderL > 0.7 &&
       shoulderToWristR / waistToShoulderR > 0.7
     this.setState({isAnI})
-    console.log('in detectPose')
+
     this.detectPose()
   }
 
@@ -73,7 +76,19 @@ export default class Camera extends Component {
         ) : (
           <h1>......</h1>
         )}
-        {this.state.isAnI ? 'SHAPE: I' : 'not recognized...'}
+        {this.state.isAnI ? (
+          <span>
+            <img width="5%" src="/assets/Line.png" />
+          </span>
+        ) : this.state.isAT ? (
+          <span>
+            <img width="5%" src="/assets/T-shape.svg" />
+          </span>
+        ) : (
+          <Header size="large" color="red">
+            CANNOT RECOGNIZE MOVEMENT
+          </Header>
+        )}
       </div>
     )
   }
