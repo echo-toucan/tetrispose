@@ -30,48 +30,54 @@ export default class Grid extends Component {
     super()
     this.state = {
       grid: [
-        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 1, 0, 0, 1, 0, 0, 0, 0],
-        [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       ]
     }
     this.updateBoard = this.updateBoard.bind(this)
     this.spawnShapes = this.spawnShapes.bind(this)
   }
-  //ADVANCES TIME
-  // ONE THAT MOVES
+
   spawnShapes(shapeId) {
-    const line = [1, 1, 1, 1]
+    const line = [[1, 1, 1, 1]]
     const tShape = [[0, 1, 0], [1, 1, 1]]
-    let newRow = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    for (let i = 0; i < line.length; i++) {
-      newRow[i + 4] = line[i]
+    let newRows = []
+    for (let i = 0; i < tShape.length; i++) {
+      let newRow = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      for (let j = 0; j < tShape[i].length; j++) {
+        newRow[j + 4] = tShape[i][j]
+      }
+      newRows.push(newRow)
+      console.log(newRows)
     }
-    console.log([newRow, ...this.state.grid.slice(1)])
+
     this.setState(prevState => ({
-      grid: [newRow, ...prevState.grid.slice(1)]
+      grid: [...newRows, ...prevState.grid.slice(newRows.length)]
     }))
   }
+
   drop() {
     setInterval(this.updateBoard, 500)
   }
+
   hasSpaceAbove(x, y) {
     const grid = this.state.grid
     if (!grid[y - 1] || grid[y - 1][x] === 0) return true
@@ -82,24 +88,42 @@ export default class Grid extends Component {
     if (grid[y + 1] && grid[y + 1][x] === 0) return true
     else return false
   }
+
   updateBoard() {
     const oldGrid = this.state.grid
-
+    let hasCollided = false
     let newGrid = oldGrid.map((row, rowIdx) => {
       return row.map((cell, cellIdx) => {
-        if (cell === 0 && !this.hasSpaceAbove(cellIdx, rowIdx)) {
-          return 1
-        } else if (
-          cell === 1 &&
-          this.hasSpaceAbove(cellIdx, rowIdx) &&
-          this.hasSpaceBelow(cellIdx, rowIdx)
-        ) {
-          return 0
+        if (cell === 1 && !this.hasSpaceBelow(cellIdx, rowIdx))
+          hasCollided = true
+        if (!hasCollided) {
+          if (cell === 0 && !this.hasSpaceAbove(cellIdx, rowIdx)) {
+            return 1
+          } else if (
+            cell === 1 &&
+            this.hasSpaceAbove(cellIdx, rowIdx) &&
+            this.hasSpaceBelow(cellIdx, rowIdx)
+          ) {
+            return 0
+          } else return cell
         } else return cell
       })
     })
     this.setState({grid: newGrid})
   }
+
+  // shouldFall(cell, cellIdx, rowIdx) {
+  //   if (cell === 0 && !this.hasSpaceAbove(cellIdx, rowIdx)) {
+  //     return true
+  //   } else if (
+  //     cell === 1 &&
+  //     this.hasSpaceAbove(cellIdx, rowIdx) &&
+  //     this.hasSpaceBelow(cellIdx, rowIdx)
+  //   ) {
+  //     return true
+  //   } else return false
+  // }
+
   render() {
     return (
       <div>
