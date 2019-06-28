@@ -6,14 +6,13 @@ import {isI, isT} from './utility'
 import {gameItems} from './icons'
 import {Header} from 'semantic-ui-react'
 
-
 export default class Camera extends Component {
   constructor() {
     super()
     this.state = {
       activeCamera: true,
       isLoading: false,
-      currentShape: ''
+      currentShape: '',
       isAnI: false,
       isAT: false
     }
@@ -99,6 +98,19 @@ export default class Camera extends Component {
   }
 
   render() {
+    let imageSource = ''
+
+    switch (this.state.currentShape) {
+      case 'isI':
+        imageSource = '/assets/Line.png'
+        break
+      case 'isT':
+        imageSource = '/assets/T-shape.svg'
+        break
+      default:
+        imageSource = ''
+    }
+
     return (
       <div>
         {this.state.activeCamera ? (
@@ -113,24 +125,15 @@ export default class Camera extends Component {
           <h1>......</h1>
         )}
 
-//         {this.state.currentShape
-//           ? `Shape: ${this.state.currentShape}`
-//           : 'not recognized...'}
-
         {this.state.currentShape ? (
           <span>
-            <img width="5%" src="/assets/Line.png" />
-          </span>
-        ) : this.state.isAT ? (
-          <span>
-            <img width="5%" src="/assets/T-shape.svg" />
+            <img width="5%" src={imageSource} />
           </span>
         ) : (
           <Header size="large" color="red">
             CANNOT RECOGNIZE MOVEMENT
           </Header>
         )}
-
       </div>
     )
   }
