@@ -53,10 +53,22 @@ export default class Grid extends Component {
       ]
     }
     this.updateBoard = this.updateBoard.bind(this)
+    this.spawnShapes = this.spawnShapes.bind(this)
   }
   //ADVANCES TIME
   // ONE THAT MOVES
-
+  spawnShapes(shapeId) {
+    const line = [1, 1, 1, 1]
+    const tShape = [[0, 1, 0], [1, 1, 1]]
+    let newRow = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for (let i = 0; i < line.length; i++) {
+      newRow[i + 4] = line[i]
+    }
+    console.log([newRow, ...this.state.grid.slice(1)])
+    this.setState(prevState => ({
+      grid: [newRow, ...prevState.grid.slice(1)]
+    }))
+  }
   drop() {
     setInterval(this.updateBoard, 500)
   }
@@ -93,6 +105,9 @@ export default class Grid extends Component {
       <div>
         <button type="button" onClick={() => this.drop()}>
           Drop!
+        </button>
+        <button type="button" onClick={() => this.spawnShapes('line')}>
+          Spawn a Line
         </button>
         <Table>
           <Table.Body>
