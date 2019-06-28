@@ -80,7 +80,7 @@ export default class Camera extends Component {
         // elbowRightX
       )
 
-    console.log(currentShape)
+    // console.log(currentShape)
 
     if (currentShape) {
       this.setState({currentShape})
