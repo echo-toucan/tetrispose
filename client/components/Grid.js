@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import GridRow from './GridRow'
 import {Table, Container, Grid as SGrid} from 'semantic-ui-react'
+import shapesArray from '../AllShapes'
 
 export default class Grid extends Component {
   constructor() {
@@ -33,14 +34,15 @@ export default class Grid extends Component {
     this.spawnShapes = this.spawnShapes.bind(this)
   }
 
-  spawnShapes(shapeId) {
-    const line = [[1, 1, 1, 1]]
-    const tShape = [[0, 2, 0], [2, 2, 2]]
+  spawnShapes() {
+    const shapeId = Math.floor(Math.random() * shapesArray.length)
+    console.log(shapeId)
+    const shape = shapesArray[shapeId].shape
     let newRows = []
-    for (let i = 0; i < line.length; i++) {
+    for (let i = 0; i < shape.length; i++) {
       let newRow = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-      for (let j = 0; j < line[i].length; j++) {
-        newRow[j + 4] = line[i][j]
+      for (let j = 0; j < shape[i].length; j++) {
+        newRow[j + 4] = shape[i][j]
       }
       newRows.push(newRow)
     }
@@ -111,8 +113,8 @@ export default class Grid extends Component {
       'yellow',
       'cyan',
       'red',
-      'green',
-      'purple',
+      'limegreen',
+      'magenta',
       'orange',
       'blue'
     ]
@@ -121,26 +123,28 @@ export default class Grid extends Component {
         <button type="button" onClick={() => this.drop()}>
           Drop!
         </button>
-        <button type="button" onClick={() => this.spawnShapes('line')}>
-          Spawn a Line
+        <button type="button" onClick={() => this.spawnShapes()}>
+          Spawn a shape
         </button>
-        <SGrid columns="equal" id="game-grid">
-          {this.state.grid.map((row, rowIdx) => {
-            return (
-              <SGrid.Row key={rowIdx}>
-                {row.map((cell, cellIdx) => {
-                  return (
-                    <SGrid.Column
-                      color={colors[cell % 10]}
-                      className="game-cell"
-                      key={cellIdx}
-                    />
-                  )
-                })}
-              </SGrid.Row>
-            )
-          })}
-        </SGrid>
+        <table>
+          <tbody>
+            {this.state.grid.map((row, rowIdx) => {
+              return (
+                <tr key={rowIdx} className="game-row">
+                  {row.map((cell, cellIdx) => {
+                    return (
+                      <td
+                        key={cellIdx}
+                        style={{backgroundColor: colors[cell % 10]}}
+                        className="game-cell"
+                      />
+                    )
+                  })}
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
       </div>
     )
   }
