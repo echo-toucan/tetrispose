@@ -106,7 +106,16 @@ export default class Grid extends Component {
   }
 
   render() {
-    const colors = ['black', 'red', 'cyan']
+    const colors = [
+      'black',
+      'yellow',
+      'cyan',
+      'red',
+      'green',
+      'purple',
+      'orange',
+      'blue'
+    ]
     return (
       <div>
         <button type="button" onClick={() => this.drop()}>
