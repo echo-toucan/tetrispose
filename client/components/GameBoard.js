@@ -2,15 +2,15 @@
 import React, {Component} from 'react'
 import Grid from './Grid'
 
-class CurrentShape extends Component {
+class GameBoard extends Component {
   render() {
     return (
       <div>
-        <h1>Display Gameboard shape</h1>
+        <h1>Tetris Gameboard</h1>
         <Grid />
       </div>
     )
   }
 }
 
-export default CurrentShape
+export default GameBoard
