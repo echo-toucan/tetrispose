@@ -121,6 +121,22 @@ export default class Grid extends Component {
   hasCollided() {
     const grid = this.state.grid
     for (let row = 0; row < grid.length; row++) {
+      for (let col = 0; col < grid[row].length; col++) {
+        // console.log('row', row)
+        const current = grid[row][col]
+        const isFalling = current > 0 && current < 10
+        const hasFloorBelow = !grid[row + 1] || grid[row + 1][col] >= 10
+        if (isFalling && hasFloorBelow) {
+          return true
+        }
+      }
+    }
+    return false
+  }
+
+  stopDrop() {
+    const grid = this.state.grid
+    for (let row = 0; row < grid.length; row++) {
       for (let col = 0; col < row.length; col++) {
         if (!grid[row + 1] || grid[row + 1][col] >= 10) {
           return true
