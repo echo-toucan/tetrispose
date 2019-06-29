@@ -114,7 +114,7 @@ export const currentShape = (state = [], action) => {
       } else {
         return state
       }
-    case 'UPDATE_SHAPE':
+    case UPDATE_SHAPE:
       return action.Shape
     case SPAWN_SHAPE:
       return shapesArray[Math.floor(Math.random() * shapesArray.length)]
@@ -149,7 +149,7 @@ export const gameOver = (state = false, action) => {
 
 export const score = (state = 0, action) => {
   switch (action.type) {
-    case UPDATE_BOARD:
+    case UPDATE_SCORE:
       return action.payload
     case RESET_GAME:
       return 0
