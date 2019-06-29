@@ -22,3 +22,13 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+
+/* #game-grid {
+  background-color: black;
+} */
+
+.game-cell {
+  max-width: 10px;
+  max-height: 10px;
+  border: black;
+}

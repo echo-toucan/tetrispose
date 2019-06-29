@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import GridRow from './GridRow'
-import {Table} from 'semantic-ui-react'
+import {Table, Container, Grid as SGrid} from 'semantic-ui-react'
 
 export default class Grid extends Component {
   constructor() {
@@ -106,6 +106,16 @@ export default class Grid extends Component {
   }
 
   render() {
+    const colors = [
+      'black',
+      'yellow',
+      'cyan',
+      'red',
+      'green',
+      'purple',
+      'orange',
+      'blue'
+    ]
     return (
       <div>
         <button type="button" onClick={() => this.drop()}>
@@ -114,19 +124,23 @@ export default class Grid extends Component {
         <button type="button" onClick={() => this.spawnShapes('line')}>
           Spawn a Line
         </button>
-        <Table>
-          <Table.Body>
-            {this.state.grid.map((row, rowIdx) => {
-              return (
-                <Table.Row key={rowIdx}>
-                  {row.map((cell, cellIdx) => {
-                    return <Table.Cell key={cellIdx}>{cell}</Table.Cell>
-                  })}
-                </Table.Row>
-              )
-            })}
-          </Table.Body>
-        </Table>
+        <SGrid columns="equal" id="game-grid">
+          {this.state.grid.map((row, rowIdx) => {
+            return (
+              <SGrid.Row key={rowIdx}>
+                {row.map((cell, cellIdx) => {
+                  return (
+                    <SGrid.Column
+                      color={colors[cell % 10]}
+                      className="game-cell"
+                      key={cellIdx}
+                    />
+                  )
+                })}
+              </SGrid.Row>
+            )
+          })}
+        </SGrid>
       </div>
     )
   }
