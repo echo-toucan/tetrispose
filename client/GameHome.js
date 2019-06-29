@@ -1,5 +1,5 @@
-import React, {Component, Fragment} from 'react'
-import {Grid, GridColumn, Segment, Container} from 'semantic-ui-react'
+import React, {Component} from 'react'
+import {Grid, GridColumn, Segment} from 'semantic-ui-react'
 import {
   Camera,
   Timer,
@@ -11,8 +11,8 @@ import {
 class GameHome extends Component {
   render() {
     return (
-      <Grid>
-        <GridColumn width={8}>
+      <Grid container columns={2}>
+        <GridColumn floated="left" width={10}>
           <Segment>
             <Timer />
           </Segment>
@@ -24,11 +24,11 @@ class GameHome extends Component {
           </Segment>
         </GridColumn>
 
-        <GridColumn width={6}>
-          <Segment>
+        <GridColumn floated="right" width={6}>
+          <Segment color="blue" inverted>
             <PreviewShape />
           </Segment>
-          <Segment>
+          <Segment color="green" inverted>
             <GameBoard />
           </Segment>
         </GridColumn>
