@@ -5,7 +5,7 @@ import {composeWithDevTools} from 'redux-devtools-extension'
 import user from './user'
 import {
   newShape,
-  currentShape,
+  // currentShape,
   gameBoard,
   updateBoard,
   updateScore,
@@ -13,19 +13,21 @@ import {
   gameOver,
   score
 } from './game'
-import {posenetReducer} from './camera'
+import {currentShape} from './currentShape'
+import {previewShape} from './previewShape'
 
 const reducer = combineReducers({
   user,
   newShape,
-  currentShape,
+  // currentShape,
   gameBoard,
   updateBoard,
   updateScore,
   gameStarted,
   gameOver,
   score,
-  posenetReducer
+  currentShape,
+  previewShape
 })
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
@@ -35,4 +37,5 @@ const store = createStore(reducer, middleware)
 export default store
 export * from './user'
 export * from './game'
-export * from './camera'
+export * from './currentShape'
+export * from './previewShape'
