@@ -13,7 +13,7 @@ export const updateShapes = () => ({
 
 const initialState = []
 
-export const previewShapes = (state = initialState, action) => {
+export const previewShape = (state = initialState, action) => {
   switch (action.type) {
     case CREATE_SHAPES: {
       let shapes = []

@@ -5,15 +5,29 @@ import {createShapes, updateShapes} from '../store/previewShape'
 import allShapes from '../AllShapes'
 
 class PreviewShape extends Component {
-  async componentDidMount() {}
+  componentDidMount() {
+    this.props.createShapes()
+  }
 
   render() {
-    return <h1>Display Preview shape</h1>
+    const shapes = this.state.shapes
+    return (
+      <div>
+        <h6>Upcoming shapes:</h6>
+        {shapes ? (
+          shapes.map(shape => {
+            return <img src={`/assets/${shape.name}.png`} />
+          })
+        ) : (
+          <h5>Loading...</h5>
+        )}
+      </div>
+    )
   }
 }
 
 const mapStateToProps = state => ({
-  previewShape: this.state.previewShape
+  shapes: state.previewShape
 })
 
 const mapDispatchToProps = dispatch => ({
