@@ -3,9 +3,28 @@ import {createLogger} from 'redux-logger'
 import thunkMiddleware from 'redux-thunk'
 import {composeWithDevTools} from 'redux-devtools-extension'
 import user from './user'
-import game from './game'
+import {
+  newShape,
+  currentShape,
+  gameBoard,
+  updateBoard,
+  updateScore,
+  gameStarted,
+  gameOver,
+  score
+} from './game'
 
-const reducer = combineReducers({user, game})
+const reducer = combineReducers({
+  user,
+  newShape,
+  currentShape,
+  gameBoard,
+  updateBoard,
+  updateScore,
+  gameStarted,
+  gameOver,
+  score
+})
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 )
