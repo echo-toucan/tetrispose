@@ -15,7 +15,7 @@ export const isI = (
     (shoulderRightY - wristRightY) / (hipRightY - shoulderRightY) > 0.7 &&
     (hipRightScore > 0.9 && hipLeftScore > 0.9)
   ) {
-    return 'isI'
+    return 'I'
   }
 }
 
@@ -43,6 +43,6 @@ export const isT = (
     // wristLeftX > elbowLeftX &&
     // wristRightX < elbowRightX
   ) {
-    return 'isT'
+    return 'T'
   }
 }

@@ -1,12 +1,15 @@
 import React, {Component} from 'react'
 import * as posenet from '@tensorflow-models/posenet'
+import {connect} from 'react-redux'
 
 import {isI, isT} from './utility'
 
 import {gameItems} from './icons'
 import {Header, Segment} from 'semantic-ui-react'
 
-export default class Camera extends Component {
+import {shapeAchieved} from '../store/camera'
+
+class Camera extends Component {
   constructor() {
     super()
     this.state = {
@@ -20,6 +23,7 @@ export default class Camera extends Component {
     this.startTracking = this.startTracking.bind(this)
   }
   async componentDidMount() {
+    console.log('props', this.props)
     if (navigator.mediaDevices.getUserMedia) {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({video: true})
@@ -33,6 +37,16 @@ export default class Camera extends Component {
       if (this.posenet) this.detectPose()
     } catch (err) {
       console.error(err)
+    }
+    if (this.posenet) {
+      console.log('timer started')
+      setTimeout(() => {
+        console.log(this.state.currentShape)
+        console.log(this.props.currentShape)
+        if (this.props.currentShape === this.state.currentShape) {
+          this.props.shapeAchieved()
+        }
+      }, 5000)
     }
   }
 
@@ -106,10 +120,10 @@ export default class Camera extends Component {
     let imageSource = ''
 
     switch (this.state.currentShape) {
-      case 'isI':
+      case 'I':
         imageSource = '/assets/Line.png'
         break
-      case 'isT':
+      case 'T':
         imageSource = '/assets/T-shape.svg'
         break
       default:
@@ -144,3 +158,13 @@ export default class Camera extends Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  currentShape: state.posenetReducer.immediateShape.name
+})
+
+const mapDispatchToProps = dispatch => ({
+  shapeAchieved: () => dispatch(shapeAchieved())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Camera)
