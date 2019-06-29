@@ -124,23 +124,27 @@ export default class Grid extends Component {
         <button type="button" onClick={() => this.spawnShapes('line')}>
           Spawn a Line
         </button>
-        <SGrid columns="equal" id="game-grid">
-          {this.state.grid.map((row, rowIdx) => {
-            return (
-              <SGrid.Row key={rowIdx}>
-                {row.map((cell, cellIdx) => {
-                  return (
-                    <SGrid.Column
-                      color={colors[cell % 10]}
-                      className="game-cell"
-                      key={cellIdx}
-                    />
-                  )
-                })}
-              </SGrid.Row>
-            )
-          })}
-        </SGrid>
+        <table>
+          <tbody>
+            {this.state.grid.map((row, rowIdx) => {
+              return (
+                <tr key={rowIdx} className="game-row">
+                  {row.map((cell, cellIdx) => {
+                    return (
+                      <td
+                        key={cellIdx}
+                        style={{backgroundColor: colors[cell % 10]}}
+                        className="game-cell"
+                      />
+                    )
+                  })}
+                </tr>
+              )
+              /* // </SGrid.Row> */
+            })}
+            {/* </SGrid> */}
+          </tbody>
+        </table>
       </div>
     )
   }
