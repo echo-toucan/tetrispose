@@ -13,6 +13,7 @@ import {
   gameOver,
   score
 } from './game'
+import {posenetReducer} from './camera'
 
 const reducer = combineReducers({
   user,
@@ -23,7 +24,8 @@ const reducer = combineReducers({
   updateScore,
   gameStarted,
   gameOver,
-  score
+  score,
+  posenetReducer
 })
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
@@ -33,3 +35,4 @@ const store = createStore(reducer, middleware)
 export default store
 export * from './user'
 export * from './game'
+export * from './camera'
