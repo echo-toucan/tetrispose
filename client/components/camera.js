@@ -4,7 +4,7 @@ import * as posenet from '@tensorflow-models/posenet'
 import {isI, isT} from './utility'
 
 import {gameItems} from './icons'
-import {Header} from 'semantic-ui-react'
+import {Header, Segment} from 'semantic-ui-react'
 
 export default class Camera extends Component {
   constructor() {
@@ -124,16 +124,17 @@ export default class Camera extends Component {
         ) : (
           <h1>......</h1>
         )}
-
-        {this.state.currentShape ? (
-          <span>
-            <img width="5%" src={imageSource} />
-          </span>
-        ) : (
-          <Header size="large" color="red">
-            CANNOT RECOGNIZE MOVEMENT
-          </Header>
-        )}
+        <Segment>
+          {this.state.currentShape ? (
+            <span>
+              <img width="5%" src={imageSource} />
+            </span>
+          ) : (
+            <Header size="large" color="red">
+              CANNOT RECOGNIZE MOVEMENT
+            </Header>
+          )}
+        </Segment>
       </div>
     )
   }
