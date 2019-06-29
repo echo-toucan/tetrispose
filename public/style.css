@@ -29,6 +29,14 @@ form div {
   background-color: black;
 } */
 
+#preview-shape {
+  width: 100%;
+}
+
+.preview-image {
+  width: 75%;
+}
+
 .game-row {
   padding: 0;
 }

@@ -2,22 +2,36 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {createShapes, updateShapes} from '../store/previewShape'
-import allShapes from '../AllShapes'
 
 class PreviewShape extends Component {
   componentDidMount() {
     this.props.createShapes()
   }
 
+  componentDidUpdate() {}
+
   render() {
-    const shapes = this.state.shapes
+    const shapes = this.props.shapes
     return (
       <div>
-        <h6>Upcoming shapes:</h6>
+        <h3>Upcoming shapes:</h3>
         {shapes ? (
-          shapes.map(shape => {
-            return <img src={`/assets/${shape.name}.png`} />
-          })
+          <table id="preview-shape">
+            <tbody>
+              <tr>
+                {shapes.map((shape, idx) => {
+                  return (
+                    <td key={idx}>
+                      <img
+                        className="preview-image"
+                        src={`/assets/${shape.name}.png`}
+                      />
+                    </td>
+                  )
+                })}
+              </tr>
+            </tbody>
+          </table>
         ) : (
           <h5>Loading...</h5>
         )}

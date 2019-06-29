@@ -7,7 +7,7 @@ import {isI, isT} from './utility'
 import {gameItems} from './icons'
 import {Header, Segment} from 'semantic-ui-react'
 
-import {shapeAchieved} from '../store/camera'
+import {shapeAchieved} from '../store/currentShape'
 
 class Camera extends Component {
   constructor() {
@@ -160,7 +160,7 @@ class Camera extends Component {
 }
 
 const mapStateToProps = state => ({
-  currentShape: state.posenetReducer.immediateShape.name
+  currentShape: state.currentShape.name
 })
 
 const mapDispatchToProps = dispatch => ({
