@@ -37,7 +37,7 @@ export default class Camera extends Component {
   }
 
   async detectPose() {
-    const pose = await this.posenet.estimateSinglePose(this.video, {
+    let pose = await this.posenet.estimateSinglePose(this.video, {
       flipHorizontal: false
     })
 
@@ -57,7 +57,8 @@ export default class Camera extends Component {
     const hipLeftY = pose.keypoints[11].position.y
     const hipRightX = pose.keypoints[12].position.x
     const hipRightY = pose.keypoints[12].position.y
-
+    const hipRightScore = pose.keypoints[12].score
+    const hipLeftScore = pose.keypoints[11].score
     let currentShape =
       isI(
         shoulderLeftY,
@@ -65,7 +66,9 @@ export default class Camera extends Component {
         hipLeftY,
         shoulderRightY,
         wristRightY,
-        hipRightY
+        hipRightY,
+        hipRightScore,
+        hipLeftScore
       ) ||
       isT(
         shoulderLeftY,
@@ -73,7 +76,9 @@ export default class Camera extends Component {
         elbowLeftY,
         shoulderRightY,
         wristRightY,
-        elbowRightY
+        elbowRightY,
+        hipRightScore,
+        hipLeftScore
         // wristLeftX,
         // elbowLeftX,
         // wristRightX,
