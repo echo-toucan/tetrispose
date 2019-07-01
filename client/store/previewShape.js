@@ -1,4 +1,4 @@
-import shapesArray from '../AllShapes'
+import {getRandom} from '../AllShapes'
 
 const CREATE_SHAPES = 'CREATE_SHAPES'
 const UPDATE_SHAPES = 'UPDATE_SHAPES'
@@ -20,16 +20,14 @@ export const previewShape = (state = initialState, action) => {
       //Unavailble shapes (O, J, L, S, Z) are commented out in AllShapes.js and will NOT be selected
       let shapes = []
       for (let i = 0; i < 3; i++) {
-        const newShape =
-          shapesArray[Math.floor(Math.random() * shapesArray.length)]
+        const newShape = getRandom()
         shapes.push(newShape)
       }
       return shapes
     }
     case UPDATE_SHAPES: {
       //Removes first element from the array adds a new one to the end
-      const newShape =
-        shapesArray[Math.floor(Math.random() * shapesArray.length)]
+      const newShape = getRandom()
       return [...state.slice(1), newShape]
     }
     default:

@@ -1,46 +1,36 @@
 // import {Menu, Container} from 'semantic-ui-react'
 import React, {Component} from 'react'
-import {updateShapes, shapeAchieved, previewShape} from '../store/index'
+import {setFirstShape, shapeAchieved, previewShape} from '../store/index'
 import {updateCurrent} from '../store/currentShape'
 import {connect} from 'react-redux'
 
 class CurrentShape extends Component {
-  constructor() {
-    super()
-    this.state = {
-      target: ''
-    }
+  componentDidMount() {
+    this.props.setFirstShape()
   }
+
   render() {
+    const shape = this.props.currentShape.shape
     return (
       <div>
         <h1>Target</h1>
-        <div>{/* {this.props.previewShape} */}</div>
-        <div>
-          {this.props.previewShape.slice(0, 1).map((shape, idx) => {
-            return (
-              <div key={idx}>
-                <img
-                  className="preview-image"
-                  src={`/assets/${shape.name}.png`}
-                />
-              </div>
-            )
-          })}
-        </div>
+        {shape.name ? (
+          <img className="preview-image" src={`/assets/${shape.name}.png`} />
+        ) : (
+          ''
+        )}
       </div>
     )
   }
 }
 
 const mapStateToProps = state => ({
-  previewShape: state.previewShape
+  currentShape: state.currentShape
 })
 
 const mapDispatchToProps = dispatch => ({
   shapeAchieved: () => dispatch(shapeAchieved()),
-  updateShapes: () => dispatch(updateShapes()),
-  updateCurrent: shape => dispatch(updateCurrent(shape))
+  setFirstShape: () => dispatch(setFirstShape())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CurrentShape)

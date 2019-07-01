@@ -1,8 +1,10 @@
+import {getRandom} from '../AllShapes'
+
 // ACTION TYPE
 
 const UPDATE_CURRENT = 'UPDATE_CURRENT'
 const SHAPE_ACHIEVED = 'SHAPE_ACHIEVED'
-const GET_ACHIEVED = 'GET_ACHIEVED'
+const SET_FIRST_SHAPE = 'SET_FIRST_SHAPE'
 const SET_USER_SHAPE = 'SET_USER_SHAPE'
 const GET_USER_SHAPE = 'GET_USER_SHAPE'
 //ACTION CREATORS
@@ -14,6 +16,10 @@ export const updateCurrent = shape => ({
 
 export const shapeAchieved = () => ({
   type: SHAPE_ACHIEVED
+})
+
+export const setFirstShape = () => ({
+  type: SET_FIRST_SHAPE
 })
 
 export const setUserShape = shape => ({
@@ -33,11 +39,13 @@ const initialState = {
 
 export const currentShape = (state = initialState, action) => {
   switch (action.type) {
+    case SET_FIRST_SHAPE:
+      return {...state, shape: getRandom()}
     case SHAPE_ACHIEVED:
       console.log('shape achieved')
       return {...state, achieved: true}
     case UPDATE_CURRENT:
-      return {shape: action.shape, achieved: false}
+      return {shape: action.payload, achieved: false}
     default:
       return state
   }

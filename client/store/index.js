@@ -5,7 +5,6 @@ import {composeWithDevTools} from 'redux-devtools-extension'
 import user from './user'
 import {
   newShape,
-  // currentShape,
   gameBoard,
   updateBoard,
   updateScore,
@@ -17,11 +16,9 @@ import {
 import {currentShape, userShape} from './currentShape'
 import {previewShape} from './previewShape'
 
-
 const reducer = combineReducers({
   user,
   newShape,
-  // currentShape,
   gameBoard,
   updateBoard,
   updateScore,

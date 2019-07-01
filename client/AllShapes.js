@@ -1,4 +1,4 @@
-const shapesArray = [
+export const shapesArray = [
   // {
   //   name: 'O',
   //   shape: [[1, 1], [1, 1]],
@@ -59,4 +59,5 @@ const shapesArray = [
   // }
 ]
 
-export default shapesArray
+export const getRandom = () =>
+  shapesArray[Math.floor(Math.random() * shapesArray.length)]
