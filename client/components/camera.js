@@ -3,14 +3,14 @@ import * as posenet from '@tensorflow-models/posenet'
 import {connect} from 'react-redux'
 import {isI, isT} from './utility'
 import {Header, Segment} from 'semantic-ui-react'
-import {shapeAchieved} from '../store/currentShape'
+import {shapeAchieved, setUserShape} from '../store/currentShape'
+
 
 class Camera extends Component {
   constructor() {
     super()
     this.state = {
       activeCamera: true,
-      currentShape: ''
     }
     this.getVideo = this.getVideo.bind(this)
   }
@@ -82,11 +82,11 @@ class Camera extends Component {
 
     // console.log(currentShape)
 
-    this.setState({currentShape})
+    this.props.setUserShape(currentShape)
 
     if (
       this.props.currentShape &&
-      this.props.currentShape === this.state.currentShape
+      this.props.currentShape === this.props.userShape
     ) {
       this.props.shapeAchieved()
     }
@@ -111,28 +111,19 @@ class Camera extends Component {
         ) : (
           <h1>......</h1>
         )}
-        <Segment>
-          {this.state.currentShape ? (
-            <span>
-              <img width="10%" src={`/assets/${this.state.currentShape}.png`} />
-            </span>
-          ) : (
-            <Header size="large" color="red">
-              CANNOT RECOGNIZE MOVEMENT
-            </Header>
-          )}
-        </Segment>
       </div>
     )
   }
 }
 
 const mapStateToProps = state => ({
-  currentShape: state.currentShape.name
+  currentShape: state.currentShape.name,
+  userShape: state.userShape
 })
 
 const mapDispatchToProps = dispatch => ({
-  shapeAchieved: () => dispatch(shapeAchieved())
+  shapeAchieved: () => dispatch(shapeAchieved()),
+  setUserShape: shape => dispatch(setUserShape(shape))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Camera)
