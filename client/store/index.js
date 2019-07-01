@@ -13,8 +13,8 @@ import {
   gameOver,
   score
 } from './game'
-import {currentShape} from './currentShape'
-import {previewShape} from './previewShape'
+import {currentShape, shapeAchieved} from './currentShape'
+import {previewShape, updateShapes} from './previewShape'
 
 const reducer = combineReducers({
   user,
@@ -27,7 +27,9 @@ const reducer = combineReducers({
   gameOver,
   score,
   currentShape,
-  previewShape
+  previewShape,
+  updateShapes,
+  shapeAchieved
 })
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))

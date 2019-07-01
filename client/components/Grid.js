@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import shapesArray from '../AllShapes'
 import {connect} from 'react-redux'
 import {updateBoard} from '../store/game'
+import {updateShapes, shapeAchieved} from '../store/index'
+import {updateCurrent} from '../store/currentShape'
 
 class Grid extends Component {
   constructor() {
@@ -12,6 +14,7 @@ class Grid extends Component {
 
   spawnShapes() {
     const shapeId = Math.floor(Math.random() * shapesArray.length)
+    // const shapeId = this.props.previewShape[0]
     console.log(shapeId)
     const shape = shapesArray[shapeId].shape
     let newRows = []
@@ -36,6 +39,10 @@ class Grid extends Component {
     const oldGrid = this.props.gameBoard
     if (this.hasCollided()) {
       this.stopDrop()
+      const newCurrent = this.props.previewShape[0]
+      this.props.updateCurrent(newCurrent)
+      console.log('props.currentShape', this.props.currentShape)
+      this.props.updateShapes()
     } else {
       let newGrid = oldGrid.map((row, rowIdx) => {
         return row.map((cell, colIdx) => {
@@ -127,11 +134,14 @@ class Grid extends Component {
 
 const mapStateToProps = state => ({
   currentShape: state.currentShape.shape,
-  gameBoard: state.gameBoard
+  gameBoard: state.gameBoard,
+  previewShape: state.previewShape
 })
 
 const mapDispatchToProps = dispatch => ({
-  updateBoard: board => dispatch(updateBoard(board))
+  updateBoard: board => dispatch(updateBoard(board)),
+  updateCurrent: shape => dispatch(updateCurrent(shape)),
+  updateShapes: () => dispatch(updateShapes())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid)
