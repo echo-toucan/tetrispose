@@ -20,10 +20,9 @@ class Camera extends Component {
       isAT: false
     }
     this.getVideo = this.getVideo.bind(this)
-    this.startTracking = this.startTracking.bind(this)
+    // this.startTracking = this.startTracking.bind(this)
   }
   async componentDidMount() {
-    console.log('props', this.props)
     if (navigator.mediaDevices.getUserMedia) {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({video: true})
@@ -37,16 +36,6 @@ class Camera extends Component {
       if (this.posenet) this.detectPose()
     } catch (err) {
       console.error(err)
-    }
-    if (this.posenet) {
-      console.log('timer started')
-      setTimeout(() => {
-        console.log(this.state.currentShape)
-        console.log(this.props.currentShape)
-        if (this.props.currentShape === this.state.currentShape) {
-          this.props.shapeAchieved()
-        }
-      }, 5000)
     }
   }
 
@@ -101,10 +90,14 @@ class Camera extends Component {
 
     // console.log(currentShape)
 
-    if (currentShape) {
-      this.setState({currentShape})
-    }
+    this.setState({currentShape})
 
+    if (
+      this.props.currentShape &&
+      this.props.currentShape === this.state.currentShape
+    ) {
+      this.props.shapeAchieved()
+    }
     this.detectPose()
   }
 
@@ -112,24 +105,11 @@ class Camera extends Component {
     this.video = element
   }
 
-  startTracking() {
-    this.setState({isLoading: true})
-  }
+  // startTracking() {
+  //   this.setState({isLoading: true})
+  // }
 
   render() {
-    let imageSource = ''
-
-    switch (this.state.currentShape) {
-      case 'I':
-        imageSource = '/assets/Line.png'
-        break
-      case 'T':
-        imageSource = '/assets/T-shape.svg'
-        break
-      default:
-        imageSource = ''
-    }
-
     return (
       <div>
         {this.state.activeCamera ? (
@@ -146,7 +126,7 @@ class Camera extends Component {
         <Segment>
           {this.state.currentShape ? (
             <span>
-              <img width="5%" src={imageSource} />
+              <img width="5%" src={`/assets/${this.state.currentShape}.png`} />
             </span>
           ) : (
             <Header size="large" color="red">
