@@ -2,8 +2,10 @@ import React, {Component} from 'react'
 import GridRow from './GridRow'
 import {Table, Container, Grid as SGrid} from 'semantic-ui-react'
 import shapesArray from '../AllShapes'
+import {connect} from 'react-redux'
+import {updateBoard} from '../store/game'
 
-export default class Grid extends Component {
+class Grid extends Component {
   constructor() {
     super()
     this.state = {
@@ -46,10 +48,8 @@ export default class Grid extends Component {
       }
       newRows.push(newRow)
     }
-
-    this.setState(prevState => ({
-      grid: [...newRows, ...prevState.grid.slice(newRows.length)]
-    }))
+    const newGrid = [...newRows, ...this.props.gameBoard.slice(newRows.length)]
+    this.props.updateBoard(newGrid)
   }
 
   //sets the tetris board speed
@@ -59,9 +59,8 @@ export default class Grid extends Component {
 
   //it updates the board when an active shape moves down or lands
   updateBoard() {
-    const oldGrid = this.state.grid
+    const oldGrid = this.props.gameBoard
     if (this.hasCollided()) {
-      console.log('it collided')
       this.stopDrop()
     } else {
       let newGrid = oldGrid.map((row, rowIdx) => {
@@ -72,13 +71,14 @@ export default class Grid extends Component {
           } else return cell
         })
       })
-      this.setState({grid: newGrid})
+      // console.log('----', this.props)
+      this.props.updateBoard(newGrid)
     }
   }
 
   //checks if the active shape has landed
   hasCollided() {
-    const grid = this.state.grid
+    const grid = this.props.gameBoard
     for (let row = 0; row < grid.length; row++) {
       for (let col = 0; col < grid[row].length; col++) {
         const current = grid[row][col]
@@ -94,7 +94,7 @@ export default class Grid extends Component {
 
   //changes the active shape id from falling to stationary by adding 10.
   stopDrop() {
-    const oldGrid = this.state.grid
+    const oldGrid = this.props.gameBoard
     let newGrid = oldGrid.map(row => {
       return row.map(cell => {
         if (cell > 0 && cell < 10) {
@@ -104,7 +104,7 @@ export default class Grid extends Component {
         }
       })
     })
-    this.setState({grid: newGrid})
+    this.props.updateBoard(newGrid)
   }
 
   render() {
@@ -118,6 +118,7 @@ export default class Grid extends Component {
       'orange',
       'blue'
     ]
+    let grid = this.props.gameBoard
     return (
       <div>
         <button type="button" onClick={() => this.drop()}>
@@ -128,7 +129,7 @@ export default class Grid extends Component {
         </button>
         <table>
           <tbody>
-            {this.state.grid.map((row, rowIdx) => {
+            {grid.map((row, rowIdx) => {
               return (
                 <tr key={rowIdx} className="game-row">
                   {row.map((cell, cellIdx) => {
@@ -149,3 +150,14 @@ export default class Grid extends Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  currentShape: state.currentShape.shape,
+  gameBoard: state.gameBoard
+})
+
+const mapDispatchToProps = dispatch => ({
+  updateBoard: board => dispatch(updateBoard(board))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Grid)
