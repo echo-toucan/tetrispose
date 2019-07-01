@@ -23,11 +23,13 @@ form div {
   display: inline-block;
 }
 
-/* #game-grid {
-  width: 400px;
-  height: 800px;
-  background-color: black;
-} */
+#preview-shape {
+  width: 100%;
+}
+
+.preview-image {
+  width: 75%;
+}
 
 .game-row {
   padding: 0;
