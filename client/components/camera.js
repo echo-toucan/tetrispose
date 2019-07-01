@@ -1,29 +1,20 @@
 import React, {Component} from 'react'
 import * as posenet from '@tensorflow-models/posenet'
 import {connect} from 'react-redux'
-
 import {isI, isT} from './utility'
-
-import {gameItems} from './icons'
 import {Header, Segment} from 'semantic-ui-react'
+import {shapeAchieved, setUserShape} from '../store/currentShape'
 
-import {shapeAchieved} from '../store/currentShape'
 
 class Camera extends Component {
   constructor() {
     super()
     this.state = {
       activeCamera: true,
-      isLoading: false,
-      currentShape: '',
-      isAnI: false,
-      isAT: false
     }
     this.getVideo = this.getVideo.bind(this)
-    this.startTracking = this.startTracking.bind(this)
   }
   async componentDidMount() {
-    console.log('props', this.props)
     if (navigator.mediaDevices.getUserMedia) {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({video: true})
@@ -37,16 +28,6 @@ class Camera extends Component {
       if (this.posenet) this.detectPose()
     } catch (err) {
       console.error(err)
-    }
-    if (this.posenet) {
-      console.log('timer started')
-      setTimeout(() => {
-        console.log(this.state.currentShape)
-        console.log(this.props.currentShape)
-        if (this.props.currentShape === this.state.currentShape) {
-          this.props.shapeAchieved()
-        }
-      }, 5000)
     }
   }
 
@@ -101,10 +82,14 @@ class Camera extends Component {
 
     // console.log(currentShape)
 
-    if (currentShape) {
-      this.setState({currentShape})
-    }
+    this.props.setUserShape(currentShape)
 
+    if (
+      this.props.currentShape &&
+      this.props.currentShape === this.props.userShape
+    ) {
+      this.props.shapeAchieved()
+    }
     this.detectPose()
   }
 
@@ -112,24 +97,7 @@ class Camera extends Component {
     this.video = element
   }
 
-  startTracking() {
-    this.setState({isLoading: true})
-  }
-
   render() {
-    let imageSource = ''
-
-    switch (this.state.currentShape) {
-      case 'I':
-        imageSource = '/assets/Line.png'
-        break
-      case 'T':
-        imageSource = '/assets/T-shape.svg'
-        break
-      default:
-        imageSource = ''
-    }
-
     return (
       <div>
         {this.state.activeCamera ? (
@@ -143,28 +111,19 @@ class Camera extends Component {
         ) : (
           <h1>......</h1>
         )}
-        <Segment>
-          {this.state.currentShape ? (
-            <span>
-              <img width="5%" src={imageSource} />
-            </span>
-          ) : (
-            <Header size="large" color="red">
-              CANNOT RECOGNIZE MOVEMENT
-            </Header>
-          )}
-        </Segment>
       </div>
     )
   }
 }
 
 const mapStateToProps = state => ({
-  currentShape: state.currentShape.name
+  currentShape: state.currentShape.name,
+  userShape: state.userShape
 })
 
 const mapDispatchToProps = dispatch => ({
-  shapeAchieved: () => dispatch(shapeAchieved())
+  shapeAchieved: () => dispatch(shapeAchieved()),
+  setUserShape: shape => dispatch(setUserShape(shape))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Camera)

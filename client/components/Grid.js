@@ -13,10 +13,9 @@ class Grid extends Component {
   }
 
   spawnShapes() {
-    const shapeId = Math.floor(Math.random() * shapesArray.length)
-    // const shapeId = this.props.previewShape[0]
-    console.log(shapeId)
-    const shape = shapesArray[shapeId].shape
+
+    const shape = this.props.currentShape.shape
+
     let newRows = []
     for (let i = 0; i < shape.length; i++) {
       let newRow = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
