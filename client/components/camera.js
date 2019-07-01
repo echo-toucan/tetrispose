@@ -1,26 +1,18 @@
 import React, {Component} from 'react'
 import * as posenet from '@tensorflow-models/posenet'
 import {connect} from 'react-redux'
-
 import {isI, isT} from './utility'
-
-import {gameItems} from './icons'
 import {Header, Segment} from 'semantic-ui-react'
-
 import {shapeAchieved, setUserShape} from '../store/currentShape'
+
 
 class Camera extends Component {
   constructor() {
     super()
     this.state = {
       activeCamera: true,
-      isLoading: false,
-
-      isAnI: false,
-      isAT: false
     }
     this.getVideo = this.getVideo.bind(this)
-    // this.startTracking = this.startTracking.bind(this)
   }
   async componentDidMount() {
     if (navigator.mediaDevices.getUserMedia) {
@@ -104,10 +96,6 @@ class Camera extends Component {
   getVideo(element) {
     this.video = element
   }
-
-  // startTracking() {
-  //   this.setState({isLoading: true})
-  // }
 
   render() {
     return (
