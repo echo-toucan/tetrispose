@@ -1,12 +1,8 @@
 import React, {Component} from 'react'
 import * as posenet from '@tensorflow-models/posenet'
 import {connect} from 'react-redux'
-
 import {isI, isT} from './utility'
-
-import {gameItems} from './icons'
 import {Header, Segment} from 'semantic-ui-react'
-
 import {shapeAchieved} from '../store/currentShape'
 
 class Camera extends Component {
@@ -14,13 +10,9 @@ class Camera extends Component {
     super()
     this.state = {
       activeCamera: true,
-      isLoading: false,
-      currentShape: '',
-      isAnI: false,
-      isAT: false
+      currentShape: ''
     }
     this.getVideo = this.getVideo.bind(this)
-    // this.startTracking = this.startTracking.bind(this)
   }
   async componentDidMount() {
     if (navigator.mediaDevices.getUserMedia) {
@@ -105,10 +97,6 @@ class Camera extends Component {
     this.video = element
   }
 
-  // startTracking() {
-  //   this.setState({isLoading: true})
-  // }
-
   render() {
     return (
       <div>
@@ -126,7 +114,7 @@ class Camera extends Component {
         <Segment>
           {this.state.currentShape ? (
             <span>
-              <img width="5%" src={`/assets/${this.state.currentShape}.png`} />
+              <img width="10%" src={`/assets/${this.state.currentShape}.png`} />
             </span>
           ) : (
             <Header size="large" color="red">
