@@ -44,10 +44,9 @@ export const updateSHAPE = shape => ({
   shape
 })
 
-export const updateBoard = (board, spawn) => ({
+export const updateBoard = board => ({
   type: UPDATE_BOARD,
-  payload: board,
-  spawn
+  payload: board
 })
 
 export const updateScore = score => ({
