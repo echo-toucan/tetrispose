@@ -7,8 +7,8 @@ const shapesArray = [
   // },
   {
     name: 'I',
-    shape: [[2], [2], [2], [2]],
-    rotations: [[[2], [2], [2], [2]], [[2, 2, 2, 2]]],
+    shape: [[2, 2, 2, 2]],
+    rotations: [[[2, 2, 2, 2]], [[2], [2], [2], [2]]],
     topLeft: {row: 0, col: 4}
   },
   // {
