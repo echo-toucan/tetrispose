@@ -13,8 +13,10 @@ import {
   gameOver,
   score
 } from './game'
+
 import {currentShape, userShape} from './currentShape'
 import {previewShape} from './previewShape'
+
 
 const reducer = combineReducers({
   user,
