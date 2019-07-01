@@ -5,7 +5,8 @@ import {
   Timer,
   PreviewShape,
   GameBoard,
-  CurrentShape
+  CurrentShape,
+  UserShape
 } from './components'
 
 class GameHome extends Component {
@@ -18,6 +19,9 @@ class GameHome extends Component {
           </Segment> */}
           <Segment>
             <Camera />
+          </Segment>
+          <Segment color="red" inverted>
+            <UserShape />
           </Segment>
           <Segment color="orange" inverted>
             <CurrentShape />
