@@ -9,7 +9,7 @@ class UserShape extends Component {
         {this.props.gotIt ? (
           <div>
             <h1>YOU GOT IT!</h1>
-            <img className="preview-image" src="/assets/check.png" />
+            <img className="checkmark" src="/assets/check.png" />
           </div>
         ) : (
           <div>
