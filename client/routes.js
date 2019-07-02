@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import {Login, Signup, UserHome, GameBoard} from './components'
 import {me} from './store'
 import GameHome from './GameHome'
+import HomePage from './HomePage'
 
 /**
  * COMPONENT
@@ -22,7 +23,10 @@ class Routes extends Component {
         {/* Routes placed here are available to all visitors */}
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-        <Route exact path="/" component={GameHome} />
+
+        <Route exact path="/" component={HomePage} />
+        <Route exact path="/gamehome" component={GameHome} />
+
         <Route exact path="/gameboard" component={GameBoard} />
         {isLoggedIn && (
           <Switch>
