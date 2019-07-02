@@ -1,6 +1,8 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
+import {Button} from 'semantic-ui-react'
 
-export const Instructions = () => {
+const Instructions = () => {
   return (
     <div>
       <h1> Tetris Pose! The classic game with a new twist!</h1>
@@ -46,6 +48,12 @@ export const Instructions = () => {
         I Shape: Raise both your arms up in the air with your hands pointing up.
       </h3>
       <h3> T Shape: Raise both arms to be just parallel to the floor.</h3>
+
+      <Button as={Link} to="/gamehome" primary>
+        Start game
+      </Button>
     </div>
   )
 }
+
+export default Instructions
