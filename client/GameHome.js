@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Grid, GridRow, GridColumn, Segment} from 'semantic-ui-react'
+import {Grid, Segment} from 'semantic-ui-react'
 import {connect} from 'react-redux'
 import {
   Camera,
