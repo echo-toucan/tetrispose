@@ -8,12 +8,16 @@ class UserShape extends Component {
   render() {
     return (
       <div>
+        <h1>Your pose is</h1>
         {this.props.userShape ? (
           <span>
-            <img width="5%" src={`/assets/${this.props.userShape}.png`} />
+            <img
+              className="preview-image"
+              src={`/assets/${this.props.userShape}.png`}
+            />
           </span>
         ) : (
-          <h1>CANNOT RECOGNIZE MOVEMENT</h1>
+          <h1>not recognized</h1>
         )}
       </div>
     )
