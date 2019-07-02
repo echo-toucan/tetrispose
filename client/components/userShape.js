@@ -3,17 +3,13 @@ import {connect} from 'react-redux'
 import {shapeAchieved} from '../store/currentShape'
 
 class UserShape extends Component {
-  constructor() {
-    super()
-  }
   render() {
-    console.log(this.props.gotIt)
     return (
       <div>
         {this.props.gotIt ? (
           <div>
             <h1>YOU GOT IT!</h1>
-            <img className="preview-image" src="/assets/check.png" />
+            <img className="checkmark" src="/assets/check.png" />
           </div>
         ) : (
           <div>
@@ -21,7 +17,7 @@ class UserShape extends Component {
             {this.props.userShape ? (
               <span>
                 <img
-                  className="preview-image"
+                  className="checkmark"
                   src={`/assets/${this.props.userShape}.png`}
                 />
               </span>

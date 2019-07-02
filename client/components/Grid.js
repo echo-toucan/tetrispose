@@ -2,7 +2,8 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {updateBoard} from '../store/game'
 import {updateShapes, shapeAchieved} from '../store/index'
-import {updateCurrent} from '../store/currentShape'
+import {updateCurrent, gotPenalty} from '../store/currentShape'
+import {penalty, colors} from '../AllShapes'
 
 class Grid extends Component {
   constructor() {
@@ -18,7 +19,13 @@ class Grid extends Component {
   }
 
   spawnShapes() {
-    const shape = this.props.currentShape.shape
+    let shape
+    if (this.props.currentShape.achieved) {
+      shape = this.props.currentShape.shape.shape
+    } else {
+      this.props.gotPenalty()
+      shape = penalty.shape
+    }
     let newRows = []
     for (let i = 0; i < shape.length; i++) {
       let newRow = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -96,16 +103,6 @@ class Grid extends Component {
   }
 
   render() {
-    const colors = [
-      'black',
-      'yellow',
-      'cyan',
-      'red',
-      'limegreen',
-      'magenta',
-      'orange',
-      'blue'
-    ]
     let grid = this.props.gameBoard
     return (
       <div>
@@ -140,7 +137,7 @@ class Grid extends Component {
 }
 
 const mapStateToProps = state => ({
-  currentShape: state.currentShape.shape,
+  currentShape: state.currentShape,
   gameBoard: state.gameBoard,
   previewShape: state.previewShape
 })
@@ -148,7 +145,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   updateBoard: board => dispatch(updateBoard(board)),
   updateCurrent: shape => dispatch(updateCurrent(shape)),
-  updateShapes: () => dispatch(updateShapes())
+  updateShapes: () => dispatch(updateShapes()),
+  gotPenalty: () => dispatch(gotPenalty())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid)

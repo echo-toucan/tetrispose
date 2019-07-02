@@ -1,15 +1,19 @@
 import React, {Component} from 'react'
 import {Grid, GridRow, GridColumn, Segment} from 'semantic-ui-react'
+import {connect} from 'react-redux'
 import {
   Camera,
   PreviewShape,
   GameBoard,
   CurrentShape,
-  UserShape
+  UserShape,
+  SuccessMessage
 } from './components'
 
 class GameHome extends Component {
   render() {
+    const achieved = this.props.currentShape.achieved
+    const isX = this.props.currentShape.shape.name === 'X'
     return (
       <Grid container columns={2} padded>
         <Grid.Column floated="left" width={10}>
@@ -18,22 +22,30 @@ class GameHome extends Component {
               <Camera />
             </Segment>
           </Grid.Row>
+          {achieved || isX ? (
+            <Segment color="orange" inverted>
+              <SuccessMessage />
+            </Segment>
+          ) : (
+            <Grid.Row>
+              <Grid padded container>
+                <Grid.Column width={8}>
+                  <Segment color="orange" inverted>
+                    <CurrentShape />
+                  </Segment>
+                </Grid.Column>
+                <Grid.Column width={8}>
+                  <Segment color="red" inverted>
+                    <UserShape />
+                  </Segment>
+                </Grid.Column>
+              </Grid>
+            </Grid.Row>
+          )}
           <Grid.Row>
-            <Grid padded container>
-              <Grid.Column width={8}>
-                <Segment color="orange" inverted>
-                  <CurrentShape />
-                </Segment>
-              </Grid.Column>
-              <Grid.Column width={8}>
-                <Segment color="red" inverted>
-                  <UserShape />
-                </Segment>
-              </Grid.Column>
-              <Segment color="blue" inverted width={16}>
-                <PreviewShape />
-              </Segment>
-            </Grid>
+            <Segment color="blue" inverted width={16}>
+              <PreviewShape />
+            </Segment>
           </Grid.Row>
         </Grid.Column>
 
@@ -47,4 +59,8 @@ class GameHome extends Component {
   }
 }
 
-export default GameHome
+const mapStateToProps = state => ({
+  currentShape: state.currentShape
+})
+
+export default connect(mapStateToProps)(GameHome)
