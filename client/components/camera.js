@@ -5,12 +5,11 @@ import {isI, isT} from './utility'
 import {Header, Segment} from 'semantic-ui-react'
 import {shapeAchieved, setUserShape} from '../store/currentShape'
 
-
 class Camera extends Component {
   constructor() {
     super()
     this.state = {
-      activeCamera: true,
+      activeCamera: true
     }
     this.getVideo = this.getVideo.bind(this)
   }
@@ -117,7 +116,7 @@ class Camera extends Component {
 }
 
 const mapStateToProps = state => ({
-  currentShape: state.currentShape.name,
+  currentShape: state.currentShape.shape.name,
   userShape: state.userShape
 })
 
