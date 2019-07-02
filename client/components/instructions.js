@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const instructions = () => {
+export const Instructions = () => {
   return (
     <div>
       <h1> Tetris Pose! The classic game with a new twist!</h1>
