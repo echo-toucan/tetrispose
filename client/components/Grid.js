@@ -9,6 +9,8 @@ class Grid extends Component {
     super()
     this.updateBoard = this.updateBoard.bind(this)
     this.spawnShapes = this.spawnShapes.bind(this)
+    this.movement = this.movement.bind(this)
+    this.leftBorder = this.leftBorder.bind(this)
   }
 
   spawnShapes() {
@@ -29,7 +31,6 @@ class Grid extends Component {
   drop() {
     setInterval(this.updateBoard, 500)
   }
-
   //it updates the board when an active shape moves down or lands
   updateBoard() {
     const oldGrid = this.props.gameBoard
@@ -52,7 +53,89 @@ class Grid extends Component {
       this.props.updateBoard(newGrid)
     }
   }
+  movement(event) {
+    // console.log('-------', event.key)
+    if (event.key === 'ArrowLeft') {
+      console.log('we are moving left', event.key)
+      return this.moveLeft()
+    } else if (event.key === 'ArrowRight') {
+      console.log('we are moving right', event.key)
+      return this.moveRight()
+    } else {
+      console.log(event.key)
+    }
+  }
 
+  moveLeft() {
+    const oldGrid = this.props.gameBoard
+    if (!this.leftBorder()) {
+      console.log('WE HERE')
+      let newGrid = oldGrid.map((row, rowIdx) => {
+        return row.map((cell, colIdx) => {
+          const cellLeft = oldGrid[rowIdx][colIdx + 1]
+          console.log('cellleft', cellLeft)
+          if (cell < 10 && cellLeft < 10) {
+            return cellLeft
+          } else return cell
+        })
+      })
+      this.props.updateBoard(newGrid)
+    } else {
+      console.log('yay')
+    }
+  }
+
+  leftBorder() {
+    const grid = this.props.gameBoard
+    for (let row = 0; row < grid.length; row++) {
+      for (let col = 0; col < grid[row].length; col++) {
+        const current = grid[row][col]
+        const isFalling = current > 0 && current < 10
+        const hasLeftWall = col === 0 || grid[row][col - 1] >= 10
+        // console.log('leftRoom', hasLeftRoom)
+        // console.log(grid)
+        if (isFalling && hasLeftWall) {
+          return true
+        }
+      }
+    }
+    return false
+  }
+
+  moveRight() {
+    const oldGrid = this.props.gameBoard
+    if (this.rightBorder() === true) {
+      console.log('WE HERE')
+      let newGrid = oldGrid.map((row, rowIdx) => {
+        return row.map((cell, colIdx) => {
+          const cellRight = oldGrid[rowIdx][colIdx - 1]
+          if (cell < 10 && cellRight < 10) {
+            return cellRight
+          } else return cell
+        })
+      })
+      this.props.updateBoard(newGrid)
+    } else {
+      console.log('yay')
+    }
+  }
+
+  rightBorder() {
+    const grid = this.props.gameBoard
+    for (let row = 0; row < grid.length; row++) {
+      for (let col = 0; col < grid[row].length; col++) {
+        const current = grid[row][col]
+        const isFalling = current > 0 && current < 10
+        const hasLeftRoom = grid[row][col - 1]
+        console.log('leftRoom', hasLeftRoom)
+        console.log(grid)
+        if (isFalling && hasLeftRoom) {
+          return true
+        }
+      }
+    }
+    return false
+  }
   //checks if the active shape has landed
   hasCollided() {
     const grid = this.props.gameBoard
@@ -101,9 +184,11 @@ class Grid extends Component {
         <button type="button" onClick={() => this.drop()}>
           Drop!
         </button>
+        <input onKeyDown={event => this.movement(event)} />
         <button type="button" onClick={() => this.spawnShapes()}>
           Spawn a shape
         </button>
+
         <table>
           <tbody>
             {grid.map((row, rowIdx) => {
