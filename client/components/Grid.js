@@ -10,6 +10,12 @@ class Grid extends Component {
     this.updateBoard = this.updateBoard.bind(this)
     this.spawnShapes = this.spawnShapes.bind(this)
   }
+  componentDidMount() {
+    this.drop()
+    setTimeout(() => {
+      this.spawnShapes(this.props.currentShape)
+    }, 3000)
+  }
 
   spawnShapes() {
     const shape = this.props.currentShape.shape
@@ -37,7 +43,12 @@ class Grid extends Component {
       this.stopDrop()
       const newCurrent = this.props.previewShape[0]
       this.props.updateCurrent(newCurrent)
-      console.log('props.currentShape', this.props.currentShape)
+      setTimeout(() => {
+        console.log('timer')
+        this.spawnShapes(this.props.currentShape)
+      }, 3000)
+
+      // console.log('props.currentShape', this.props.currentShape)
       this.props.updateShapes()
     } else {
       let newGrid = oldGrid.map((row, rowIdx) => {
