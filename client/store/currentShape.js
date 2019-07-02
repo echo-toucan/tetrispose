@@ -1,9 +1,10 @@
-import {getRandom} from '../AllShapes'
+import {getRandom, penalty} from '../AllShapes'
 
 // ACTION TYPE
 
 const UPDATE_CURRENT = 'UPDATE_CURRENT'
 const SHAPE_ACHIEVED = 'SHAPE_ACHIEVED'
+const GOT_PENALTY = 'GOT_PENALTY'
 const SET_FIRST_SHAPE = 'SET_FIRST_SHAPE'
 const SET_USER_SHAPE = 'SET_USER_SHAPE'
 const GET_USER_SHAPE = 'GET_USER_SHAPE'
@@ -16,6 +17,10 @@ export const updateCurrent = shape => ({
 
 export const shapeAchieved = () => ({
   type: SHAPE_ACHIEVED
+})
+
+export const gotPenalty = () => ({
+  type: GOT_PENALTY
 })
 
 export const setFirstShape = () => ({
@@ -42,8 +47,9 @@ export const currentShape = (state = initialState, action) => {
     case SET_FIRST_SHAPE:
       return {...state, shape: getRandom()}
     case SHAPE_ACHIEVED:
-      console.log('shape achieved')
       return {...state, achieved: true}
+    case GOT_PENALTY:
+      return {shape: penalty}
     case UPDATE_CURRENT:
       return {shape: action.payload, achieved: false}
     default:
