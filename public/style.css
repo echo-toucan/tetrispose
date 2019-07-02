@@ -1,8 +1,19 @@
 body {
   font-family: sans-serif;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-content: center;
+  background: #659999; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #f4791f,
+    #659999
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #f4791f,
+    #659999
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 a {
@@ -46,4 +57,18 @@ form div {
   border: 1px solid black;
   padding: 0;
   margin: 0;
+}
+
+.navBar {
+  background: #f12711; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #f5af19,
+    #f12711
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #f5af19,
+    #f12711
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
