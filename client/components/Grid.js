@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import shapesArray from '../AllShapes'
 import {connect} from 'react-redux'
 import {updateBoard} from '../store/game'
 import {updateShapes, shapeAchieved} from '../store/index'
@@ -13,9 +12,7 @@ class Grid extends Component {
   }
 
   spawnShapes() {
-
     const shape = this.props.currentShape.shape
-
     let newRows = []
     for (let i = 0; i < shape.length; i++) {
       let newRow = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]

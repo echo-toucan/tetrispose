@@ -1,4 +1,4 @@
-import shapesArray from '../AllShapes'
+import {shapesArray} from '../AllShapes'
 
 const gameBoardArray = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -104,25 +104,6 @@ export const gameBoard = (state = Array.from(gameBoardArray), action) => {
       return state
   }
 }
-
-// export const currentShape = (state = [], action) => {
-//   switch (action.type) {
-//     case UPDATE_BOARD:
-//       if (action.spawn) {
-//         return shapesArray[Math.floor(Math.random() * shapesArray.length)]
-//       } else {
-//         return state
-//       }
-//     case UPDATE_SHAPE:
-//       return action.Shape
-//     case SPAWN_SHAPE:
-//       return shapesArray[Math.floor(Math.random() * shapesArray.length)]
-//     case RESET_GAME:
-//       return shapesArray[Math.floor(Math.random() * shapesArray.length)]
-//     default:
-//       return state
-//   }
-// }
 
 export const gameStarted = (state = false, action) => {
   switch (action.type) {
