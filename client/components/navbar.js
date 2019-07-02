@@ -15,8 +15,8 @@ class Navbar extends Component {
     const {handleClick, isLoggedIn} = this.props
 
     return (
-      <Menu color="purple" inverted fixed="top">
-        <Container>
+      <Menu secondary fixed="top">
+        <Container className="navBar">
           <Menu.Item
             name="home"
             as={Link}
