@@ -10,7 +10,6 @@ class Grid extends Component {
     this.updateBoard = this.updateBoard.bind(this)
     this.spawnShapes = this.spawnShapes.bind(this)
     this.movement = this.movement.bind(this)
-    this.leftBorder = this.leftBorder.bind(this)
   }
 
   spawnShapes() {
@@ -54,46 +53,38 @@ class Grid extends Component {
     }
   }
   movement(event) {
-    // console.log('-------', event.key)
     if (event.key === 'ArrowLeft') {
-      console.log('we are moving left', event.key)
       return this.moveLeft()
-    } else if (event.key === 'ArrowRight') {
-      console.log('we are moving right', event.key)
+    }
+    if (event.key === 'ArrowRight') {
       return this.moveRight()
-    } else {
-      console.log(event.key)
     }
   }
 
   moveLeft() {
     const oldGrid = this.props.gameBoard
-    if (!this.leftBorder()) {
-      console.log('WE HERE')
+    if (!this.hasLeftBorder()) {
       let newGrid = oldGrid.map((row, rowIdx) => {
         return row.map((cell, colIdx) => {
-          const cellLeft = oldGrid[rowIdx][colIdx + 1]
-          console.log('cellleft', cellLeft)
-          if (cell < 10 && cellLeft < 10) {
-            return cellLeft
+          const cellToRight =
+            colIdx + 1 === row.length ? 0 : oldGrid[rowIdx][colIdx + 1]
+
+          if (cell < 10 && cellToRight < 10) {
+            return cellToRight
           } else return cell
         })
       })
       this.props.updateBoard(newGrid)
-    } else {
-      console.log('yay')
     }
   }
 
-  leftBorder() {
+  hasLeftBorder() {
     const grid = this.props.gameBoard
     for (let row = 0; row < grid.length; row++) {
       for (let col = 0; col < grid[row].length; col++) {
         const current = grid[row][col]
         const isFalling = current > 0 && current < 10
         const hasLeftWall = col === 0 || grid[row][col - 1] >= 10
-        // console.log('leftRoom', hasLeftRoom)
-        // console.log(grid)
         if (isFalling && hasLeftWall) {
           return true
         }
@@ -104,32 +95,28 @@ class Grid extends Component {
 
   moveRight() {
     const oldGrid = this.props.gameBoard
-    if (this.rightBorder() === true) {
-      console.log('WE HERE')
+    if (!this.hasRightBorder()) {
       let newGrid = oldGrid.map((row, rowIdx) => {
         return row.map((cell, colIdx) => {
-          const cellRight = oldGrid[rowIdx][colIdx - 1]
-          if (cell < 10 && cellRight < 10) {
-            return cellRight
+          const cellToLeft = colIdx === 0 ? 0 : oldGrid[rowIdx][colIdx - 1]
+          if (cell < 10 && cellToLeft < 10) {
+            return cellToLeft
           } else return cell
         })
       })
       this.props.updateBoard(newGrid)
-    } else {
-      console.log('yay')
     }
   }
 
-  rightBorder() {
+  hasRightBorder() {
     const grid = this.props.gameBoard
     for (let row = 0; row < grid.length; row++) {
       for (let col = 0; col < grid[row].length; col++) {
         const current = grid[row][col]
         const isFalling = current > 0 && current < 10
-        const hasLeftRoom = grid[row][col - 1]
-        console.log('leftRoom', hasLeftRoom)
-        console.log(grid)
-        if (isFalling && hasLeftRoom) {
+        const hasRightWall =
+          col + 1 === grid[row].length || grid[row][col + 1] >= 10
+        if (isFalling && hasRightWall) {
           return true
         }
       }
