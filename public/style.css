@@ -31,6 +31,11 @@ form div {
   width: 75%;
 }
 
+.checkmark {
+  width: 25%;
+  height: 25%;
+}
+
 .game-row {
   padding: 0;
 }

@@ -49,7 +49,7 @@ export const currentShape = (state = initialState, action) => {
     case SHAPE_ACHIEVED:
       return {...state, achieved: true}
     case GOT_PENALTY:
-      return {shape: penalty}
+      return {shape: penalty, achieved: false}
     case UPDATE_CURRENT:
       return {shape: action.payload, achieved: false}
     default:
