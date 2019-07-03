@@ -55,11 +55,11 @@ class GameHome extends Component {
       //     </Segment>
       //   </Grid.Column>
       // </Grid>
-      <Grid padded centered columns={3}>
-        <Grid.Column width={2}>
-          <Segment color="blue" inverted>
-            <PreviewShape />
-          </Segment>
+      <Grid padded centered="true" columns={3}>
+        <Grid.Column width={2} divided>
+          {/* <Segment color="blue" inverted height="100px"> */}
+          <PreviewShape />
+          {/* </Segment> */}
         </Grid.Column>
 
         <Grid.Column width={8} centered>
@@ -75,9 +75,9 @@ class GameHome extends Component {
                 <SuccessMessage />
               </Segment>
             ) : (
-              <Grid padded celled className="fixed-width">
+              <Grid padded columns={2}>
                 <Grid.Column width={8}>
-                  <Segment color="orange" inverted>
+                  <Segment>
                     <CurrentShape />
                   </Segment>
                 </Grid.Column>
