@@ -8,9 +8,13 @@ import {penalty, colors} from '../AllShapes'
 class Grid extends Component {
   constructor() {
     super()
+    this.state = {
+      rotations: 0
+    }
     this.updateBoard = this.updateBoard.bind(this)
     this.spawnShapes = this.spawnShapes.bind(this)
     this.movement = this.movement.bind(this)
+    this.rotate = this.rotate.bind(this)
   }
   componentDidMount() {
     this.drop()
@@ -28,15 +32,24 @@ class Grid extends Component {
       shape = penalty.shape
     }
     let newRows = []
+    const oldGrid = this.props.gameBoard
     for (let i = 0; i < shape.length; i++) {
-      let newRow = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      let newRow = [...oldGrid[i]]
       for (let j = 0; j < shape[i].length; j++) {
-        newRow[j + 4] = shape[i][j]
+        if (oldGrid[i][j + 4] < 10) {
+          newRow[j + 4] = shape[i][j]
+        } else {
+          this.gameEnd()
+        }
       }
       newRows.push(newRow)
     }
     const newGrid = [...newRows, ...this.props.gameBoard.slice(newRows.length)]
     this.props.updateBoard(newGrid)
+  }
+
+  gameEnd() {
+    alert('You lose!')
   }
 
   //sets the tetris board speed
@@ -76,6 +89,9 @@ class Grid extends Component {
     }
     if (event.key === 'ArrowRight') {
       return this.moveRight()
+    }
+    if (event.key === 'ArrowUp') {
+      return this.rotate()
     }
   }
 
@@ -170,6 +186,52 @@ class Grid extends Component {
       })
     })
     this.props.updateBoard(newGrid)
+  }
+
+  rotate() {
+    const rotations = this.props.currentShape.shape.rotations
+
+    const rotatedShape = rotations[this.state.rotations % rotations.length]
+    let newRows = []
+
+    const [pivotRow, pivotCol] = this.findPivot()
+    const oldGrid = this.removeFallingShape()
+
+    for (let i = 0; i < rotatedShape.length; i++) {
+      let newRow = [...oldGrid[pivotRow + i]]
+      for (let j = 0; j < rotatedShape[i].length; j++) {
+        newRow[pivotCol + j] = rotatedShape[i][j]
+      }
+      newRows.push(newRow)
+    }
+
+    const rowsAbove = oldGrid.slice(0, pivotRow)
+    const rowsBelow = oldGrid.slice(pivotRow + newRows.length)
+
+    const newGrid = [...rowsAbove, ...newRows, ...rowsBelow]
+    this.props.updateBoard(newGrid)
+    this.setState(prevState => ({
+      rotations: prevState.rotations + 1
+    }))
+  }
+
+  removeFallingShape() {
+    const oldGrid = this.props.gameBoard
+    const clearBoard = oldGrid.map(row => {
+      return row.map(rowCell => {
+        if (rowCell >= 10) return rowCell
+        else return 0
+      })
+    })
+    return clearBoard
+  }
+  findPivot() {
+    const grid = this.props.gameBoard
+    for (let i = 0; i < grid.length; i++) {
+      for (let j = 0; j < grid[i].length; j++) {
+        if (grid[i][j] > 0 && grid[i][j] < 10) return [i, j]
+      }
+    }
   }
 
   render() {
