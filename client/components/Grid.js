@@ -8,9 +8,13 @@ import {penalty, colors} from '../AllShapes'
 class Grid extends Component {
   constructor() {
     super()
+    this.state = {
+      rotations: 0
+    }
     this.updateBoard = this.updateBoard.bind(this)
     this.spawnShapes = this.spawnShapes.bind(this)
     this.movement = this.movement.bind(this)
+    this.rotate = this.rotate.bind(this)
   }
   componentDidMount() {
     this.drop()
@@ -76,6 +80,9 @@ class Grid extends Component {
     }
     if (event.key === 'ArrowRight') {
       return this.moveRight()
+    }
+    if (event.key === 'ArrowUp') {
+      return this.rotate()
     }
   }
 
@@ -170,6 +177,25 @@ class Grid extends Component {
       })
     })
     this.props.updateBoard(newGrid)
+  }
+
+  rotate() {
+    const rotations = this.props.currentShape.shape.rotations
+
+    const rotatedShape = rotations[this.state.rotations % rotations.length]
+    let newRows = []
+    for (let i = 0; i < rotatedShape.length; i++) {
+      let newRow = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      for (let j = 0; j < rotatedShape[i].length; j++) {
+        newRow[j + 4] = rotatedShape[i][j]
+      }
+      newRows.push(newRow)
+    }
+    const newGrid = [...newRows, ...this.props.gameBoard.slice(newRows.length)]
+    this.props.updateBoard(newGrid)
+    this.setState(prevState => ({
+      rotations: prevState.rotations + 1
+    }))
   }
 
   render() {

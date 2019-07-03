@@ -56,13 +56,7 @@ class Camera extends Component {
     return (
       <div>
         {this.state.activeCamera ? (
-          <video
-            width="640"
-            height="480"
-            controls
-            autoPlay={true}
-            ref={this.getVideo}
-          />
+          <video width="640" height="480" autoPlay={true} ref={this.getVideo} />
         ) : (
           <h1>......</h1>
         )}
