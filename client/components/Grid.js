@@ -32,15 +32,24 @@ class Grid extends Component {
       shape = penalty.shape
     }
     let newRows = []
+    const oldGrid = this.props.gameBoard
     for (let i = 0; i < shape.length; i++) {
-      let newRow = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      let newRow = [...oldGrid[i]]
       for (let j = 0; j < shape[i].length; j++) {
-        newRow[j + 4] = shape[i][j]
+        if (oldGrid[i][j + 4] < 10) {
+          newRow[j + 4] = shape[i][j]
+        } else {
+          this.gameEnd()
+        }
       }
       newRows.push(newRow)
     }
     const newGrid = [...newRows, ...this.props.gameBoard.slice(newRows.length)]
     this.props.updateBoard(newGrid)
+  }
+
+  gameEnd() {
+    alert('You lose!')
   }
 
   //sets the tetris board speed
@@ -184,18 +193,34 @@ class Grid extends Component {
 
     const rotatedShape = rotations[this.state.rotations % rotations.length]
     let newRows = []
+    const oldGrid = this.props.gameBoard
+    const [pivotRow, pivotCol] = this.findPivot()
+
     for (let i = 0; i < rotatedShape.length; i++) {
-      let newRow = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      let newRow = [...oldGrid[pivotRow + i]]
       for (let j = 0; j < rotatedShape[i].length; j++) {
-        newRow[j + 4] = rotatedShape[i][j]
+        newRow[pivotCol + j] = rotatedShape[i][j]
       }
       newRows.push(newRow)
     }
-    const newGrid = [...newRows, ...this.props.gameBoard.slice(newRows.length)]
+
+    const rowsAbove = oldGrid.slice(0, pivotRow)
+    const rowsBelow = oldGrid.slice(pivotRow + newRows.length)
+
+    const newGrid = [...rowsAbove, ...newRows, ...rowsBelow]
     this.props.updateBoard(newGrid)
     this.setState(prevState => ({
       rotations: prevState.rotations + 1
     }))
+  }
+
+  findPivot() {
+    const grid = this.props.gameBoard
+    for (let i = 0; i < grid.length; i++) {
+      for (let j = 0; j < grid[i].length; j++) {
+        if (grid[i][j] > 0 && grid[i][j] < 10) return [i, j]
+      }
+    }
   }
 
   render() {
