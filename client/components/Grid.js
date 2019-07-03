@@ -193,8 +193,9 @@ class Grid extends Component {
 
     const rotatedShape = rotations[this.state.rotations % rotations.length]
     let newRows = []
-    const oldGrid = this.props.gameBoard
+
     const [pivotRow, pivotCol] = this.findPivot()
+    const oldGrid = this.removeFallingShape()
 
     for (let i = 0; i < rotatedShape.length; i++) {
       let newRow = [...oldGrid[pivotRow + i]]
@@ -214,6 +215,16 @@ class Grid extends Component {
     }))
   }
 
+  removeFallingShape() {
+    const oldGrid = this.props.gameBoard
+    const clearBoard = oldGrid.map(row => {
+      return row.map(rowCell => {
+        if (rowCell >= 10) return rowCell
+        else return 0
+      })
+    })
+    return clearBoard
+  }
   findPivot() {
     const grid = this.props.gameBoard
     for (let i = 0; i < grid.length; i++) {
