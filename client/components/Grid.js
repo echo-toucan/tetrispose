@@ -184,7 +184,7 @@ class Grid extends Component {
           Spawn a shape
         </button>
 
-        <table>
+        <table className="game-table">
           <tbody>
             {grid.map((row, rowIdx) => {
               return (

@@ -15,41 +15,84 @@ class GameHome extends Component {
     const achieved = this.props.currentShape.achieved
     const isX = this.props.currentShape.shape.name === 'X'
     return (
-      <Grid container columns={2} padded>
-        <Grid.Column floated="left" width={10}>
+      // <Grid  padded>
+      //   <Grid.Column floated="left" width={10}>
+      //     <Grid.Row>
+      //       <Segment>
+      //         <Camera />
+      //       </Segment>
+      //     </Grid.Row>
+      //     {achieved || isX ? (
+      //       <Segment color="orange" inverted>
+      //         <SuccessMessage />
+      //       </Segment>
+      //     ) : (
+      //       <Grid.Row>
+      //         <Grid  >
+      //           <Grid.Column width={8}>
+      //             <Segment color="orange" inverted>
+      //               <CurrentShape />
+      //             </Segment>
+      //           </Grid.Column>
+      //           <Grid.Column width={8}>
+      //             <Segment color="red" inverted>
+      //               <UserShape />
+      //             </Segment>
+      //           </Grid.Column>
+      //         </Grid>
+      //       </Grid.Row>
+      //     )}
+      //     <Grid.Row>
+      //       <Segment color="blue" inverted width={16}>
+      //         <PreviewShape />
+      //       </Segment>
+      //     </Grid.Row>
+      //   </Grid.Column>
+
+      //   <Grid.Column width={6}>
+      //     <Segment color="green" inverted>
+      //       <GameBoard />
+      //     </Segment>
+      //   </Grid.Column>
+      // </Grid>
+      <Grid padded centered columns={3}>
+        <Grid.Column width={2}>
+          <Segment color="blue" inverted>
+            <PreviewShape />
+          </Segment>
+        </Grid.Column>
+
+        <Grid.Column width={8} centered>
           <Grid.Row>
             <Segment>
               <Camera />
             </Segment>
           </Grid.Row>
-          {achieved || isX ? (
-            <Segment color="orange" inverted>
-              <SuccessMessage />
-            </Segment>
-          ) : (
-            <Grid.Row>
-              <Grid padded container>
+
+          <Grid.Row>
+            {achieved || isX ? (
+              <Segment color="orange" inverted>
+                <SuccessMessage />
+              </Segment>
+            ) : (
+              <Grid padded celled className="fixed-width">
                 <Grid.Column width={8}>
                   <Segment color="orange" inverted>
                     <CurrentShape />
                   </Segment>
                 </Grid.Column>
+
                 <Grid.Column width={8}>
                   <Segment color="red" inverted>
                     <UserShape />
                   </Segment>
                 </Grid.Column>
               </Grid>
-            </Grid.Row>
-          )}
-          <Grid.Row>
-            <Segment color="blue" inverted width={16}>
-              <PreviewShape />
-            </Segment>
+            )}
           </Grid.Row>
         </Grid.Column>
 
-        <Grid.Column floated="right" width={6}>
+        <Grid.Column width={6}>
           <Segment color="green" inverted>
             <GameBoard />
           </Segment>

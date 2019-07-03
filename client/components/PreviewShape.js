@@ -2,6 +2,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {createShapes, setFirstShape} from '../store'
+import {Container, Image, Grid, Menu} from 'semantic-ui-react'
 
 class PreviewShape extends Component {
   componentDidMount() {
@@ -15,27 +16,26 @@ class PreviewShape extends Component {
     const shapes = this.props.shapes
     return (
       <div>
-        <h3>Upcoming shapes:</h3>
-        {shapes ? (
-          <table id="preview-shape">
-            <tbody>
-              <tr>
-                {shapes.map((shape, idx) => {
-                  return (
-                    <td key={idx} align="center">
-                      <img
-                        className="preview-image"
-                        src={`/assets/${shape.name}.png`}
-                      />
-                    </td>
-                  )
-                })}
-              </tr>
-            </tbody>
-          </table>
-        ) : (
-          <h5>Loading...</h5>
-        )}
+        {/* <Menu fixed="top" inverted> */}
+        <Container fixed="top" className="preview-image">
+          <Grid.Row>
+            <h3>Upcoming shapes:</h3>
+          </Grid.Row>
+          {shapes ? (
+            <Grid.Row>
+              {shapes.map((shape, idx) => {
+                return (
+                  <div key={idx} className="preview-image">
+                    <Image src={`/assets/${shape.name}.png`} />
+                  </div>
+                )
+              })}
+            </Grid.Row>
+          ) : (
+            <h5>Loading...</h5>
+          )}
+        </Container>
+        {/* </Menu> */}
       </div>
     )
   }

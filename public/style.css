@@ -23,12 +23,25 @@ form div {
   display: inline-block;
 }
 
-#preview-shape {
+/* #preview-shape {
   width: 100%;
-}
+} */
 
 .preview-image {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
   width: 75%;
+  justify-items: center;
+  /* padding: 5px; */
+  padding: 5px;
+}
+
+.fixed-width {
+  width: 300px;
+  height: 300px;
+  min-width: 300px;
+  min-height: 200px;
 }
 
 .checkmark {
@@ -41,11 +54,21 @@ form div {
 }
 
 .game-cell {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border: 1px solid black;
   padding: 0;
   margin: 0;
+}
+
+.game-table {
+  display: flex;
+  justify-content: center;
+}
+
+.camera-position {
+  display: flex;
+  justify-content: center;
 }
 
 .navBar {
