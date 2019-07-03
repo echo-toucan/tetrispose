@@ -38,9 +38,25 @@ export const getUserShape = () => ({
 
 //REDUCER
 const initialState = {
-  shape: {},
-  achieved: false
+  shape: {
+    name: 'T',
+    shape: [[5, 5, 5], [0, 5, 0]],
+    rotations: [
+      [[0, 5], [5, 5], [0, 5]],
+      [[0, 5, 0], [5, 5, 5]],
+      [[5, 0], [5, 5], [5, 0]],
+      [[5, 5, 5], [0, 5, 0]]
+    ],
+    topLeft: {row: 0, col: 4},
+    color: 'purple'
+  },
+  achieved: true
 }
+
+// const initialState = {
+//   shape: {},
+//   achieved: false
+// }
 
 export const currentShape = (state = initialState, action) => {
   switch (action.type) {
