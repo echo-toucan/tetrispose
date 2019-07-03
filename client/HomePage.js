@@ -6,7 +6,7 @@ import StartGame from './components/StartGame'
 export default class HomePage extends Component {
   render() {
     return (
-      <Container padded className="home-page">
+      <Container padded="true" className="home-page">
         <StartGame />
       </Container>
     )

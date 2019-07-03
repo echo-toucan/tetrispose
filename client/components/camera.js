@@ -34,6 +34,7 @@ class Camera extends Component {
     let pose = await this.posenet.estimateSinglePose(this.video, {
       flipHorizontal: false
     })
+    console.log('pose', pose)
 
     const currentShape = getShape(pose)
 

@@ -1,19 +1,31 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import Camera from './camera'
-import {Button} from 'semantic-ui-react'
+import StartPreviewShape from './StartPreviewShape'
+import {Button, Grid} from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
 import Instructions from './instructions'
+import {UserShape} from '.'
 
-const StartGame = props => {
+const StartGame = () => {
   return (
-    <div>
-      <Button size="huge" as={Link} to="/gamehome" primary>
-        Start game
-      </Button>
-      <Camera />
-      <Instructions />
-    </div>
+    <Grid rows={3} padded>
+      <Grid.Row>
+        <Button primary size="huge" as={Link} to="/gamehome">
+          Start Game
+        </Button>
+      </Grid.Row>
+      <Grid.Row>
+        <Grid.Column width={10}>
+          <Camera />
+        </Grid.Column>
+        <Grid.Column width={6}>
+          <StartPreviewShape />
+          <UserShape />
+        </Grid.Column>
+        <Instructions />
+      </Grid.Row>
+    </Grid>
   )
 }
 

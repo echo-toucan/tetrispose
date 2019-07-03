@@ -6,25 +6,16 @@ class UserShape extends Component {
   render() {
     return (
       <div>
-        {this.props.gotIt ? (
-          <div>
-            <h1>YOU GOT IT!</h1>
-            <img className="checkmark" src="/assets/check.png" />
-          </div>
+        <h1>Your pose is</h1>
+        {this.props.userShape ? (
+          <span>
+            <img
+              className="checkmark"
+              src={`/assets/${this.props.userShape}.png`}
+            />
+          </span>
         ) : (
-          <div>
-            <h1>Your pose is</h1>
-            {this.props.userShape ? (
-              <span>
-                <img
-                  className="checkmark"
-                  src={`/assets/${this.props.userShape}.png`}
-                />
-              </span>
-            ) : (
-              <h1>not recognized</h1>
-            )}
-          </div>
+          <h1>not recognized</h1>
         )}
       </div>
     )
