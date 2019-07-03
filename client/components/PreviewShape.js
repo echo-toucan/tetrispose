@@ -1,11 +1,12 @@
 // import {Menu, Container} from 'semantic-ui-react'
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {createShapes} from '../store/previewShape'
+import {createShapes, setFirstShape} from '../store'
 
 class PreviewShape extends Component {
   componentDidMount() {
     this.props.createShapes()
+    this.props.setFirstShape()
   }
 
   render() {
@@ -45,7 +46,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  createShapes: () => dispatch(createShapes())
+  createShapes: () => dispatch(createShapes()),
+  setFirstShape: () => dispatch(setFirstShape())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PreviewShape)
