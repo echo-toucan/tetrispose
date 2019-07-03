@@ -1,48 +1,77 @@
-import {poseChain} from '@tensorflow-models/posenet'
-
-export const isI = (
-  shoulderLeftY,
-  wristLeftY,
-  hipLeftY,
-  shoulderRightY,
-  wristRightY,
-  hipRightY,
-  hipRightScore,
-  hipLeftScore
-) => {
-  if (
-    (shoulderLeftY - wristLeftY) / (hipLeftY - shoulderLeftY) > 0.7 &&
-    (shoulderRightY - wristRightY) / (hipRightY - shoulderRightY) > 0.7 &&
-    (hipRightScore > 0.9 && hipLeftScore > 0.9)
-  ) {
-    return 'I'
+const getObj = pose => {
+  let obj = {}
+  for (let idx = 0; idx < pose.keypoints.length; idx++) {
+    obj[pose.keypoints[idx].part] = {
+      x: pose.keypoints[idx].position.x,
+      y: pose.keypoints[idx].position.y,
+      score: pose.keypoints[idx].score
+    }
   }
+  return obj
 }
 
-export const isT = (
-  shoulderLeftY,
-  wristLeftY,
-  elbowLeftY,
-  shoulderRightY,
-  wristRightY,
-  elbowRightY,
-  hipRightScore,
-  hipLeftScore
-  // wristLeftX,
-  // elbowLeftX,
-  // wristRightX,
-  // elbowRightX
-) => {
+const leftArmIsOut = pose => {
   if (
-    Math.abs(wristLeftY - shoulderLeftY) < 0.25 * shoulderLeftY &&
-    Math.abs(wristRightY - shoulderRightY) < 0.25 * shoulderRightY &&
-    Math.abs(elbowLeftY - shoulderLeftY) < 0.25 * shoulderLeftY &&
-    Math.abs(elbowRightY - shoulderRightY) < 0.25 * shoulderRightY &&
-    hipRightScore > 0.9 &&
-    hipLeftScore > 0.9
-    // wristLeftX > elbowLeftX &&
-    // wristRightX < elbowRightX
+    Math.abs(pose.leftWrist.y - pose.leftShoulder.y) <
+      0.25 * pose.leftShoulder.y &&
+    Math.abs(pose.leftElbow.y - pose.leftShoulder.y) <
+      0.25 * pose.leftShoulder.y
   ) {
-    return 'T'
+    return true
+  } else return false
+}
+
+const rightArmIsOut = pose => {
+  if (
+    Math.abs(pose.rightWrist.y - pose.rightShoulder.y) <
+      0.25 * pose.rightShoulder.y &&
+    Math.abs(pose.rightElbow.y - pose.rightShoulder.y) <
+      0.25 * pose.rightShoulder.y
+  ) {
+    return true
+  } else return false
+}
+
+const leftArmIsUp = pose => {
+  if (
+    (pose.leftShoulder.y - pose.leftWrist.y) /
+      (pose.leftHip.y - pose.leftShoulder.y) >
+    0.7
+  ) {
+    return true
+  } else return false
+}
+
+const rightArmIsUp = pose => {
+  if (
+    (pose.rightShoulder.y - pose.rightWrist.y) /
+      (pose.rightHip.y - pose.rightShoulder.y) >
+    0.7
+  ) {
+    return true
+  } else return false
+}
+
+const isI = pose => {
+  if (leftArmIsUp(pose) && rightArmIsUp(pose)) return 'I'
+}
+
+const isT = pose => {
+  if (leftArmIsOut(pose) && rightArmIsOut(pose)) return 'T'
+}
+
+const isJ = pose => {
+  if (leftArmIsOut(pose) && rightArmIsUp(pose)) return 'J'
+}
+
+const isL = pose => {
+  if (rightArmIsOut(pose) && leftArmIsUp(pose)) return 'J'
+}
+
+export const getShape = rawPose => {
+  const pose = getObj(rawPose)
+  if (pose.leftHip.score < 0.9 || pose.rightHip.score < 0.9) {
+    return undefined
   }
+  return isI(pose) || isT(pose) || isJ(pose) || isL(pose)
 }
