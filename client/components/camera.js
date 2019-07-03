@@ -23,7 +23,14 @@ class Camera extends Component {
       }
     }
     try {
-      this.posenet = await posenet.load()
+      console.log('loading posenet...')
+      this.posenet = await posenet.load({
+        architecture: 'ResNet50',
+        outputStride: 32,
+        inputResolution: 193,
+        quantBytes: 1
+      })
+      if (this.posenet) console.log('posenet loaded!')
       if (this.posenet) this.detectPose()
     } catch (err) {
       console.error(err)
