@@ -239,6 +239,7 @@ class Grid extends Component {
     console.log('---', [newPivotRow, newPivotCol])
     return [newPivotRow, newPivotCol]
   }
+
   removeFallingShape() {
     const oldGrid = this.props.gameBoard
     const clearBoard = oldGrid.map(row => {
