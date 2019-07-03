@@ -28,6 +28,7 @@ const rightArmIsOut = pose => {
     Math.abs(pose.rightElbow.y - pose.rightShoulder.y) <
       0.25 * pose.rightShoulder.y
   ) {
+    // console.log('right arm OUT')
     return true
   } else return false
 }
@@ -43,17 +44,32 @@ const leftArmIsUp = pose => {
 }
 
 const rightArmIsUp = pose => {
+  // console.log(
+  //   (pose.rightShoulder.y - pose.rightWrist.y) /
+  //     (pose.rightHip.y - pose.rightShoulder.y)
+  // )
   if (
     (pose.rightShoulder.y - pose.rightWrist.y) /
       (pose.rightHip.y - pose.rightShoulder.y) >
     0.7
+  ) {
+    console.log('right arm UP')
+    return true
+  } else return false
+}
+
+const wristsAreTogether = pose => {
+  if (
+    1.25 * pose.leftShoulder.x - pose.rightShoulder.x >
+    pose.leftWrist.x - pose.rightWrist.x
   ) {
     return true
   } else return false
 }
 
 const isI = pose => {
-  if (leftArmIsUp(pose) && rightArmIsUp(pose)) return 'I'
+  if (leftArmIsUp(pose) && rightArmIsUp(pose) && wristsAreTogether(pose))
+    return 'I'
 }
 
 const isT = pose => {
@@ -65,16 +81,18 @@ const isJ = pose => {
 }
 
 const isL = pose => {
-  if (rightArmIsOut(pose) && leftArmIsUp(pose)) return 'J'
-}
-
-const isStartPose = pose => {
-  if (leftArmIsUp(pose) && rightArmIsUp(pose)) return 'Start'
+  if (rightArmIsOut(pose) && leftArmIsUp(pose)) return 'L'
 }
 
 export const getShape = rawPose => {
   const pose = getObj(rawPose)
-  if (pose.leftHip.score < 0.9 || pose.rightHip.score < 0.9) {
+  console.log(pose.rightWrist.score)
+  if (
+    pose.leftHip.score < 0.9 ||
+    pose.rightHip.score < 0.9 ||
+    pose.rightWrist.score < 0.7 ||
+    pose.leftWrist.score < 0.7
+  ) {
     return undefined
   }
   return isI(pose) || isT(pose) || isJ(pose) || isL(pose)
