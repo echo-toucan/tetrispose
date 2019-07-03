@@ -194,7 +194,7 @@ class Grid extends Component {
     const rotatedShape = rotations[this.state.rotations % rotations.length]
     let newRows = []
 
-    const [pivotRow, pivotCol] = this.findPivot()
+    const [pivotRow, pivotCol] = this.adjustPivot(rotatedShape)
     const oldGrid = this.removeFallingShape()
 
     for (let i = 0; i < rotatedShape.length; i++) {
@@ -213,6 +213,31 @@ class Grid extends Component {
     this.setState(prevState => ({
       rotations: prevState.rotations + 1
     }))
+  }
+
+  // canRotate(shape, pivot) {
+  //   const grid = this.props.gameBoard
+  //   //check if pivot point needs to be adjusted
+  //   //check if necessary to invoke that function
+  // }
+
+  adjustPivot(shape) {
+    const grid = this.props.gameBoard
+    const [pivotRow, pivotCol] = this.findPivot()
+    let [newPivotRow, newPivotCol] = [pivotRow, pivotCol]
+    for (let row = 0; row < shape.length; row++) {
+      for (let col = 0; col < shape[row].length; col++) {
+        console.log('FIRST ONE', pivotCol + col, 'ROW', pivotRow)
+        if (
+          pivotCol + col >= grid[pivotRow].length ||
+          grid[pivotRow + row][pivotCol + col] >= 10
+        ) {
+          newPivotCol--
+        }
+      }
+    }
+    console.log('---', [newPivotRow, newPivotCol])
+    return [newPivotRow, newPivotCol]
   }
 
   removeFallingShape() {
