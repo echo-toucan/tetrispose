@@ -1,8 +1,7 @@
-// import {Menu, Container} from 'semantic-ui-react'
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {createShapes, setFirstShape} from '../store'
-import {Container, Image, Grid, Menu} from 'semantic-ui-react'
+import {Container, Image, Grid} from 'semantic-ui-react'
 
 class PreviewShape extends Component {
   componentDidMount() {
@@ -16,7 +15,6 @@ class PreviewShape extends Component {
     const shapes = this.props.shapes
     return (
       <div>
-        {/* <Menu fixed="top" inverted> */}
         <Container fixed="top" className="preview-image">
           <Grid.Row>
             <h3>Upcoming shapes:</h3>
@@ -35,7 +33,6 @@ class PreviewShape extends Component {
             <h5>Loading...</h5>
           )}
         </Container>
-        {/* </Menu> */}
       </div>
     )
   }

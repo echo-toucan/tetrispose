@@ -55,14 +55,14 @@ class GameHome extends Component {
       //     </Segment>
       //   </Grid.Column>
       // </Grid>
-      <Grid padded centered="true" columns={3}>
-        <Grid.Column width={2} divided>
+      <Grid padded columns={3}>
+        <Grid.Column width={2} divided="true">
           {/* <Segment color="blue" inverted height="100px"> */}
           <PreviewShape />
           {/* </Segment> */}
         </Grid.Column>
 
-        <Grid.Column width={8} centered>
+        <Grid.Column width={8}>
           <Grid.Row>
             <Segment>
               <Camera />
