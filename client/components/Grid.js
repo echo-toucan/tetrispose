@@ -189,36 +189,45 @@ class Grid extends Component {
 
   rotate() {
     const rotations = this.props.currentShape.shape.rotations
-
     const rotatedShape = rotations[this.state.rotations % rotations.length]
-    let newRows = []
 
     const [pivotRow, pivotCol] = this.adjustPivot(rotatedShape)
-    const oldGrid = this.removeFallingShape()
 
-    for (let i = 0; i < rotatedShape.length; i++) {
-      let newRow = [...oldGrid[pivotRow + i]]
-      for (let j = 0; j < rotatedShape[i].length; j++) {
-        newRow[pivotCol + j] = rotatedShape[i][j]
+    if (this.canRotate(rotatedShape, pivotRow, pivotCol)) {
+      const oldGrid = this.removeFallingShape()
+      let newRows = []
+
+      for (let i = 0; i < rotatedShape.length; i++) {
+        let newRow = [...oldGrid[pivotRow + i]]
+        for (let j = 0; j < rotatedShape[i].length; j++) {
+          newRow[pivotCol + j] = rotatedShape[i][j]
+        }
+        newRows.push(newRow)
       }
-      newRows.push(newRow)
+
+      const rowsAbove = oldGrid.slice(0, pivotRow)
+      const rowsBelow = oldGrid.slice(pivotRow + newRows.length)
+
+      const newGrid = [...rowsAbove, ...newRows, ...rowsBelow]
+      this.props.updateBoard(newGrid)
+      this.setState(prevState => ({
+        rotations: prevState.rotations + 1
+      }))
     }
-
-    const rowsAbove = oldGrid.slice(0, pivotRow)
-    const rowsBelow = oldGrid.slice(pivotRow + newRows.length)
-
-    const newGrid = [...rowsAbove, ...newRows, ...rowsBelow]
-    this.props.updateBoard(newGrid)
-    this.setState(prevState => ({
-      rotations: prevState.rotations + 1
-    }))
   }
 
-  // canRotate(shape, pivot) {
-  //   const grid = this.props.gameBoard
-  //   //check if pivot point needs to be adjusted
-  //   //check if necessary to invoke that function
-  // }
+  canRotate(shape, pivotRow, pivotCol) {
+    if (pivotCol < 0) return false
+    const grid = this.props.gameBoard
+    for (let row = 0; row < shape.length; row++) {
+      for (let col = 0; col < shape[row].length; col++) {
+        if (grid[pivotRow + row][pivotCol + col] >= 10) {
+          return false
+        }
+      }
+    }
+    return true
+  }
 
   adjustPivot(shape) {
     const grid = this.props.gameBoard
@@ -226,6 +235,7 @@ class Grid extends Component {
     let [newPivotRow, newPivotCol] = [pivotRow, pivotCol]
     let offset = 0
     //Is it necessary to loop through all rows of the rotated shape, or just the first one???
+    //Also, what about empty squares in a shape?? Can they be ignored or must they be counted?
     for (let row = 0; row < shape.length; row++) {
       let rowOffset = 0
       for (let col = 0; col < shape[row].length; col++) {
