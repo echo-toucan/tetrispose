@@ -64,7 +64,6 @@ class Grid extends Component {
       const newCurrent = this.props.previewShape[0]
       this.props.updateCurrent(newCurrent)
       setTimeout(() => {
-        console.log('timer')
         this.spawnShapes(this.props.currentShape)
       }, 3000)
 
@@ -225,19 +224,23 @@ class Grid extends Component {
     const grid = this.props.gameBoard
     const [pivotRow, pivotCol] = this.findPivot()
     let [newPivotRow, newPivotCol] = [pivotRow, pivotCol]
+    let offset = 0
+    //Is it necessary to loop through all rows of the rotated shape, or just the first one???
     for (let row = 0; row < shape.length; row++) {
+      let rowOffset = 0
       for (let col = 0; col < shape[row].length; col++) {
-        console.log('FIRST ONE', pivotCol + col, 'ROW', pivotRow)
         if (
           pivotCol + col >= grid[pivotRow].length ||
           grid[pivotRow + row][pivotCol + col] >= 10
         ) {
-          newPivotCol--
+          rowOffset++
+        }
+        if (rowOffset > offset) {
+          offset = rowOffset
         }
       }
     }
-    console.log('---', [newPivotRow, newPivotCol])
-    return [newPivotRow, newPivotCol]
+    return [newPivotRow, newPivotCol - offset]
   }
 
   removeFallingShape() {
