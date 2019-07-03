@@ -97,3 +97,11 @@ video {
   align-items: center;
   width: 50%;
 }
+
+.home-page {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+}

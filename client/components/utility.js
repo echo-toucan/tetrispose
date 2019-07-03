@@ -68,6 +68,10 @@ const isL = pose => {
   if (rightArmIsOut(pose) && leftArmIsUp(pose)) return 'J'
 }
 
+const isStartPose = pose => {
+  if (leftArmIsUp(pose) && rightArmIsUp(pose)) return 'Start'
+}
+
 export const getShape = rawPose => {
   const pose = getObj(rawPose)
   if (pose.leftHip.score < 0.9 || pose.rightHip.score < 0.9) {
