@@ -1,20 +1,20 @@
 // import {Menu, Container} from 'semantic-ui-react'
 import React, {Component} from 'react'
-import {shapeAchieved} from '../store/index'
 import {connect} from 'react-redux'
+import {Container, Image} from 'semantic-ui-react'
 
 class CurrentShape extends Component {
   render() {
     const shape = this.props.currentShape.shape
     return (
-      <div>
+      <Container fixed>
         <h1>Target</h1>
         {shape.name ? (
-          <img className="preview-image" src={`/assets/${shape.name}.png`} />
+          <Image size="small" src={`/assets/${shape.name}.png`} />
         ) : (
           ''
         )}
-      </div>
+      </Container>
     )
   }
 }

@@ -6,7 +6,6 @@ class GameBoard extends Component {
   render() {
     return (
       <div>
-        <h1>Tetris Gameboard</h1>
         <Grid />
       </div>
     )

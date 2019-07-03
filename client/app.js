@@ -6,10 +6,10 @@ import {Container} from 'semantic-ui-react'
 
 const App = () => {
   return (
-    <Container>
-      <Navbar />
+    <div>
+      {/* <Navbar /> */}
       <Routes />
-    </Container>
+    </div>
   )
 }
 
