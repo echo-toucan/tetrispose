@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {updateBoard} from '../store/game'
-import {updateShapes, shapeAchieved} from '../store/index'
+import {updateBoard, movedLeft, movedRight} from '../store/game'
+import {updateShapes} from '../store'
 import {updateCurrent, gotPenalty} from '../store/currentShape'
 import {penalty, colors} from '../AllShapes'
 
@@ -78,84 +78,21 @@ class Grid extends Component {
           } else return cell
         })
       })
-      // console.log('----', this.props)
       this.props.updateBoard(newGrid)
     }
   }
   movement(event) {
     if (event.key === 'ArrowLeft') {
-      return this.moveLeft()
+      return this.props.moveLeft()
     }
     if (event.key === 'ArrowRight') {
-      return this.moveRight()
+      return this.props.moveRight()
     }
     if (event.key === 'ArrowUp') {
-      return this.rotate()
+      return this.props.rotate()
     }
   }
 
-  moveLeft() {
-    const oldGrid = this.props.gameBoard
-    if (!this.hasLeftBorder()) {
-      let newGrid = oldGrid.map((row, rowIdx) => {
-        return row.map((cell, colIdx) => {
-          const cellToRight =
-            colIdx + 1 === row.length ? 0 : oldGrid[rowIdx][colIdx + 1]
-
-          if (cell < 10 && cellToRight < 10) {
-            return cellToRight
-          } else return cell
-        })
-      })
-      this.props.updateBoard(newGrid)
-    }
-  }
-
-  hasLeftBorder() {
-    const grid = this.props.gameBoard
-    for (let row = 0; row < grid.length; row++) {
-      for (let col = 0; col < grid[row].length; col++) {
-        const current = grid[row][col]
-        const isFalling = current > 0 && current < 10
-        const hasLeftWall = col === 0 || grid[row][col - 1] >= 10
-        if (isFalling && hasLeftWall) {
-          return true
-        }
-      }
-    }
-    return false
-  }
-
-  moveRight() {
-    const oldGrid = this.props.gameBoard
-    if (!this.hasRightBorder()) {
-      let newGrid = oldGrid.map((row, rowIdx) => {
-        return row.map((cell, colIdx) => {
-          const cellToLeft = colIdx === 0 ? 0 : oldGrid[rowIdx][colIdx - 1]
-          if (cell < 10 && cellToLeft < 10) {
-            return cellToLeft
-          } else return cell
-        })
-      })
-      this.props.updateBoard(newGrid)
-    }
-  }
-
-  hasRightBorder() {
-    const grid = this.props.gameBoard
-    for (let row = 0; row < grid.length; row++) {
-      for (let col = 0; col < grid[row].length; col++) {
-        const current = grid[row][col]
-        const isFalling = current > 0 && current < 10
-        const hasRightWall =
-          col + 1 === grid[row].length || grid[row][col + 1] >= 10
-        if (isFalling && hasRightWall) {
-          return true
-        }
-      }
-    }
-    return false
-  }
   //checks if the active shape has landed
   hasCollided() {
     const grid = this.props.gameBoard
@@ -318,7 +255,9 @@ const mapDispatchToProps = dispatch => ({
   updateBoard: board => dispatch(updateBoard(board)),
   updateCurrent: shape => dispatch(updateCurrent(shape)),
   updateShapes: () => dispatch(updateShapes()),
-  gotPenalty: () => dispatch(gotPenalty())
+  gotPenalty: () => dispatch(gotPenalty()),
+  moveLeft: () => dispatch(movedLeft()),
+  moveRight: () => dispatch(movedRight())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid)
