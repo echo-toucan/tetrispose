@@ -49,7 +49,7 @@ class Grid extends Component {
   }
 
   gameEnd() {
-    alert('You lose!')
+    // alert('You lose!')
   }
 
   //sets the tetris board speed

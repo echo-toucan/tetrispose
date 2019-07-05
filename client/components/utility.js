@@ -102,24 +102,22 @@ export const getShape = rawPose => {
 const moveLeftPose = pose => {
   // const pose = getObj(rawPose)
 
-  let nosePose = pose.nose.x
-  console.log(nosePose)
+  let nosePose = Math.floor(pose.nose.x)
   let moveLeft = []
-  console.log(moveLeft)
+  console.log('array:', moveLeft)
   while (moveLeft.length < 10) {
     moveLeft.push(nosePose)
   }
-  // let leftReduce = moveLeft.reduce((accu, curr) => {
-  //   return (accu + curr) / moveLeft.length
-  // }, 0)
-  // console.log(leftReduce)
-  return moveLeft
+  let leftReduce = moveLeft.reduce((accu, curr) => {
+    return accu + curr
+  }, 0)
+  console.log('leftReduce', leftReduce)
+  return leftReduce
 }
 
 export const getPose = rawPose => {
   const pose = getObj(rawPose)
   // console.log(pose.rightWrist.score)
-  console.log('nose x', pose.nose.x)
 
   return moveLeftPose(pose)
 }
