@@ -64,11 +64,16 @@ class Camera extends Component {
     }
     if (this.props.phase === 2) {
       const userMovement = getPose(pose)
-      if (checkRotation(pose, this.state.prevKnee)) {
+      const rotation = checkRotation(pose, this.state.prevKnee)
+      if (rotation.rotate) {
         this.props.rotate(
           this.props.currentShape.rotations,
           this.state.rotationsCounter
         )
+        this.setState(prevState => ({
+          rotationsCounter: prevState.rotationsCounter + 1,
+          prevKnee: rotation.knee
+        }))
       }
       // this.props.setUserMovement(userMovement)
     }

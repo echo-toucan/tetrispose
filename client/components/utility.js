@@ -145,12 +145,11 @@ export const getPose = rawPose => {
   return movementPose(pose)
 }
 
-export const checkRotation = (rawPose, knee) => {
+export const checkRotation = (rawPose, prevKnee) => {
   const pose = getObj(rawPose)
-  if (
-    (knee !== 'right' && rightKneeIsUp(pose)) ||
-    (knee !== 'left' && leftKneeIsUp(pose))
-  ) {
-    return true
-  } else return false
+  if (prevKnee !== 'right' && rightKneeIsUp(pose)) {
+    return {rotate: true, knee: 'right'}
+  } else if (prevKnee !== 'left' && leftKneeIsUp(pose)) {
+    return {rotate: true, knee: 'left'}
+  } else return {rotate: false}
 }
