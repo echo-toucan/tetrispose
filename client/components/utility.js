@@ -104,15 +104,26 @@ const moveLeftPose = pose => {
 
   let nosePose = Math.floor(pose.nose.x)
   let moveLeft = []
+
   console.log('array:', moveLeft)
-  while (moveLeft.length < 10) {
+
+  while (moveLeft.length < 20) {
     moveLeft.push(nosePose)
   }
   let leftReduce = moveLeft.reduce((accu, curr) => {
-    return accu + curr
+    return (accu + curr) / moveLeft.length * 10
   }, 0)
   console.log('leftReduce', leftReduce)
-  return leftReduce
+
+  // const firstElement = moveLeft[0]
+  // const lastElement = moveLeft[moveLeft.length - 1]
+  // const difference = lastElement - firstElement
+
+  if (leftReduce < 100 && leftReduce > 0) {
+    return console.log('Move Left')
+  } else if (leftReduce > 100 && leftReduce < 300) {
+    return console.log('Move right')
+  }
 }
 
 export const getPose = rawPose => {
