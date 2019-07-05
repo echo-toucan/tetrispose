@@ -99,7 +99,7 @@ export const getShape = rawPose => {
   return isI(pose) || isT(pose) || isJ(pose) || isL(pose)
 }
 
-const movementPose = pose => {
+export const movementPose = pose => {
   let nosePose = Math.floor(pose.nose.x)
   let movement = []
 
@@ -111,14 +111,15 @@ const movementPose = pose => {
   let moveReduce = movement.reduce((accu, curr) => {
     return (accu + curr) / movement.length * 10
   }, 0)
-  console.log('moveReduce', moveReduce)
 
-  if (moveReduce > 400 && moveReduce < 640) {
-    return console.log('Move Left')
+  if (moveReduce > 440 && moveReduce < 600) {
+    // console.log('ArrowLeft')
+    return 'Move Left'
   }
 
-  if (moveReduce > 100 && moveReduce < 300) {
-    return console.log('Move right')
+  if (moveReduce > 50 && moveReduce < 220) {
+    // console.log('ArrowRight')
+    return 'Move Right'
   }
 }
 

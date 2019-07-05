@@ -8,8 +8,6 @@ const GOT_PENALTY = 'GOT_PENALTY'
 const SET_FIRST_SHAPE = 'SET_FIRST_SHAPE'
 const SET_USER_SHAPE = 'SET_USER_SHAPE'
 const GET_USER_SHAPE = 'GET_USER_SHAPE'
-const MOVE_LEFT = 'MOVE_LEFT'
-const MOVE_RIGHT = 'MOVE_RIGHT'
 const SET_USER_MOVEMENT = 'SET_USER_MOVEMENT'
 
 //ACTION CREATORS
@@ -38,21 +36,6 @@ export const setUserShape = shape => ({
 
 export const getUserShape = () => ({
   type: GET_USER_SHAPE
-})
-
-export const moveLeft = pose => ({
-  type: MOVE_LEFT,
-  payload: pose
-})
-
-export const moveRight = pose => ({
-  type: MOVE_RIGHT,
-  payload: pose
-})
-
-export const setUserMovement = pose => ({
-  type: SET_USER_MOVEMENT,
-  payload: pose
 })
 
 //REDUCER
@@ -101,10 +84,6 @@ export const userMovement = (state = {}, action) => {
       } else {
         return null
       }
-    case MOVE_LEFT:
-      return action.payload
-    case MOVE_RIGHT:
-      return action.payload
     default:
       return state
   }

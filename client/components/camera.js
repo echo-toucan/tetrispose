@@ -6,12 +6,8 @@ import {changePhase} from '../store/game'
 import {movedLeft, movedRight, rotated} from '../store/game'
 
 import {getShape, getPose} from './utility'
-import {
-  shapeAchieved,
-  setUserShape,
-  setUserMovement
-} from '../store/currentShape'
-
+import {shapeAchieved, setUserShape} from '../store/currentShape'
+import {get} from 'http'
 
 class Camera extends Component {
   constructor() {
@@ -55,7 +51,6 @@ class Camera extends Component {
 
       this.props.setUserShape(currentShape)
 
-
       if (
         this.props.currentShape &&
         this.props.currentShape === this.props.userShape
@@ -63,11 +58,16 @@ class Camera extends Component {
         this.props.shapeAchieved()
       }
     }
-    
+
     const userMovement = getPose(pose)
 
+    if (userMovement === 'Move Left') {
+      this.props.moveLeft()
+    }
 
-    this.props.setUserMovement(userMovement)
+    if (userMovement === 'Move Right') {
+      this.props.moveRight()
+    }
 
     this.detectPose()
   }
@@ -92,15 +92,15 @@ class Camera extends Component {
 const mapStateToProps = state => ({
   currentShape: state.currentShape.shape.name,
   userShape: state.userShape,
-  phase: state.phase,
-  userMovement: state.userMovement
+  phase: state.phase
 })
 
 const mapDispatchToProps = dispatch => ({
   shapeAchieved: () => dispatch(shapeAchieved()),
   setUserShape: shape => dispatch(setUserShape(shape)),
   changePhase: () => dispatch(changePhase()),
-  setUserMovement: pose => dispatch(setUserMovement(pose))
+  moveLeft: () => dispatch(movedLeft()),
+  moveRight: () => dispatch(movedRight())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Camera)
