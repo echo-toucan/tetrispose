@@ -60,36 +60,6 @@ export const moveRight = gameBoard => {
     return newGrid
   }
 }
-//checks if the active shape has landed
-// hasCollided() {
-//   const grid = this.props.gameBoard
-//   for (let row = 0; row < grid.length; row++) {
-//     for (let col = 0; col < grid[row].length; col++) {
-//       const current = grid[row][col]
-//       const isFalling = current > 0 && current < 10
-//       const hasFloorBelow = !grid[row + 1] || grid[row + 1][col] >= 10
-//       if (isFalling && hasFloorBelow) {
-//         return true
-//       }
-//     }
-//   }
-//   return false
-// }
-
-//changes the active shape id from falling to stationary by adding 10.
-// stopDrop() {
-//   const oldGrid = this.props.gameBoard
-//   let newGrid = oldGrid.map(row => {
-//     return row.map(cell => {
-//       if (cell > 0 && cell < 10) {
-//         return cell + 10
-//       } else {
-//         return cell
-//       }
-//     })
-//   })
-//   this.props.updateBoard(newGrid)
-// }
 
 const canRotate = (grid, shape, pivotRow, pivotCol) => {
   if (pivotCol < 0) return false
