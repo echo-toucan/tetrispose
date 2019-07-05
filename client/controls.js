@@ -91,35 +91,6 @@ export const moveRight = gameBoard => {
 //   this.props.updateBoard(newGrid)
 // }
 
-const rotate = gameBoard => {
-  const rotations = this.props.currentShape.shape.rotations
-  const rotatedShape = rotations[this.state.rotations % rotations.length]
-
-  const [pivotRow, pivotCol] = this.adjustPivot(rotatedShape)
-
-  if (this.canRotate(rotatedShape, pivotRow, pivotCol)) {
-    const oldGrid = this.removeFallingShape()
-    let newRows = []
-
-    for (let i = 0; i < rotatedShape.length; i++) {
-      let newRow = [...oldGrid[pivotRow + i]]
-      for (let j = 0; j < rotatedShape[i].length; j++) {
-        newRow[pivotCol + j] = rotatedShape[i][j]
-      }
-      newRows.push(newRow)
-    }
-
-    const rowsAbove = oldGrid.slice(0, pivotRow)
-    const rowsBelow = oldGrid.slice(pivotRow + newRows.length)
-
-    const newGrid = [...rowsAbove, ...newRows, ...rowsBelow]
-    this.props.updateBoard(newGrid)
-    this.setState(prevState => ({
-      rotations: prevState.rotations + 1
-    }))
-  }
-}
-
 const canRotate = (shape, pivotRow, pivotCol) => {
   if (pivotCol < 0) return false
   const grid = this.props.gameBoard
@@ -167,11 +138,40 @@ const removeFallingShape = () => {
   })
   return clearBoard
 }
-const findPivot = () => {
-  const grid = this.props.gameBoard
+const findPivot = gameBoard => {
+  const grid = gameBoard
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < grid[i].length; j++) {
       if (grid[i][j] > 0 && grid[i][j] < 10) return [i, j]
     }
+  }
+}
+
+const rotate = gameBoard => {
+  const rotations = this.props.currentShape.shape.rotations
+  const rotatedShape = rotations[this.state.rotations % rotations.length]
+
+  const [pivotRow, pivotCol] = this.adjustPivot(rotatedShape)
+
+  if (canRotate(rotatedShape, pivotRow, pivotCol)) {
+    const oldGrid = this.removeFallingShape()
+    let newRows = []
+
+    for (let i = 0; i < rotatedShape.length; i++) {
+      let newRow = [...oldGrid[pivotRow + i]]
+      for (let j = 0; j < rotatedShape[i].length; j++) {
+        newRow[pivotCol + j] = rotatedShape[i][j]
+      }
+      newRows.push(newRow)
+    }
+
+    const rowsAbove = oldGrid.slice(0, pivotRow)
+    const rowsBelow = oldGrid.slice(pivotRow + newRows.length)
+
+    const newGrid = [...rowsAbove, ...newRows, ...rowsBelow]
+    this.props.updateBoard(newGrid)
+    this.setState(prevState => ({
+      rotations: prevState.rotations + 1
+    }))
   }
 }

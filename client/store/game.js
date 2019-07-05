@@ -85,8 +85,10 @@ export const movedRight = () => ({
   type: MOVE_RIGHT
 })
 
-export const rotate = () => ({
-  type: ROTATE
+export const rotate = (rotations, counter) => ({
+  type: ROTATE,
+  rotations,
+  counter
 })
 
 export const gameBoard = (state = Array.from(gameBoardArray), action) => {
@@ -97,6 +99,7 @@ export const gameBoard = (state = Array.from(gameBoardArray), action) => {
       return moveLeft(state)
     case MOVE_RIGHT:
       return moveRight(state)
+
     case RESET_GAME:
       return [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
