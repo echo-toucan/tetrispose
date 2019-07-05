@@ -1,5 +1,5 @@
 import {shapesArray} from '../AllShapes'
-import {moveLeft, moveRight} from '../controls'
+import {moveLeft, moveRight, rotate} from '../controls'
 
 const gameBoardArray = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -85,12 +85,12 @@ export const movedRight = () => ({
   type: MOVE_RIGHT
 })
 
-export const rotate = (rotations, counter) => ({
+export const rotated = (rotations, counter) => ({
   type: ROTATE,
   rotations,
   counter
 })
-
+//
 export const gameBoard = (state = Array.from(gameBoardArray), action) => {
   switch (action.type) {
     case UPDATE_BOARD:
@@ -99,7 +99,8 @@ export const gameBoard = (state = Array.from(gameBoardArray), action) => {
       return moveLeft(state)
     case MOVE_RIGHT:
       return moveRight(state)
-
+    case ROTATE:
+      return rotate(state, action.rotations, action.counter)
     case RESET_GAME:
       return [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],

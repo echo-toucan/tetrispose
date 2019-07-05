@@ -91,9 +91,8 @@ export const moveRight = gameBoard => {
 //   this.props.updateBoard(newGrid)
 // }
 
-const canRotate = (shape, pivotRow, pivotCol) => {
+const canRotate = (grid, shape, pivotRow, pivotCol) => {
   if (pivotCol < 0) return false
-  const grid = this.props.gameBoard
   for (let row = 0; row < shape.length; row++) {
     for (let col = 0; col < shape[row].length; col++) {
       if (grid[pivotRow + row][pivotCol + col] >= 10) {
@@ -104,9 +103,16 @@ const canRotate = (shape, pivotRow, pivotCol) => {
   return true
 }
 
-const adjustPivot = shape => {
-  const grid = this.props.gameBoard
-  const [pivotRow, pivotCol] = this.findPivot()
+const findPivot = grid => {
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[i].length; j++) {
+      if (grid[i][j] > 0 && grid[i][j] < 10) return [i, j]
+    }
+  }
+}
+
+const adjustPivot = (shape, grid) => {
+  const [pivotRow, pivotCol] = findPivot(grid)
   let [newPivotRow, newPivotCol] = [pivotRow, pivotCol]
   let offset = 0
   //Is it necessary to loop through all rows of the rotated shape, or just the first one???
@@ -128,8 +134,8 @@ const adjustPivot = shape => {
   return [newPivotRow, newPivotCol - offset]
 }
 
-const removeFallingShape = () => {
-  const oldGrid = this.props.gameBoard
+const removeFallingShape = gameBoard => {
+  const oldGrid = gameBoard
   const clearBoard = oldGrid.map(row => {
     return row.map(rowCell => {
       if (rowCell >= 10) return rowCell
@@ -138,23 +144,15 @@ const removeFallingShape = () => {
   })
   return clearBoard
 }
-const findPivot = gameBoard => {
-  const grid = gameBoard
-  for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < grid[i].length; j++) {
-      if (grid[i][j] > 0 && grid[i][j] < 10) return [i, j]
-    }
-  }
-}
 
-const rotate = gameBoard => {
-  const rotations = this.props.currentShape.shape.rotations
-  const rotatedShape = rotations[this.state.rotations % rotations.length]
+//rotations and counter must be passed in when action is dispatched!
+export const rotate = (grid, rotations, counter) => {
+  const rotatedShape = rotations[counter % rotations.length]
 
-  const [pivotRow, pivotCol] = this.adjustPivot(rotatedShape)
+  const [pivotRow, pivotCol] = adjustPivot(rotatedShape, grid)
 
-  if (canRotate(rotatedShape, pivotRow, pivotCol)) {
-    const oldGrid = this.removeFallingShape()
+  if (canRotate(grid, rotatedShape, pivotRow, pivotCol)) {
+    const oldGrid = removeFallingShape(grid)
     let newRows = []
 
     for (let i = 0; i < rotatedShape.length; i++) {
@@ -168,10 +166,9 @@ const rotate = gameBoard => {
     const rowsAbove = oldGrid.slice(0, pivotRow)
     const rowsBelow = oldGrid.slice(pivotRow + newRows.length)
 
+    //increment number of rotations...
+    //Where to track? On state of component that dispatches the action?
     const newGrid = [...rowsAbove, ...newRows, ...rowsBelow]
-    this.props.updateBoard(newGrid)
-    this.setState(prevState => ({
-      rotations: prevState.rotations + 1
-    }))
+    return newGrid
   }
 }
