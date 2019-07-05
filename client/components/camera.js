@@ -2,7 +2,8 @@ import React, {Component} from 'react'
 import * as posenet from '@tensorflow-models/posenet'
 import {connect} from 'react-redux'
 import {getShape} from './utility'
-import {Container} from 'semantic-ui-react'
+import {changePhase} from '../store/game'
+import {movedLeft, movedRight, rotated} from '../store/game'
 import {shapeAchieved, setUserShape} from '../store/currentShape'
 
 class Camera extends Component {
@@ -42,16 +43,19 @@ class Camera extends Component {
       flipHorizontal: false
     })
 
-    const currentShape = getShape(pose)
+    if (this.props.phase === 1) {
+      const currentShape = getShape(pose)
 
-    this.props.setUserShape(currentShape)
+      this.props.setUserShape(currentShape)
 
-    if (
-      this.props.currentShape &&
-      this.props.currentShape === this.props.userShape
-    ) {
-      this.props.shapeAchieved()
+      if (
+        this.props.currentShape &&
+        this.props.currentShape === this.props.userShape
+      ) {
+        this.props.shapeAchieved()
+      }
     }
+
     this.detectPose()
   }
 
@@ -74,12 +78,14 @@ class Camera extends Component {
 
 const mapStateToProps = state => ({
   currentShape: state.currentShape.shape.name,
-  userShape: state.userShape
+  userShape: state.userShape,
+  phase: state.phase
 })
 
 const mapDispatchToProps = dispatch => ({
   shapeAchieved: () => dispatch(shapeAchieved()),
-  setUserShape: shape => dispatch(setUserShape(shape))
+  setUserShape: shape => dispatch(setUserShape(shape)),
+  changePhase: () => dispatch(changePhase())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Camera)

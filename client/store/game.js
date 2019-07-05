@@ -37,6 +37,7 @@ const RESET_GAME = 'RESET_GAME'
 const MOVE_LEFT = 'MOVE_LEFT'
 const MOVE_RIGHT = 'MOVE_RIGHT'
 const ROTATE = 'ROTATE'
+const CHANGE_PHASE = 'CHANGE_PHASE'
 
 //ACTION CREATORS
 export const newShape = () => ({
@@ -90,7 +91,11 @@ export const rotated = (rotations, counter) => ({
   rotations,
   counter
 })
-//
+
+export const changePhase = () => ({
+  type: CHANGE_PHASE
+})
+
 export const gameBoard = (state = Array.from(gameBoardArray), action) => {
   switch (action.type) {
     case UPDATE_BOARD:
@@ -157,6 +162,16 @@ export const score = (state = 0, action) => {
       return action.payload
     case RESET_GAME:
       return 0
+    default:
+      return state
+  }
+}
+
+export const phase = (state = 1, action) => {
+  switch (action.type) {
+    case CHANGE_PHASE:
+      if (state === 1) return 2
+      else return 1
     default:
       return state
   }
