@@ -1,5 +1,5 @@
 import {createStore, combineReducers, applyMiddleware} from 'redux'
-import {createLogger} from 'redux-logger'
+// import {createLogger} from 'redux-logger'
 import thunkMiddleware from 'redux-thunk'
 import {composeWithDevTools} from 'redux-devtools-extension'
 import user from './user'
@@ -10,7 +10,8 @@ import {
   updateScore,
   gameStarted,
   gameOver,
-  score
+  score,
+  phase
 } from './game'
 
 import {currentShape, userShape} from './currentShape'
@@ -27,7 +28,8 @@ const reducer = combineReducers({
   score,
   currentShape,
   previewShape,
-  userShape
+  userShape,
+  phase
 })
 const middleware = composeWithDevTools(
   applyMiddleware(
