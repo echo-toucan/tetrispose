@@ -1,11 +1,16 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {updateBoard, movedLeft, movedRight, rotated, changePhase} from '../store/game'
+import {
+  updateBoard,
+  movedLeft,
+  movedRight,
+  rotated,
+  changePhase
+} from '../store/game'
 import {updateShapes} from '../store'
 import {updateCurrent, gotPenalty} from '../store/currentShape'
 import {penalty, colors} from '../AllShapes'
 import {movementPose, getPose} from './utility'
-
 
 class Grid extends Component {
   constructor() {
@@ -16,7 +21,6 @@ class Grid extends Component {
     this.updateBoard = this.updateBoard.bind(this)
     this.spawnShapes = this.spawnShapes.bind(this)
     this.movement = this.movement.bind(this)
-    // this.rotate = this.rotate.bind(this)
   }
   componentDidMount() {
     this.drop()
@@ -59,6 +63,7 @@ class Grid extends Component {
   drop() {
     setInterval(this.updateBoard, 500)
   }
+
   //it updates the board when an active shape moves down or lands
   updateBoard() {
     const oldGrid = this.props.gameBoard
@@ -71,7 +76,6 @@ class Grid extends Component {
         this.props.changePhase()
       }, 3000)
       this.props.changePhase()
-      // console.log('props.currentShape', this.props.currentShape)
       this.props.updateShapes()
     } else {
       let newGrid = oldGrid.map((row, rowIdx) => {
@@ -187,7 +191,6 @@ const mapDispatchToProps = dispatch => ({
   rotate: (rotations, counter) => dispatch(rotated(rotations, counter)),
   changePhase: () => dispatch(changePhase())
   //, movementPose: (pose) => dispatch(movementPose(pose))
-
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid)
