@@ -90,7 +90,7 @@ export const rotated = (rotations, counter) => ({
   rotations,
   counter
 })
-
+//
 export const gameBoard = (state = Array.from(gameBoardArray), action) => {
   switch (action.type) {
     case UPDATE_BOARD:
