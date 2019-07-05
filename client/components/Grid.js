@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {updateBoard, movedLeft, movedRight, rotated} from '../store/game'
+import {updateBoard, movedLeft, movedRight, rotated, changePhase} from '../store/game'
 import {updateShapes} from '../store'
 import {updateCurrent, gotPenalty} from '../store/currentShape'
 import {penalty, colors} from '../AllShapes'
-import {changePhase} from '../store/game'
+import {movementPose, getPose} from './utility'
+
 
 class Grid extends Component {
   constructor() {
@@ -84,6 +85,7 @@ class Grid extends Component {
       this.props.updateBoard(newGrid)
     }
   }
+
   movement(event) {
     if (event.key === 'ArrowLeft') {
       return this.props.moveLeft()
@@ -184,6 +186,8 @@ const mapDispatchToProps = dispatch => ({
   moveRight: () => dispatch(movedRight()),
   rotate: (rotations, counter) => dispatch(rotated(rotations, counter)),
   changePhase: () => dispatch(changePhase())
+  //, movementPose: (pose) => dispatch(movementPose(pose))
+
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid)

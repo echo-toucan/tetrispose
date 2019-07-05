@@ -1,9 +1,7 @@
 import React, {Component} from 'react'
 import * as posenet from '@tensorflow-models/posenet'
 import {connect} from 'react-redux'
-import {changePhase} from '../store/game'
-import {movedLeft, movedRight, rotated} from '../store/game'
-
+import {movedLeft, movedRight, rotated, changePhase} from '../store/game'
 import {getShape, getPose, checkRotation} from './utility'
 import {
   shapeAchieved,
@@ -62,8 +60,18 @@ class Camera extends Component {
         this.props.shapeAchieved()
       }
     }
+
+
+
+      
     if (this.props.phase === 2) {
       const userMovement = getPose(pose)
+      if (userMovement === 'Move Left') {
+      this.props.moveLeft()
+    }
+
+    if (userMovement === 'Move Right') {
+      this.props.moveRight()
       const rotation = checkRotation(pose, this.state.prevKnee)
       if (rotation.rotate) {
         this.props.rotate(
@@ -75,7 +83,7 @@ class Camera extends Component {
           prevKnee: rotation.knee
         }))
       }
-      // this.props.setUserMovement(userMovement)
+
     }
 
     this.detectPose()
@@ -102,7 +110,6 @@ const mapStateToProps = state => ({
   currentShape: state.currentShape.shape,
   userShape: state.userShape,
   phase: state.phase,
-  userMovement: state.userMovement,
   gameBoard: state.gameBoard
 })
 
@@ -110,7 +117,8 @@ const mapDispatchToProps = dispatch => ({
   shapeAchieved: () => dispatch(shapeAchieved()),
   setUserShape: shape => dispatch(setUserShape(shape)),
   changePhase: () => dispatch(changePhase()),
-  setUserMovement: pose => dispatch(setUserMovement(pose)),
+  moveLeft: () => dispatch(movedLeft()),
+  moveRight: () => dispatch(movedRight()),
   rotate: (grid, rotations, counter) =>
     dispatch(rotated(grid, rotations, counter))
 })
