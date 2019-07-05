@@ -2,6 +2,7 @@
 
 const GET_SHAPE = 'GET_SHAPE'
 const SHAPE_ACHIEVED = 'SHAPE_ACHIEVED'
+const GET_POSE = 'GET_POSE'
 
 //ACTION CREATORS
 
@@ -11,6 +12,10 @@ export const getShape = () => ({
 
 export const shapeAchieved = () => ({
   type: SHAPE_ACHIEVED
+})
+
+export const getPose = () => ({
+  type: GET_POSE
 })
 
 //REDUCER
