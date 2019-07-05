@@ -100,8 +100,6 @@ export const getShape = rawPose => {
 }
 
 const movementPose = pose => {
-  // const pose = getObj(rawPose)
-
   let nosePose = Math.floor(pose.nose.x)
   let movement = []
 
@@ -115,10 +113,6 @@ const movementPose = pose => {
   }, 0)
   console.log('moveReduce', moveReduce)
 
-  // const firstElement = moveLeft[0]
-  // const lastElement = moveLeft[moveLeft.length - 1]
-  // const difference = lastElement - firstElement
-
   if (moveReduce > 400 && moveReduce < 640) {
     return console.log('Move Left')
   }
@@ -130,7 +124,6 @@ const movementPose = pose => {
 
 export const getPose = rawPose => {
   const pose = getObj(rawPose)
-  // console.log(pose.rightWrist.score)
 
   return movementPose(pose)
 }
