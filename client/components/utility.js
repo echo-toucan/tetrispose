@@ -99,29 +99,31 @@ export const getShape = rawPose => {
   return isI(pose) || isT(pose) || isJ(pose) || isL(pose)
 }
 
-const moveLeftPose = pose => {
+const movementPose = pose => {
   // const pose = getObj(rawPose)
 
   let nosePose = Math.floor(pose.nose.x)
-  let moveLeft = []
+  let movement = []
 
-  console.log('array:', moveLeft)
+  console.log('array:', movement)
 
-  while (moveLeft.length < 20) {
-    moveLeft.push(nosePose)
+  while (movement.length < 20) {
+    movement.push(nosePose)
   }
-  let leftReduce = moveLeft.reduce((accu, curr) => {
-    return (accu + curr) / moveLeft.length * 10
+  let moveReduce = movement.reduce((accu, curr) => {
+    return (accu + curr) / movement.length * 10
   }, 0)
-  console.log('leftReduce', leftReduce)
+  console.log('moveReduce', moveReduce)
 
   // const firstElement = moveLeft[0]
   // const lastElement = moveLeft[moveLeft.length - 1]
   // const difference = lastElement - firstElement
 
-  if (leftReduce < 100 && leftReduce > 0) {
+  if (moveReduce > 400 && moveReduce < 640) {
     return console.log('Move Left')
-  } else if (leftReduce > 100 && leftReduce < 300) {
+  }
+
+  if (moveReduce > 100 && moveReduce < 300) {
     return console.log('Move right')
   }
 }
@@ -130,5 +132,5 @@ export const getPose = rawPose => {
   const pose = getObj(rawPose)
   // console.log(pose.rightWrist.score)
 
-  return moveLeftPose(pose)
+  return movementPose(pose)
 }
