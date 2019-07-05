@@ -120,7 +120,6 @@ export const movementPose = pose => {
   let nosePose = Math.floor(pose.nose.x)
   let movement = []
 
-
   while (movement.length < 20) {
     movement.push(nosePose)
   }
@@ -128,12 +127,11 @@ export const movementPose = pose => {
     return (accu + curr) / movement.length * 10
   }, 0)
 
-
-  if (moveReduce > 440 && moveReduce < 600) {
+  if (moveReduce > 370 && moveReduce < 600) {
     return 'Move Left'
   }
 
-  if (moveReduce > 50 && moveReduce < 220) {
+  if (moveReduce > 50 && moveReduce < 270) {
     return 'Move Right'
   }
 }

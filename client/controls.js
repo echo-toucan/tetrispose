@@ -14,12 +14,11 @@ const hasLeftBorder = gameBoard => {
 }
 
 export const moveLeft = gameBoard => {
-  const oldGrid = gameBoard
   if (!hasLeftBorder(gameBoard)) {
-    let newGrid = oldGrid.map((row, rowIdx) => {
+    let newGrid = gameBoard.map((row, rowIdx) => {
       return row.map((cell, colIdx) => {
         const cellToRight =
-          colIdx + 1 === row.length ? 0 : oldGrid[rowIdx][colIdx + 1]
+          colIdx + 1 === row.length ? 0 : gameBoard[rowIdx][colIdx + 1]
 
         if (cell < 10 && cellToRight < 10) {
           return cellToRight
@@ -27,7 +26,7 @@ export const moveLeft = gameBoard => {
       })
     })
     return newGrid
-  }
+  } else return gameBoard
 }
 
 const hasRightBorder = gameBoard => {
@@ -47,18 +46,17 @@ const hasRightBorder = gameBoard => {
 }
 
 export const moveRight = gameBoard => {
-  const oldGrid = gameBoard
   if (!hasRightBorder(gameBoard)) {
-    let newGrid = oldGrid.map((row, rowIdx) => {
+    let newGrid = gameBoard.map((row, rowIdx) => {
       return row.map((cell, colIdx) => {
-        const cellToLeft = colIdx === 0 ? 0 : oldGrid[rowIdx][colIdx - 1]
+        const cellToLeft = colIdx === 0 ? 0 : gameBoard[rowIdx][colIdx - 1]
         if (cell < 10 && cellToLeft < 10) {
           return cellToLeft
         } else return cell
       })
     })
     return newGrid
-  }
+  } else return gameBoard
 }
 
 const canRotate = (grid, shape, pivotRow, pivotCol) => {

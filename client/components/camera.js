@@ -69,17 +69,18 @@ class Camera extends Component {
 
       if (userMovement === 'Move Right') {
         this.props.moveRight()
-        const rotation = checkRotation(pose, this.state.prevKnee)
-        if (rotation.rotate) {
-          this.props.rotate(
-            this.props.currentShape.rotations,
-            this.state.rotationsCounter
-          )
-          this.setState(prevState => ({
-            rotationsCounter: prevState.rotationsCounter + 1,
-            prevKnee: rotation.knee
-          }))
-        }
+      }
+
+      const rotation = checkRotation(pose, this.state.prevKnee)
+      if (rotation.rotate) {
+        this.props.rotate(
+          this.props.currentShape.rotations,
+          this.state.rotationsCounter
+        )
+        this.setState(prevState => ({
+          rotationsCounter: prevState.rotationsCounter + 1,
+          prevKnee: rotation.knee
+        }))
       }
     }
 
