@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {updateBoard} from '../store/game'
-import {updateShapes, shapeAchieved} from '../store/index'
+import {updateBoard, movedLeft, movedRight, rotated} from '../store/game'
+import {updateShapes} from '../store'
 import {updateCurrent, gotPenalty} from '../store/currentShape'
 import {penalty, colors} from '../AllShapes'
 
@@ -9,12 +9,12 @@ class Grid extends Component {
   constructor() {
     super()
     this.state = {
-      rotations: 0
+      rotationCounter: null
     }
     this.updateBoard = this.updateBoard.bind(this)
     this.spawnShapes = this.spawnShapes.bind(this)
     this.movement = this.movement.bind(this)
-    this.rotate = this.rotate.bind(this)
+    // this.rotate = this.rotate.bind(this)
   }
   componentDidMount() {
     this.drop()
@@ -49,7 +49,7 @@ class Grid extends Component {
   }
 
   gameEnd() {
-    // alert('You lose!')
+    console.log('You lose!')
   }
 
   //sets the tetris board speed
@@ -78,84 +78,27 @@ class Grid extends Component {
           } else return cell
         })
       })
-      // console.log('----', this.props)
       this.props.updateBoard(newGrid)
     }
   }
   movement(event) {
     if (event.key === 'ArrowLeft') {
-      return this.moveLeft()
+      return this.props.moveLeft()
     }
     if (event.key === 'ArrowRight') {
-      return this.moveRight()
+      return this.props.moveRight()
     }
     if (event.key === 'ArrowUp') {
-      return this.rotate()
+      const rotations = this.props.currentShape.shape.rotations
+      let rotationCounter
+      if (this.state.rotationCounter === null) {
+        rotationCounter = 0
+      } else rotationCounter = this.state.rotationCounter + 1
+      this.setState({rotationCounter})
+      this.props.rotate(rotations, rotationCounter)
     }
   }
 
-  moveLeft() {
-    const oldGrid = this.props.gameBoard
-    if (!this.hasLeftBorder()) {
-      let newGrid = oldGrid.map((row, rowIdx) => {
-        return row.map((cell, colIdx) => {
-          const cellToRight =
-            colIdx + 1 === row.length ? 0 : oldGrid[rowIdx][colIdx + 1]
-
-          if (cell < 10 && cellToRight < 10) {
-            return cellToRight
-          } else return cell
-        })
-      })
-      this.props.updateBoard(newGrid)
-    }
-  }
-
-  hasLeftBorder() {
-    const grid = this.props.gameBoard
-    for (let row = 0; row < grid.length; row++) {
-      for (let col = 0; col < grid[row].length; col++) {
-        const current = grid[row][col]
-        const isFalling = current > 0 && current < 10
-        const hasLeftWall = col === 0 || grid[row][col - 1] >= 10
-        if (isFalling && hasLeftWall) {
-          return true
-        }
-      }
-    }
-    return false
-  }
-
-  moveRight() {
-    const oldGrid = this.props.gameBoard
-    if (!this.hasRightBorder()) {
-      let newGrid = oldGrid.map((row, rowIdx) => {
-        return row.map((cell, colIdx) => {
-          const cellToLeft = colIdx === 0 ? 0 : oldGrid[rowIdx][colIdx - 1]
-          if (cell < 10 && cellToLeft < 10) {
-            return cellToLeft
-          } else return cell
-        })
-      })
-      this.props.updateBoard(newGrid)
-    }
-  }
-
-  hasRightBorder() {
-    const grid = this.props.gameBoard
-    for (let row = 0; row < grid.length; row++) {
-      for (let col = 0; col < grid[row].length; col++) {
-        const current = grid[row][col]
-        const isFalling = current > 0 && current < 10
-        const hasRightWall =
-          col + 1 === grid[row].length || grid[row][col + 1] >= 10
-        if (isFalling && hasRightWall) {
-          return true
-        }
-      }
-    }
-    return false
-  }
   //checks if the active shape has landed
   hasCollided() {
     const grid = this.props.gameBoard
@@ -187,90 +130,90 @@ class Grid extends Component {
     this.props.updateBoard(newGrid)
   }
 
-  rotate() {
-    const rotations = this.props.currentShape.shape.rotations
-    const rotatedShape = rotations[this.state.rotations % rotations.length]
+  // rotate() {
+  //   const rotations = this.props.currentShape.shape.rotations
+  //   const rotatedShape = rotations[this.state.rotations % rotations.length]
 
-    const [pivotRow, pivotCol] = this.adjustPivot(rotatedShape)
+  //   const [pivotRow, pivotCol] = this.adjustPivot(rotatedShape)
 
-    if (this.canRotate(rotatedShape, pivotRow, pivotCol)) {
-      const oldGrid = this.removeFallingShape()
-      let newRows = []
+  //   if (this.canRotate(rotatedShape, pivotRow, pivotCol)) {
+  //     const oldGrid = this.removeFallingShape()
+  //     let newRows = []
 
-      for (let i = 0; i < rotatedShape.length; i++) {
-        let newRow = [...oldGrid[pivotRow + i]]
-        for (let j = 0; j < rotatedShape[i].length; j++) {
-          newRow[pivotCol + j] = rotatedShape[i][j]
-        }
-        newRows.push(newRow)
-      }
+  //     for (let i = 0; i < rotatedShape.length; i++) {
+  //       let newRow = [...oldGrid[pivotRow + i]]
+  //       for (let j = 0; j < rotatedShape[i].length; j++) {
+  //         newRow[pivotCol + j] = rotatedShape[i][j]
+  //       }
+  //       newRows.push(newRow)
+  //     }
 
-      const rowsAbove = oldGrid.slice(0, pivotRow)
-      const rowsBelow = oldGrid.slice(pivotRow + newRows.length)
+  //     const rowsAbove = oldGrid.slice(0, pivotRow)
+  //     const rowsBelow = oldGrid.slice(pivotRow + newRows.length)
 
-      const newGrid = [...rowsAbove, ...newRows, ...rowsBelow]
-      this.props.updateBoard(newGrid)
-      this.setState(prevState => ({
-        rotations: prevState.rotations + 1
-      }))
-    }
-  }
+  //     const newGrid = [...rowsAbove, ...newRows, ...rowsBelow]
+  //     this.props.updateBoard(newGrid)
+  //     this.setState(prevState => ({
+  //       rotations: prevState.rotationCounter + 1
+  //     }))
+  //   }
+  // }
 
-  canRotate(shape, pivotRow, pivotCol) {
-    if (pivotCol < 0) return false
-    const grid = this.props.gameBoard
-    for (let row = 0; row < shape.length; row++) {
-      for (let col = 0; col < shape[row].length; col++) {
-        if (grid[pivotRow + row][pivotCol + col] >= 10) {
-          return false
-        }
-      }
-    }
-    return true
-  }
+  // canRotate(shape, pivotRow, pivotCol) {
+  //   if (pivotCol < 0) return false
+  //   const grid = this.props.gameBoard
+  //   for (let row = 0; row < shape.length; row++) {
+  //     for (let col = 0; col < shape[row].length; col++) {
+  //       if (grid[pivotRow + row][pivotCol + col] >= 10) {
+  //         return false
+  //       }
+  //     }
+  //   }
+  //   return true
+  // }
 
-  adjustPivot(shape) {
-    const grid = this.props.gameBoard
-    const [pivotRow, pivotCol] = this.findPivot()
-    let [newPivotRow, newPivotCol] = [pivotRow, pivotCol]
-    let offset = 0
-    //Is it necessary to loop through all rows of the rotated shape, or just the first one???
-    //Also, what about empty squares in a shape?? Can they be ignored or must they be counted?
-    for (let row = 0; row < shape.length; row++) {
-      let rowOffset = 0
-      for (let col = 0; col < shape[row].length; col++) {
-        if (
-          pivotCol + col >= grid[pivotRow].length ||
-          grid[pivotRow + row][pivotCol + col] >= 10
-        ) {
-          rowOffset++
-        }
-        if (rowOffset > offset) {
-          offset = rowOffset
-        }
-      }
-    }
-    return [newPivotRow, newPivotCol - offset]
-  }
+  // adjustPivot(shape) {
+  //   const grid = this.props.gameBoard
+  //   const [pivotRow, pivotCol] = this.findPivot()
+  //   let [newPivotRow, newPivotCol] = [pivotRow, pivotCol]
+  //   let offset = 0
+  //   //Is it necessary to loop through all rows of the rotated shape, or just the first one???
+  //   //Also, what about empty squares in a shape?? Can they be ignored or must they be counted?
+  //   for (let row = 0; row < shape.length; row++) {
+  //     let rowOffset = 0
+  //     for (let col = 0; col < shape[row].length; col++) {
+  //       if (
+  //         pivotCol + col >= grid[pivotRow].length ||
+  //         grid[pivotRow + row][pivotCol + col] >= 10
+  //       ) {
+  //         rowOffset++
+  //       }
+  //       if (rowOffset > offset) {
+  //         offset = rowOffset
+  //       }
+  //     }
+  //   }
+  //   return [newPivotRow, newPivotCol - offset]
+  // }
 
-  removeFallingShape() {
-    const oldGrid = this.props.gameBoard
-    const clearBoard = oldGrid.map(row => {
-      return row.map(rowCell => {
-        if (rowCell >= 10) return rowCell
-        else return 0
-      })
-    })
-    return clearBoard
-  }
-  findPivot() {
-    const grid = this.props.gameBoard
-    for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid[i].length; j++) {
-        if (grid[i][j] > 0 && grid[i][j] < 10) return [i, j]
-      }
-    }
-  }
+  // removeFallingShape() {
+  //   const oldGrid = this.props.gameBoard
+  //   const clearBoard = oldGrid.map(row => {
+  //     return row.map(rowCell => {
+  //       if (rowCell >= 10) return rowCell
+  //       else return 0
+  //     })
+  //   })
+  //   return clearBoard
+  // }
+  // findPivot() {
+  //   const grid = this.props.gameBoard
+  //   for (let i = 0; i < grid.length; i++) {
+  //     for (let j = 0; j < grid[i].length; j++) {
+  //       if (grid[i][j] > 0 && grid[i][j] < 10) return [i, j]
+  //     }
+  //   }
+  // }
 
   render() {
     let grid = this.props.gameBoard
@@ -318,7 +261,10 @@ const mapDispatchToProps = dispatch => ({
   updateBoard: board => dispatch(updateBoard(board)),
   updateCurrent: shape => dispatch(updateCurrent(shape)),
   updateShapes: () => dispatch(updateShapes()),
-  gotPenalty: () => dispatch(gotPenalty())
+  gotPenalty: () => dispatch(gotPenalty()),
+  moveLeft: () => dispatch(movedLeft()),
+  moveRight: () => dispatch(movedRight()),
+  rotate: (rotations, counter) => dispatch(rotated(rotations, counter))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid)
