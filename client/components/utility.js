@@ -111,13 +111,13 @@ const movementPose = pose => {
   let moveReduce = movement.reduce((accu, curr) => {
     return (accu + curr) / movement.length * 10
   }, 0)
-  console.log('moveReduce', moveReduce)
+  console.log('center', moveReduce)
 
-  if (moveReduce > 400 && moveReduce < 640) {
+  if (moveReduce > 440 && moveReduce < 640) {
     return console.log('Move Left')
   }
 
-  if (moveReduce > 100 && moveReduce < 300) {
+  if (moveReduce > 50 && moveReduce < 220) {
     return console.log('Move right')
   }
 }
