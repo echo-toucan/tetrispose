@@ -13,7 +13,7 @@ import {
   score
 } from './game'
 
-import {currentShape, userShape} from './currentShape'
+import {currentShape, userShape, userMovement} from './currentShape'
 import {previewShape} from './previewShape'
 
 const reducer = combineReducers({
@@ -27,7 +27,8 @@ const reducer = combineReducers({
   score,
   currentShape,
   previewShape,
-  userShape
+  userShape,
+  userMovement
 })
 const middleware = composeWithDevTools(
   applyMiddleware(
