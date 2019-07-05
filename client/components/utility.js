@@ -86,7 +86,8 @@ const isL = pose => {
 
 export const getShape = rawPose => {
   const pose = getObj(rawPose)
-  console.log(pose.rightWrist.score)
+  // console.log(pose.rightWrist.score)
+  // console.log('nose x', pose.nose.x)
   if (
     pose.leftHip.score < 0.9 ||
     pose.rightHip.score < 0.9 ||
@@ -96,4 +97,29 @@ export const getShape = rawPose => {
     return undefined
   }
   return isI(pose) || isT(pose) || isJ(pose) || isL(pose)
+}
+
+const moveLeftPose = pose => {
+  // const pose = getObj(rawPose)
+
+  let nosePose = pose.nose.x
+  console.log(nosePose)
+  let moveLeft = []
+  console.log(moveLeft)
+  while (moveLeft.length < 10) {
+    moveLeft.push(nosePose)
+  }
+  // let leftReduce = moveLeft.reduce((accu, curr) => {
+  //   return (accu + curr) / moveLeft.length
+  // }, 0)
+  // console.log(leftReduce)
+  return moveLeft
+}
+
+export const getPose = rawPose => {
+  const pose = getObj(rawPose)
+  // console.log(pose.rightWrist.score)
+  console.log('nose x', pose.nose.x)
+
+  return moveLeftPose(pose)
 }
