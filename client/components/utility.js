@@ -10,6 +10,28 @@ const getObj = pose => {
   return obj
 }
 
+const leftKneeIsUp = pose => {
+  if (
+    (pose.leftKnee.y - pose.leftShoulder.y) /
+      (pose.leftHip.y - pose.leftShoulder.y) <
+      1.5 &&
+    pose.leftKnee.score > 0.85
+  ) {
+    return true
+  } else return false
+}
+
+const rightKneeIsUp = pose => {
+  if (
+    (pose.rightKnee.y - pose.rightShoulder.y) /
+      (pose.rightHip.y - pose.rightShoulder.y) <
+      1.5 &&
+    pose.rightKnee.score > 0.85
+  ) {
+    return true
+  } else return false
+}
+
 const leftArmIsOut = pose => {
   if (
     Math.abs(pose.leftWrist.y - pose.leftShoulder.y) <
@@ -44,16 +66,11 @@ const leftArmIsUp = pose => {
 }
 
 const rightArmIsUp = pose => {
-  // console.log(
-  //   (pose.rightShoulder.y - pose.rightWrist.y) /
-  //     (pose.rightHip.y - pose.rightShoulder.y)
-  // )
   if (
     (pose.rightShoulder.y - pose.rightWrist.y) /
       (pose.rightHip.y - pose.rightShoulder.y) >
     0.7
   ) {
-    console.log('right arm UP')
     return true
   } else return false
 }
@@ -86,8 +103,8 @@ const isL = pose => {
 
 export const getShape = rawPose => {
   const pose = getObj(rawPose)
-  // console.log(pose.rightWrist.score)
-  // console.log('nose x', pose.nose.x)
+  console.log(rightKneeIsUp(pose))
+
   if (
     pose.leftHip.score < 0.9 ||
     pose.rightHip.score < 0.9 ||
@@ -103,7 +120,7 @@ const movementPose = pose => {
   let nosePose = Math.floor(pose.nose.x)
   let movement = []
 
-  console.log('array:', movement)
+  // console.log('array:', movement)
 
   while (movement.length < 20) {
     movement.push(nosePose)
@@ -111,7 +128,7 @@ const movementPose = pose => {
   let moveReduce = movement.reduce((accu, curr) => {
     return (accu + curr) / movement.length * 10
   }, 0)
-  console.log('moveReduce', moveReduce)
+  // console.log('moveReduce', moveReduce)
 
   if (moveReduce > 400 && moveReduce < 640) {
     return console.log('Move Left')
@@ -126,4 +143,13 @@ export const getPose = rawPose => {
   const pose = getObj(rawPose)
 
   return movementPose(pose)
+}
+
+export const checkRotation = (rawPose, prevKnee) => {
+  const pose = getObj(rawPose)
+  if (prevKnee !== 'right' && rightKneeIsUp(pose)) {
+    return {rotate: true, knee: 'right'}
+  } else if (prevKnee !== 'left' && leftKneeIsUp(pose)) {
+    return {rotate: true, knee: 'left'}
+  } else return {rotate: false}
 }

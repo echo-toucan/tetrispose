@@ -1,23 +1,23 @@
 import React, {Component} from 'react'
 import * as posenet from '@tensorflow-models/posenet'
 import {connect} from 'react-redux'
-
 import {changePhase} from '../store/game'
 import {movedLeft, movedRight, rotated} from '../store/game'
 
-import {getShape, getPose} from './utility'
+import {getShape, getPose, checkRotation} from './utility'
 import {
   shapeAchieved,
   setUserShape,
   setUserMovement
 } from '../store/currentShape'
 
-
 class Camera extends Component {
   constructor() {
     super()
     this.state = {
-      activeCamera: true
+      prevKnee: '',
+      activeCamera: true,
+      rotationsCounter: 0
     }
     this.getVideo = this.getVideo.bind(this)
   }
@@ -55,19 +55,28 @@ class Camera extends Component {
 
       this.props.setUserShape(currentShape)
 
-
       if (
-        this.props.currentShape &&
-        this.props.currentShape === this.props.userShape
+        this.props.currentShape.name &&
+        this.props.currentShape.name === this.props.userShape
       ) {
         this.props.shapeAchieved()
       }
     }
-    
-    const userMovement = getPose(pose)
-
-
-    this.props.setUserMovement(userMovement)
+    if (this.props.phase === 2) {
+      const userMovement = getPose(pose)
+      const rotation = checkRotation(pose, this.state.prevKnee)
+      if (rotation.rotate) {
+        this.props.rotate(
+          this.props.currentShape.rotations,
+          this.state.rotationsCounter
+        )
+        this.setState(prevState => ({
+          rotationsCounter: prevState.rotationsCounter + 1,
+          prevKnee: rotation.knee
+        }))
+      }
+      // this.props.setUserMovement(userMovement)
+    }
 
     this.detectPose()
   }
@@ -90,17 +99,20 @@ class Camera extends Component {
 }
 
 const mapStateToProps = state => ({
-  currentShape: state.currentShape.shape.name,
+  currentShape: state.currentShape.shape,
   userShape: state.userShape,
   phase: state.phase,
-  userMovement: state.userMovement
+  userMovement: state.userMovement,
+  gameBoard: state.gameBoard
 })
 
 const mapDispatchToProps = dispatch => ({
   shapeAchieved: () => dispatch(shapeAchieved()),
   setUserShape: shape => dispatch(setUserShape(shape)),
   changePhase: () => dispatch(changePhase()),
-  setUserMovement: pose => dispatch(setUserMovement(pose))
+  setUserMovement: pose => dispatch(setUserMovement(pose)),
+  rotate: (grid, rotations, counter) =>
+    dispatch(rotated(grid, rotations, counter))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Camera)

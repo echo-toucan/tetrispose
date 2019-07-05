@@ -4,6 +4,7 @@ import {updateBoard, movedLeft, movedRight, rotated} from '../store/game'
 import {updateShapes} from '../store'
 import {updateCurrent, gotPenalty} from '../store/currentShape'
 import {penalty, colors} from '../AllShapes'
+import {changePhase} from '../store/game'
 
 class Grid extends Component {
   constructor() {
@@ -20,6 +21,7 @@ class Grid extends Component {
     this.drop()
     setTimeout(() => {
       this.spawnShapes(this.props.currentShape)
+      this.props.changePhase()
     }, 3000)
   }
 
@@ -65,8 +67,9 @@ class Grid extends Component {
       this.props.updateCurrent(newCurrent)
       setTimeout(() => {
         this.spawnShapes(this.props.currentShape)
+        this.props.changePhase()
       }, 3000)
-
+      this.props.changePhase()
       // console.log('props.currentShape', this.props.currentShape)
       this.props.updateShapes()
     } else {
@@ -179,7 +182,8 @@ const mapDispatchToProps = dispatch => ({
   gotPenalty: () => dispatch(gotPenalty()),
   moveLeft: () => dispatch(movedLeft()),
   moveRight: () => dispatch(movedRight()),
-  rotate: (rotations, counter) => dispatch(rotated(rotations, counter))
+  rotate: (rotations, counter) => dispatch(rotated(rotations, counter)),
+  changePhase: () => dispatch(changePhase())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid)
