@@ -2,8 +2,7 @@ import React, {Component} from 'react'
 import * as posenet from '@tensorflow-models/posenet'
 import {connect} from 'react-redux'
 
-import {changePhase} from '../store/game'
-import {movedLeft, movedRight, rotated} from '../store/game'
+import {movedLeft, movedRight, rotated, changePhase} from '../store/game'
 
 import {getShape, getPose} from './utility'
 import {shapeAchieved, setUserShape} from '../store/currentShape'
