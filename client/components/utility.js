@@ -159,6 +159,8 @@ export const movementPose = pose => {
   }
 }
 
+const checkRotate = pose => {}
+
 export const getPose = rawPose => {
   const pose = getObj(rawPose)
 
@@ -173,6 +175,17 @@ export const checkRotation = (rawPose, prevKnee) => {
     return {rotate: true, knee: 'left'}
   } else return {rotate: false}
 }
+
+// export const checkRotation = rawPose => {
+//   const pose = getObj(rawPose)
+//   const shoulderBreadth = pose.leftShoulder.x - pose.rightShoulder.x
+//   const wristExtension = pose.rightShoulder.x - pose.rightWrist.x
+//   if (pose.rightWrist.y > 1.2 * pose.rightShoulder) return 0
+//   if (wristExtension < 0.5 * shoulderBreadth) return 0
+//   else if (wristExtension < 0.8 * shoulderBreadth) return 1
+//   else if (wristExtension < 1.1 * shoulderBreadth) return 2
+//   else return 3
+// }
 
 export const checkPosition = rawPose => {
   const pose = getObj(rawPose)

@@ -92,10 +92,10 @@ export const moved = column => ({
   payload: column
 })
 
-export const rotated = (rotations, counter) => ({
+export const rotated = (rotations, target) => ({
   type: ROTATE,
   rotations,
-  counter
+  target
 })
 
 export const changePhase = () => ({
@@ -113,7 +113,7 @@ export const gameBoard = (state = Array.from(gameBoardArray), action) => {
     case MOVE:
       return move(state, action.payload)
     case ROTATE:
-      return rotate(state, action.rotations, action.counter)
+      return rotate(state, action.rotations, action.target)
     case RESET_GAME:
       return [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],

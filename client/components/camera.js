@@ -10,9 +10,7 @@ class Camera extends Component {
   constructor() {
     super()
     this.state = {
-      prevKnee: '',
-      activeCamera: true,
-      rotationsCounter: 0
+      activeCamera: true
     }
     this.getVideo = this.getVideo.bind(this)
   }
@@ -33,15 +31,6 @@ class Camera extends Component {
     } finally {
       await this.setupCamera()
     }
-
-    //   try {
-    //   } catch (error) {
-    //     throw new Error(
-    //       'This browser does not support video capture, or this device does not have a camera'
-    //     )
-    //   } finally {
-    //     this.detectPose()
-    //   }
   }
 
   async setupCamera() {
@@ -60,9 +49,7 @@ class Camera extends Component {
         }
       })
       this.setState({activeCamera: false})
-      // setTimeout(() => {
       this.video.srcObject = stream
-      // }, 100)
     } catch (err) {
       console.error(err)
     } finally {
@@ -92,17 +79,8 @@ class Camera extends Component {
       const column = checkPosition(pose)
       this.props.move(column)
 
-      const rotation = checkRotation(pose, this.state.prevKnee)
-      if (rotation.rotate) {
-        this.props.rotate(
-          this.props.currentShape.rotations,
-          this.state.rotationsCounter
-        )
-        this.setState(prevState => ({
-          rotationsCounter: prevState.rotationsCounter + 1,
-          prevKnee: rotation.knee
-        }))
-      }
+      const targetRotation = checkRotation(pose)
+      this.props.rotate(this.props.currentShape.rotations, targetRotation)
     }
 
     this.detectPose()
