@@ -3,11 +3,8 @@ import * as posenet from '@tensorflow-models/posenet'
 import {connect} from 'react-redux'
 import {movedLeft, movedRight, rotated, changePhase} from '../store/game'
 import {getShape, getPose, checkRotation} from './utility'
-import {
-  shapeAchieved,
-  setUserShape,
-  setUserMovement
-} from '../store/currentShape'
+import {shapeAchieved, setUserShape} from '../store/currentShape'
+import {Dimmer, Loader, Image, Segment} from 'semantic-ui-react'
 
 class Camera extends Component {
   constructor() {
@@ -19,15 +16,49 @@ class Camera extends Component {
     }
     this.getVideo = this.getVideo.bind(this)
   }
+
   async componentDidMount() {
-    if (navigator.mediaDevices.getUserMedia) {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({video: true})
-        this.video.srcObject = stream
-      } catch (err) {
-        console.error(err)
-      }
+    try {
+      await this.setupCamera()
+    } catch (error) {
+      throw new Error(
+        'This browser does not support video capture, or this device does not have a camera'
+      )
     }
+
+    try {
+      this.posenetModel = await posenet.load()
+    } catch (error) {
+      throw new Error('Posenet failed to load')
+    } finally {
+      setTimeout(() => {
+        this.setState({activeCamera: false})
+      }, 100)
+    }
+
+    this.detectPose()
+  }
+
+  async setupCamera() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      throw new Error(
+        'Browser API navigator.mediaDevices.getUserMedia not available'
+      )
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: {
+          facingMode: 'user',
+          width: 640,
+          height: 480
+        }
+      })
+      this.video.srcObject = stream
+    } catch (err) {
+      console.error(err)
+    }
+
     try {
       console.log('loading posenet...')
       this.posenet = await posenet.load({
@@ -92,13 +123,18 @@ class Camera extends Component {
   }
 
   render() {
+    const activeCamera = this.state.activeCamera ? (
+      <Segment>
+        <Dimmer active>
+          <Loader indeterminate>Camera Loading</Loader>
+        </Dimmer>
+        <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
+      </Segment>
+    ) : null
     return (
       <div className="camera-position">
-        {this.state.activeCamera ? (
-          <video width="640" height="480" autoPlay={true} ref={this.getVideo} />
-        ) : (
-          <h1>......</h1>
-        )}
+        <div>{activeCamera}</div>
+        <video width="640" height="480" autoPlay={true} ref={this.getVideo} />
       </div>
     )
   }
