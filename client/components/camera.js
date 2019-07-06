@@ -19,24 +19,29 @@ class Camera extends Component {
 
   async componentDidMount() {
     try {
-      await this.setupCamera()
-    } catch (error) {
-      throw new Error(
-        'This browser does not support video capture, or this device does not have a camera'
-      )
-    }
-
-    try {
-      this.posenetModel = await posenet.load()
-    } catch (error) {
+      console.log('loading posenet...')
+      this.posenet = await posenet.load({
+        architecture: 'ResNet50',
+        outputStride: 32,
+        inputResolution: 193,
+        quantBytes: 1
+      })
+      if (this.posenet) console.log('posenet loaded!')
+    } catch (err) {
+      console.error(err)
       throw new Error('Posenet failed to load')
     } finally {
-      setTimeout(() => {
-        this.setState({activeCamera: false})
-      }, 100)
+      await this.setupCamera()
     }
 
-    this.detectPose()
+    //   try {
+    //   } catch (error) {
+    //     throw new Error(
+    //       'This browser does not support video capture, or this device does not have a camera'
+    //     )
+    //   } finally {
+    //     this.detectPose()
+    //   }
   }
 
   async setupCamera() {
@@ -54,23 +59,14 @@ class Camera extends Component {
           height: 480
         }
       })
+      this.setState({activeCamera: false})
+      // setTimeout(() => {
       this.video.srcObject = stream
+      // }, 100)
     } catch (err) {
       console.error(err)
-    }
-
-    try {
-      console.log('loading posenet...')
-      this.posenet = await posenet.load({
-        architecture: 'ResNet50',
-        outputStride: 32,
-        inputResolution: 193,
-        quantBytes: 1
-      })
-      if (this.posenet) console.log('posenet loaded!')
-      if (this.posenet) this.detectPose()
-    } catch (err) {
-      console.error(err)
+    } finally {
+      this.detectPose()
     }
   }
 
@@ -93,17 +89,7 @@ class Camera extends Component {
     }
 
     if (this.props.phase === 2) {
-      // const userMovement = getPose(pose)
-      // if (userMovement === 'Move Left') {
-      //   this.props.moveLeft()
-      // }
-
-      // if (userMovement === 'Move Right') {
-      //   this.props.moveRight()
-      // }
-
       const column = checkPosition(pose)
-      console.log(column)
       this.props.move(column)
 
       const rotation = checkRotation(pose, this.state.prevKnee)
@@ -127,18 +113,25 @@ class Camera extends Component {
   }
 
   render() {
-    const activeCamera = this.state.activeCamera ? (
-      <Segment>
-        <Dimmer active>
-          <Loader indeterminate>Camera Loading</Loader>
-        </Dimmer>
-        <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
-      </Segment>
-    ) : null
     return (
-      <div className="camera-position">
-        <div>{activeCamera}</div>
-        <video width="640" height="480" autoPlay={true} ref={this.getVideo} />
+      <div>
+        {this.state.activeCamera ? (
+          <Segment>
+            <Dimmer active>
+              <Loader indeterminate>Camera Loading</Loader>
+            </Dimmer>
+            <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
+          </Segment>
+        ) : (
+          <div className="camera-position">
+            <video
+              width="640"
+              height="480"
+              autoPlay={true}
+              ref={this.getVideo}
+            />
+          </div>
+        )}
       </div>
     )
   }
