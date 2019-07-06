@@ -1,28 +1,17 @@
 import {shapesArray} from '../AllShapes'
 import {moveLeft, moveRight, rotate, move} from '../controls'
 
-const gameBoardArray = [
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-]
+const boardHeight = 20
+const boardWidth = 10
+
+const createBoard = (height, width) => {
+  let board = []
+  for (let i = 0; i < height; i++) {
+    const row = new Array(width).fill(0)
+    board.push(row)
+  }
+  return board
+}
 
 //ACTION TYPE!!
 
@@ -38,6 +27,7 @@ const MOVE_LEFT = 'MOVE_LEFT'
 const MOVE_RIGHT = 'MOVE_RIGHT'
 const MOVE = 'MOVE'
 const ROTATE = 'ROTATE'
+const CLEAR_ROWS = 'CLEAR_ROWS'
 const CHANGE_PHASE = 'CHANGE_PHASE'
 
 //ACTION CREATORS
@@ -98,11 +88,19 @@ export const rotated = (rotations, counter) => ({
   counter
 })
 
+export const clearRows = rows => ({
+  type: CLEAR_ROWS,
+  payload: rows
+})
+
 export const changePhase = () => ({
   type: CHANGE_PHASE
 })
 
-export const gameBoard = (state = Array.from(gameBoardArray), action) => {
+const initialState = createBoard(boardHeight, boardWidth)
+console.log(initialState)
+
+export const gameBoard = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_BOARD:
       return action.payload
@@ -114,29 +112,18 @@ export const gameBoard = (state = Array.from(gameBoardArray), action) => {
       return move(state, action.payload)
     case ROTATE:
       return rotate(state, action.rotations, action.counter)
+    case CLEAR_ROWS:
+      const rowsToRemove = action.payload
+      const clearedGrid = state.filter(
+        (row, idx) => !action.payload.includes(idx)
+      )
+      for (let i = 0; i < rowsToRemove.length; i++) {
+        const row = new Array(10).fill(0)
+        clearedGrid.unshift(row)
+      }
+      return clearedGrid
     case RESET_GAME:
-      return [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-      ]
+      return initalState
     default:
       return state
   }

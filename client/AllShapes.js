@@ -70,7 +70,8 @@ export const getRandom = () =>
 
 export const penalty = {
   name: 'X',
-  shape: [[8, 0, 8], [0, 8, 0], [8, 0, 8]],
+  // shape: [[8, 0, 8], [0, 8, 0], [8, 0, 8]],
+  shape: [[2, 2, 2, 2, 2]],
   rotations: [[[8, 0, 8], [0, 8, 0], [8, 0, 8]]],
   topLeft: {row: 0, col: 4},
   color: 'white'

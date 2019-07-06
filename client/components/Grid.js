@@ -5,7 +5,8 @@ import {
   movedLeft,
   movedRight,
   rotated,
-  changePhase
+  changePhase,
+  clearRows
 } from '../store/game'
 import {updateShapes} from '../store'
 import {updateCurrent, gotPenalty} from '../store/currentShape'
@@ -69,6 +70,7 @@ class Grid extends Component {
     const oldGrid = this.props.gameBoard
     if (this.hasCollided()) {
       this.stopDrop()
+      this.deleteRows()
       const newCurrent = this.props.previewShape[0]
       this.props.updateCurrent(newCurrent)
       setTimeout(() => {
@@ -139,6 +141,19 @@ class Grid extends Component {
     this.props.updateBoard(newGrid)
   }
 
+  deleteRows() {
+    const gameBoard = this.props.gameBoard
+    let rowsToRemove = []
+    for (let row = 0; row < gameBoard.length; row++) {
+      let rowComplete = true
+      for (let col = 0; col < gameBoard[row].length; col++) {
+        if (gameBoard[row][col] === 0) rowComplete = false
+      }
+      if (rowComplete) rowsToRemove.push(row)
+    }
+    this.props.clearRows(rowsToRemove)
+  }
+
   render() {
     let grid = this.props.gameBoard
     return (
@@ -189,7 +204,8 @@ const mapDispatchToProps = dispatch => ({
   moveLeft: () => dispatch(movedLeft()),
   moveRight: () => dispatch(movedRight()),
   rotate: (rotations, counter) => dispatch(rotated(rotations, counter)),
-  changePhase: () => dispatch(changePhase())
+  changePhase: () => dispatch(changePhase()),
+  clearRows: rows => dispatch(clearRows(rows))
   //, movementPose: (pose) => dispatch(movementPose(pose))
 })
 
