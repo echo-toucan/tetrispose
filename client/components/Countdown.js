@@ -13,7 +13,7 @@ class Countdown extends Component {
         size={150}
         showMilliseconds={false}
         onComplete={() => {
-          console.log('test')
+          console.log("time's up")
         }}
       />
     )
