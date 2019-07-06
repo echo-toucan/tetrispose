@@ -13,7 +13,7 @@ const getObj = pose => {
 const leftKneeIsUp = pose => {
   if (
     (pose.leftKnee.y - pose.leftShoulder.y) /
-      (pose.leftHip.y - pose.leftShoulder.y) <
+      (pose.rightHip.y - pose.rightShoulder.y) <
       1.5 &&
     pose.leftKnee.score > 0.85
   ) {
@@ -24,7 +24,7 @@ const leftKneeIsUp = pose => {
 const rightKneeIsUp = pose => {
   if (
     (pose.rightKnee.y - pose.rightShoulder.y) /
-      (pose.rightHip.y - pose.rightShoulder.y) <
+      (pose.leftHip.y - pose.leftShoulder.y) <
       1.5 &&
     pose.rightKnee.score > 0.85
   ) {
@@ -100,17 +100,27 @@ const isL = pose => {
   if (rightArmIsOut(pose) && leftArmIsUp(pose)) return 'L'
 }
 
+// const isS = pose => {
+//   if (leftArmIsUp(pose) && leftKneeIsUp(pose)) return 'S'
+// }
+
+// const isZ = pose => {
+//   if (rightArmIsUp(pose) && rightKneeIsUp(pose)) return 'Z'
+// }
+
 export const getShape = rawPose => {
   const pose = getObj(rawPose)
   if (
-    pose.leftHip.score < 0.9 ||
-    pose.rightHip.score < 0.9 ||
+    (pose.leftHip.score < 0.9 && pose.rightHip.score < 0.9) ||
     pose.rightWrist.score < 0.7 ||
     pose.leftWrist.score < 0.7
   ) {
     return undefined
   }
-  return isI(pose) || isT(pose) || isJ(pose) || isL(pose)
+  return (
+    isI(pose) || isT(pose) || isJ(pose) || isL(pose)
+    //  || isS(pose) || isZ(pose)
+  )
 }
 
 export const movementPose = pose => {
@@ -151,9 +161,10 @@ export const checkRotation = (rawPose, prevKnee) => {
 export const checkPosition = rawPose => {
   const pose = getObj(rawPose)
   const nose = pose.nose.x
-  const buffer = 70
+  const buffer = 150
   const screenWidth = 640
+  const columnWidth = (screenWidth - buffer * 2) / 10
   if (nose <= buffer) return 9
   else if (nose >= screenWidth - buffer) return 0
-  else return Math.ceil(9 - (nose - buffer) / 50)
+  else return Math.ceil(9 - (nose - buffer) / columnWidth)
 }
