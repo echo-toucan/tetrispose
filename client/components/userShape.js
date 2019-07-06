@@ -1,21 +1,26 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {shapeAchieved} from '../store/currentShape'
+// import {shapeAchieved} from '../store/currentShape'
+import {Image, Icon, Segment} from 'semantic-ui-react'
 
 class UserShape extends Component {
   render() {
     return (
       <div>
-        <h1>Your pose is</h1>
+        {/* <h1>Please match your pose of upcoming shape!</h1> */}
         {this.props.userShape ? (
           <span>
-            <img
+            <Image
+              size="small"
               className="checkmark"
               src={`/assets/${this.props.userShape}.png`}
             />
           </span>
         ) : (
-          <h1>not recognized</h1>
+          <Segment>
+            <h1>Please match your pose of upcoming shape!</h1>
+            <Icon name="hand point left" size="huge" />
+          </Segment>
         )}
       </div>
     )
