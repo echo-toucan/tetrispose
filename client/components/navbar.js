@@ -16,42 +16,40 @@ class Navbar extends Component {
 
     return (
       <Menu secondary fixed="top">
-        <Container className="navBar">
+        <Menu.Item
+          name="home"
+          as={Link}
+          to="/"
+          active={activeItem === 'home'}
+          onClick={this.handleItemClick}
+        />
+        {isLoggedIn ? (
           <Menu.Item
-            name="home"
+            name="logout"
             as={Link}
-            to="/"
-            active={activeItem === 'home'}
-            onClick={this.handleItemClick}
+            to="#"
+            active={activeItem === 'logout'}
+            onClick={handleClick}
           />
-          {isLoggedIn ? (
+        ) : (
+          <Fragment>
             <Menu.Item
-              name="logout"
+              position="right"
+              name="login"
+              active={activeItem === 'login'}
+              onClick={this.handleItemClick}
               as={Link}
-              to="#"
-              active={activeItem === 'logout'}
-              onClick={handleClick}
+              to="/login"
             />
-          ) : (
-            <Fragment>
-              <Menu.Item
-                position="right"
-                name="login"
-                active={activeItem === 'login'}
-                onClick={this.handleItemClick}
-                as={Link}
-                to="/login"
-              />
-              <Menu.Item
-                name="signup"
-                as={Link}
-                to="/signup"
-                active={activeItem === 'signout'}
-                onClick={this.handleItemClick}
-              />
-            </Fragment>
-          )}
-        </Container>
+            <Menu.Item
+              name="signup"
+              as={Link}
+              to="/signup"
+              active={activeItem === 'signout'}
+              onClick={this.handleItemClick}
+            />
+          </Fragment>
+        )}
       </Menu>
     )
   }
