@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import * as posenet from '@tensorflow-models/posenet'
 import {connect} from 'react-redux'
-import {movedLeft, movedRight, rotated, changePhase} from '../store/game'
-import {getShape, getPose, checkRotation} from './utility'
+import {movedLeft, movedRight, rotated, changePhase, moved} from '../store/game'
+import {getShape, getPose, checkRotation, checkPosition} from './utility'
 import {shapeAchieved, setUserShape} from '../store/currentShape'
 import {Dimmer, Loader, Image, Segment} from 'semantic-ui-react'
 
@@ -93,14 +93,18 @@ class Camera extends Component {
     }
 
     if (this.props.phase === 2) {
-      const userMovement = getPose(pose)
-      if (userMovement === 'Move Left') {
-        this.props.moveLeft()
-      }
+      // const userMovement = getPose(pose)
+      // if (userMovement === 'Move Left') {
+      //   this.props.moveLeft()
+      // }
 
-      if (userMovement === 'Move Right') {
-        this.props.moveRight()
-      }
+      // if (userMovement === 'Move Right') {
+      //   this.props.moveRight()
+      // }
+
+      const column = checkPosition(pose)
+      console.log(column)
+      this.props.move(column)
 
       const rotation = checkRotation(pose, this.state.prevKnee)
       if (rotation.rotate) {
@@ -154,7 +158,8 @@ const mapDispatchToProps = dispatch => ({
   moveLeft: () => dispatch(movedLeft()),
   moveRight: () => dispatch(movedRight()),
   rotate: (grid, rotations, counter) =>
-    dispatch(rotated(grid, rotations, counter))
+    dispatch(rotated(grid, rotations, counter)),
+  move: column => dispatch(moved(column))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Camera)

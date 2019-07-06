@@ -76,9 +76,10 @@ export const userShape = (state = initialUserShape, action) => {
   }
 }
 
-export const userMovement = (state = {}, action) => {
+const initialPosition = {column: 4, rotationCounter: 0}
+export const shapePosition = (state = initialPosition, action) => {
   switch (action.type) {
-    case SET_USER_MOVEMENT:
+    case MOVE:
       if (action.payload) {
         return action.payload
       } else {

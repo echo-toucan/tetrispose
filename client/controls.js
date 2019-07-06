@@ -142,3 +142,12 @@ export const rotate = (grid, rotations, counter) => {
     return newGrid
   }
 }
+
+export const move = (gameBoard, column) => {
+  const [shapeRow, shapeCol] = findPivot(gameBoard)
+  if (column < shapeCol + 1) {
+    return moveLeft(gameBoard)
+  } else if (column > shapeCol + 1) {
+    return moveRight(gameBoard)
+  } else return gameBoard
+}

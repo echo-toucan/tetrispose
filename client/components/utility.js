@@ -102,8 +102,6 @@ const isL = pose => {
 
 export const getShape = rawPose => {
   const pose = getObj(rawPose)
-  console.log(rightKneeIsUp(pose))
-
   if (
     pose.leftHip.score < 0.9 ||
     pose.rightHip.score < 0.9 ||
@@ -148,4 +146,14 @@ export const checkRotation = (rawPose, prevKnee) => {
   } else if (prevKnee !== 'left' && leftKneeIsUp(pose)) {
     return {rotate: true, knee: 'left'}
   } else return {rotate: false}
+}
+
+export const checkPosition = rawPose => {
+  const pose = getObj(rawPose)
+  const nose = pose.nose.x
+  const buffer = 70
+  const screenWidth = 640
+  if (nose <= buffer) return 9
+  else if (nose >= screenWidth - buffer) return 0
+  else return Math.ceil(9 - (nose - buffer) / 50)
 }
