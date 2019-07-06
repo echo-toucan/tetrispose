@@ -17,8 +17,10 @@ export const moveLeft = gameBoard => {
   if (!hasLeftBorder(gameBoard)) {
     let newGrid = gameBoard.map((row, rowIdx) => {
       return row.map((cell, colIdx) => {
-        const cellToRight =
-          colIdx + 1 === row.length ? 0 : gameBoard[rowIdx][colIdx + 1]
+        const barrierOnRight =
+          colIdx + 1 === row.length || gameBoard[rowIdx][colIdx + 1] > 10
+
+        const cellToRight = barrierOnRight ? 0 : gameBoard[rowIdx][colIdx + 1]
 
         if (cell < 10 && cellToRight < 10) {
           return cellToRight
@@ -30,13 +32,12 @@ export const moveLeft = gameBoard => {
 }
 
 const hasRightBorder = gameBoard => {
-  const grid = gameBoard
-  for (let row = 0; row < grid.length; row++) {
-    for (let col = 0; col < grid[row].length; col++) {
-      const current = grid[row][col]
+  for (let row = 0; row < gameBoard.length; row++) {
+    for (let col = 0; col < gameBoard[row].length; col++) {
+      const current = gameBoard[row][col]
       const isFalling = current > 0 && current < 10
       const hasRightWall =
-        col + 1 === grid[row].length || grid[row][col + 1] >= 10
+        col + 1 === gameBoard[row].length || gameBoard[row][col + 1] >= 10
       if (isFalling && hasRightWall) {
         return true
       }
@@ -49,7 +50,8 @@ export const moveRight = gameBoard => {
   if (!hasRightBorder(gameBoard)) {
     let newGrid = gameBoard.map((row, rowIdx) => {
       return row.map((cell, colIdx) => {
-        const cellToLeft = colIdx === 0 ? 0 : gameBoard[rowIdx][colIdx - 1]
+        const barrierOnLeft = colIdx === 0 || gameBoard[rowIdx][colIdx - 1] > 10
+        const cellToLeft = barrierOnLeft ? 0 : gameBoard[rowIdx][colIdx - 1]
         if (cell < 10 && cellToLeft < 10) {
           return cellToLeft
         } else return cell
