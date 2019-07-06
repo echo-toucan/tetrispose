@@ -8,23 +8,23 @@ class CurrentShape extends Component {
   render() {
     const shape = this.props.currentShape.shape
     return (
-      <div className="currentShapeContent">
-        <Header as="h2">Target</Header>
+      // <div className="currentShapeContent">
+      <Grid column={2} divided>
+        {/* <Header as="h2">Target</Header> */}
 
-        <Container fixed="true" className="fixed-width">
-          <Grid.Column>
-            {/* <h1>Target</h1> */}
-            {shape.name ? (
-              <Image size="small" src={`/assets/${shape.name}.png`} />
-            ) : (
-              ''
-            )}
-          </Grid.Column>
-          <Grid.Column>
-            <Countdown />
-          </Grid.Column>
-        </Container>
-      </div>
+        {/* <Container fixed="true" className="fixed-width"> */}
+        <Grid.Column width={8}>
+          {shape.name ? (
+            <Image size="small" src={`/assets/${shape.name}.png`} />
+          ) : (
+            'Please match this shape'
+          )}
+        </Grid.Column>
+        <Grid.Column width={8}>
+          <Countdown />
+        </Grid.Column>
+        {/* </Container> */}
+      </Grid>
     )
   }
 }

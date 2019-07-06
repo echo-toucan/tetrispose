@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {createShapes, setFirstShape} from '../store'
-import {Container, Image, Grid} from 'semantic-ui-react'
+import {Container, Image, Grid, Segment} from 'semantic-ui-react'
 
 class PreviewShape extends Component {
   componentDidMount() {
@@ -16,15 +16,20 @@ class PreviewShape extends Component {
     return (
       <div>
         <Container fixed="top" className="preview-image">
-          <Grid.Row>
+          {/* <Grid.Row>
             <h3>Upcoming shapes:</h3>
-          </Grid.Row>
+          </Grid.Row> */}
           {shapes ? (
             <Grid.Row>
+              <Segment textAlign="center">
+                <h3>Follow This Pattern</h3>
+              </Segment>
               {shapes.map((shape, idx) => {
                 return (
-                  <div key={idx} className="preview-image">
-                    <Image src={`/assets/${shape.name}.png`} />
+                  <div key={idx}>
+                    <Segment padded stacked color="olive" inverted secondary>
+                      <Image src={`/assets/${shape.name}.png`} />
+                    </Segment>
                   </div>
                 )
               })}
