@@ -17,6 +17,7 @@ const leftKneeIsUp = pose => {
       1.5 &&
     pose.leftKnee.score > 0.85
   ) {
+    console.log('left knee was up')
     return true
   } else return false
 }
@@ -28,6 +29,21 @@ const rightKneeIsUp = pose => {
       1.5 &&
     pose.rightKnee.score > 0.85
   ) {
+    console.log('right knee was up')
+    return true
+  } else return false
+}
+
+const rightWristIsPerpendicular = pose => {
+  console.log('right Elbow', pose.rightElbow.y, pose.rightElbow.score)
+  console.log('right Shoulder', pose.rightShoulder.y, pose.rightShoulder.score)
+  console.log('right Wrist', pose.rightWrist.y, pose.rightWrist.score)
+  if (
+    (pose.rightElbow.y / pose.rightShoulder.y > 0.95 ||
+      pose.rightElbow.y / pose.rightShoulder.y < 1.05) &&
+    pose.rightWrist.y < pose.rightElbow.y
+  ) {
+    console.log('right wrist was perpendicular')
     return true
   } else return false
 }
@@ -151,7 +167,7 @@ export const getPose = rawPose => {
 
 export const checkRotation = (rawPose, prevKnee) => {
   const pose = getObj(rawPose)
-  if (prevKnee !== 'right' && rightKneeIsUp(pose)) {
+  if (rightWristIsPerpendicular(pose)) {
     return {rotate: true, knee: 'right'}
   } else if (prevKnee !== 'left' && leftKneeIsUp(pose)) {
     return {rotate: true, knee: 'left'}
