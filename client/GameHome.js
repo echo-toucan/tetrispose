@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Grid, Segment} from 'semantic-ui-react'
+import {Grid, Segment, Message, Icon} from 'semantic-ui-react'
 import {connect} from 'react-redux'
 import {
   Camera,
@@ -31,19 +31,23 @@ class GameHome extends Component {
 
           <Grid.Row>
             {achieved || isX ? (
-              <Segment color="orange" inverted>
+              <Segment color="orange" inverted secondary textAlign="center">
                 <SuccessMessage />
               </Segment>
             ) : (
               <Grid padded columns={2}>
                 <Grid.Column width={8}>
-                  <Segment>
+                  <Message warning attached="top">
+                    <Icon name="warning" />
+                    DO THIS POSE IN 3 SECOND!
+                  </Message>
+                  <Segment color="yellow" inverted secondary raised>
                     <CurrentShape />
                   </Segment>
                 </Grid.Column>
 
                 <Grid.Column width={8}>
-                  <Segment color="red" inverted>
+                  <Segment color="red" inverted secondary>
                     <UserShape />
                   </Segment>
                 </Grid.Column>
@@ -53,7 +57,7 @@ class GameHome extends Component {
         </Grid.Column>
 
         <Grid.Column width={6}>
-          <Segment color="green" inverted>
+          <Segment color="green" inverted secondary raised>
             <GameBoard />
           </Segment>
         </Grid.Column>
