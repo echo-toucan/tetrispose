@@ -1,5 +1,5 @@
 import {shapesArray} from '../AllShapes'
-import {moveLeft, moveRight, rotate} from '../controls'
+import {moveLeft, moveRight, rotate, move} from '../controls'
 
 const gameBoardArray = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -36,6 +36,7 @@ const SWITCH_GAME_OVER = 'SWITCH_GAME_OVER'
 const RESET_GAME = 'RESET_GAME'
 const MOVE_LEFT = 'MOVE_LEFT'
 const MOVE_RIGHT = 'MOVE_RIGHT'
+const MOVE = 'MOVE'
 const ROTATE = 'ROTATE'
 const CHANGE_PHASE = 'CHANGE_PHASE'
 
@@ -86,6 +87,11 @@ export const movedRight = () => ({
   type: MOVE_RIGHT
 })
 
+export const moved = column => ({
+  type: MOVE,
+  payload: column
+})
+
 export const rotated = (rotations, counter) => ({
   type: ROTATE,
   rotations,
@@ -104,6 +110,8 @@ export const gameBoard = (state = Array.from(gameBoardArray), action) => {
       return moveLeft(state)
     case MOVE_RIGHT:
       return moveRight(state)
+    case MOVE:
+      return move(state, action.payload)
     case ROTATE:
       return rotate(state, action.rotations, action.counter)
     case RESET_GAME:
@@ -145,28 +153,6 @@ export const gameStarted = (state = false, action) => {
   }
 }
 
-export const gameOver = (state = false, action) => {
-  switch (action.type) {
-    case SWITCH_GAME_OVER:
-      return action.payload
-    case RESET_GAME:
-      return false
-    default:
-      return state
-  }
-}
-
-export const score = (state = 0, action) => {
-  switch (action.type) {
-    case UPDATE_SCORE:
-      return action.payload
-    case RESET_GAME:
-      return 0
-    default:
-      return state
-  }
-}
-
 export const phase = (state = 1, action) => {
   switch (action.type) {
     case CHANGE_PHASE:
@@ -176,3 +162,25 @@ export const phase = (state = 1, action) => {
       return state
   }
 }
+
+// export const gameOver = (state = false, action) => {
+//   switch (action.type) {
+//     case SWITCH_GAME_OVER:
+//       return action.payload
+//     case RESET_GAME:
+//       return false
+//     default:
+//       return state
+//   }
+// }
+
+// export const score = (state = 0, action) => {
+//   switch (action.type) {
+//     case UPDATE_SCORE:
+//       return action.payload
+//     case RESET_GAME:
+//       return 0
+//     default:
+//       return state
+//   }
+// }
