@@ -15,7 +15,11 @@ class CurrentShape extends Component {
         {/* <Container fixed="true" className="fixed-width"> */}
         <Grid.Column width={8}>
           {shape.name ? (
-            <Image size="small" src={`/assets/${shape.name}.png`} />
+            <Image
+              size="small"
+              src={`/assets/${shape.name}.png`}
+              className="animated infinite heartBeat"
+            />
           ) : (
             'Please match this shape'
           )}

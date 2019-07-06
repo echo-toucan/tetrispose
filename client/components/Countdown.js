@@ -4,14 +4,27 @@ import {connect} from 'react-redux'
 import ReactCountdownClock from 'react-countdown-clock'
 
 class Countdown extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      seconds: 3
+    }
+  }
+
+  // componentDidMount() {
+  //   setTimeout(() => {
+  //     this.setState({seconds: 3})
+  //   }, 3000)
+  // }
+
   render() {
     return (
       <ReactCountdownClock
-        seconds={3}
+        seconds={this.state.seconds}
         color="teal"
         alpha={0.9}
         size={150}
-        showMilliseconds={false}
+        showMilliseconds={true}
         onComplete={() => {
           console.log("time's up")
         }}
