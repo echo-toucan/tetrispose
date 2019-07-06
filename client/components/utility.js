@@ -50,7 +50,6 @@ const rightArmIsOut = pose => {
     Math.abs(pose.rightElbow.y - pose.rightShoulder.y) <
       0.25 * pose.rightShoulder.y
   ) {
-    // console.log('right arm OUT')
     return true
   } else return false
 }
