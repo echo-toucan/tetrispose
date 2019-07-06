@@ -151,4 +151,11 @@ export const checkRotation = (rawPose, prevKnee) => {
 
 export const checkPosition = rawPose => {
   const pose = getObj(rawPose)
+  const nose = pose.nose.x
+  const buffer = 70
+  const screenWidth = 640
+  console.log(Math.floor(640 - pose.nose.x))
+  if (nose <= buffer) return 9
+  else if (nose >= screenWidth - buffer) return 0
+  else return Math.floor(9 - (nose - buffer) / 50)
 }
