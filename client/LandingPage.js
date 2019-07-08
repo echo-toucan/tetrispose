@@ -1,14 +1,5 @@
-import PropTypes from 'prop-types'
-import React, {Component} from 'react'
-import {
-  Button,
-  Container,
-  Divider,
-  Grid,
-  Header,
-  Icon,
-  Responsive
-} from 'semantic-ui-react'
+import React from 'react'
+import {Button, Container, Header, Icon} from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
 
 const HomepageLayout = ({mobile}) => (
