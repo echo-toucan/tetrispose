@@ -1,9 +1,14 @@
 import React, {Component} from 'react'
 import * as posenet from '@tensorflow-models/posenet'
 import {connect} from 'react-redux'
-import {movedLeft, movedRight, rotated, changePhase, moved} from '../store/game'
-import {getShape, getPose, checkRotation, checkPosition} from './utility'
-import {shapeAchieved, setUserShape} from '../store/currentShape'
+import {
+  rotated,
+  changePhase,
+  moved,
+  shapeAchieved,
+  setUserShape
+} from '../store'
+import {getShape, checkRotation, checkPosition} from './utility'
 import {Dimmer, Loader, Image, Segment} from 'semantic-ui-react'
 
 class Camera extends Component {
@@ -33,15 +38,6 @@ class Camera extends Component {
     } finally {
       await this.setupCamera()
     }
-
-    //   try {
-    //   } catch (error) {
-    //     throw new Error(
-    //       'This browser does not support video capture, or this device does not have a camera'
-    //     )
-    //   } finally {
-    //     this.detectPose()
-    //   }
   }
 
   async setupCamera() {
@@ -60,9 +56,7 @@ class Camera extends Component {
         }
       })
       this.setState({activeCamera: false})
-      // setTimeout(() => {
       this.video.srcObject = stream
-      // }, 100)
     } catch (err) {
       console.error(err)
     } finally {
@@ -98,10 +92,10 @@ class Camera extends Component {
           this.props.currentShape.rotations,
           this.state.rotationsCounter
         )
-        this.setState(prevState => ({
-          rotationsCounter: prevState.rotationsCounter + 1,
-          prevKnee: rotation.knee
-        }))
+        // this.setState(prevState => ({
+        //   rotationsCounter: prevState.rotationsCounter + 1,
+        //   prevKnee: rotation.knee
+        // }))
       }
     }
 
@@ -148,8 +142,6 @@ const mapDispatchToProps = dispatch => ({
   shapeAchieved: () => dispatch(shapeAchieved()),
   setUserShape: shape => dispatch(setUserShape(shape)),
   changePhase: () => dispatch(changePhase()),
-  moveLeft: () => dispatch(movedLeft()),
-  moveRight: () => dispatch(movedRight()),
   rotate: (grid, rotations, counter) =>
     dispatch(rotated(grid, rotations, counter)),
   move: column => dispatch(moved(column))
