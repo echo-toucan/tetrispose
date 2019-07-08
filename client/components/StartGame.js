@@ -1,14 +1,5 @@
 import React from 'react'
-import {
-  Button,
-  Grid,
-  Card,
-  Image,
-  Popup,
-  Rating,
-  Message,
-  Icon
-} from 'semantic-ui-react'
+import {Button, Grid, Card, Image, Popup, Rating, Icon} from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
 
 const StartGame = () => {
@@ -19,11 +10,6 @@ const StartGame = () => {
           <Button.Content visible>Start Game</Button.Content>
           <Button.Content hidden>Play Tetris</Button.Content>
         </Button>
-        <Message
-          header="Welcome to Tetris Pose, a new twist on the classic game. Using Google's TensorFlow technology, Tetris Pose lets you use gestures to control the game! All the controls you need are below:"
-          color="blue"
-          size="large"
-        />
       </Grid.Row>
 
       <Grid.Row>
