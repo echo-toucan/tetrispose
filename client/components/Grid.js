@@ -11,7 +11,8 @@ import {
 import {updateShapes} from '../store'
 import {updateCurrent, gotPenalty} from '../store/currentShape'
 import {penalty, colors} from '../AllShapes'
-import {movementPose, getPose} from './utility'
+// import {movementPose, getPose} from './utility'
+// import {Button} from 'semantic-ui-react'
 
 class Grid extends Component {
   constructor() {
@@ -23,8 +24,15 @@ class Grid extends Component {
     this.spawnShapes = this.spawnShapes.bind(this)
     this.movement = this.movement.bind(this)
   }
+
   componentDidMount() {
-    this.drop()
+    setTimeout(() => {
+      this.drop()
+      this.gameStart()
+    }, 5000)
+  }
+
+  gameStart() {
     setTimeout(() => {
       this.spawnShapes(this.props.currentShape)
       this.props.changePhase()
@@ -158,6 +166,9 @@ class Grid extends Component {
     let grid = this.props.gameBoard
     return (
       <div>
+        {/* <Button primary onClick={() => this.gameStart()}>
+          Start Game
+        </Button> */}
         <button type="button" onClick={() => this.drop()}>
           Drop!
         </button>

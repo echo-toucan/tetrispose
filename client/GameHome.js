@@ -37,7 +37,12 @@ class GameHome extends Component {
             ) : (
               <Grid padded columns={2}>
                 <Grid.Column width={8}>
-                  <Message warning attached="top">
+                  <Message
+                    warning
+                    attached="top"
+                    size="big"
+                    className="animated flash delay-1s"
+                  >
                     <Icon name="warning" />
                     DO THIS POSE IN 3 SECOND!
                   </Message>

@@ -1,19 +1,38 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Image} from 'semantic-ui-react'
+import {Image, Message, Segment, Icon} from 'semantic-ui-react'
 
 const SuccessMessage = props => {
   return (
     <div>
       {props.shapeAchieved ? (
-        <div>
-          <h1>YEAH! YOU GOT IT!</h1>
-          <Image size="small" className="checkmark" src="/assets/check.png" />
-        </div>
+        <Segment>
+          <Message
+            header="YEAH! 😀 YOU GOT IT! 🥳"
+            color="green"
+            size="big"
+            className="animated infinite jello"
+          />
+          <Image
+            centered
+            size="small"
+            className="checkmark"
+            src="/assets/check.png"
+          />
+        </Segment>
       ) : (
-        <div>
-          <h1>Ops... Out of time! Please do better on next upcoming shape.</h1>
-        </div>
+        <Segment>
+          <Icon
+            name="hand point left"
+            size="huge"
+            className="animated infinite wobble delay-1s"
+          />
+          <Message
+            header=" 😂 Out of time! Please match your pose of next pattern. 😤"
+            color="red"
+            size="big"
+          />
+        </Segment>
       )}
     </div>
   )
