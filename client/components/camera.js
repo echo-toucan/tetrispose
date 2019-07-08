@@ -24,7 +24,8 @@ class Camera extends Component {
     this.state = {
       // prevKnee: '',
       activeCamera: true,
-      rotationsCounter: 0
+      rotationsCounter: 0,
+      canvasIsPainted: false
     }
     this.getVideo = this.getVideo.bind(this)
     this.getCanvas = this.getCanvas.bind(this)
@@ -78,6 +79,10 @@ class Camera extends Component {
     })
 
     if (this.props.phase === 1) {
+      if (this.state.canvasIsPainted) {
+        this.setState({canvasIsPainted: false})
+        console.log(this.state.canvasIsPainted)
+      }
       this.clearCanvas()
       const currentShape = getShape(pose)
 
@@ -99,37 +104,39 @@ class Camera extends Component {
       // const targetRotation = checkRotation(pose)
       // this.props.rotate(this.props.currentShape.rotations,
       //   targetRotation)
-      const rotations = this.props.currentShape.rotations
+      // const rotations = this.props.currentShape.rotations
+      // console.log(this.state.canvasIsPainted)
 
-      this.drawRotations(rotations)
-
-      //Attempting rotation using throttle
-      // const rotate = throttle(checkRotation, pose, 250)
-      // if (rotate) {
-      //   console.log(this.state.rotationsCounter)
-      //   this.props.rotate(
-      //     this.props.currentShape.rotations,
-      //     this.state.rotationsCounter
-      //   )
-      // }
-
-      this.setState(prevState => ({
-        rotationsCounter: prevState.rotationsCounter + 1
-      }))
-
-      //This is the original function (with knee-raises to rotate)
-      // const rotation = checkRotation(pose, this.state.prevKnee)
-      // if (rotation.rotate) {
-      //   this.props.rotate(
-      //     this.props.currentShape.rotations,
-      //     this.state.rotationsCounter
-      //   )
-      //   this.setState(prevState => ({
-      //     rotationsCounter: prevState.rotationsCounter + 1,
-      //     prevKnee: rotation.knee
-      //   }))
-      // }
+      // if (!this.state.canvasIsPainted) {
+      this.drawRotations(this.props.currentShape.rotations)
+      // this.setState({canvasIsPainted: true})
     }
+    //Attempting rotation using throttle
+    // const rotate = throttle(checkRotation, pose, 250)
+    // if (rotate) {
+    //   console.log(this.state.rotationsCounter)
+    //   this.props.rotate(
+    //     this.props.currentShape.rotations,
+    //     this.state.rotationsCounter
+    //   )
+    // }
+
+    this.setState(prevState => ({
+      rotationsCounter: prevState.rotationsCounter + 1
+    }))
+
+    //This is the original function (with knee-raises to rotate)
+    // const rotation = checkRotation(pose, this.state.prevKnee)
+    // if (rotation.rotate) {
+    //   this.props.rotate(
+    //     this.props.currentShape.rotations,
+    //     this.state.rotationsCounter
+    //   )
+    //   this.setState(prevState => ({
+    //     rotationsCounter: prevState.rotationsCounter + 1,
+    //     prevKnee: rotation.knee
+    //   }))
+    // }
 
     this.detectPose()
   }
