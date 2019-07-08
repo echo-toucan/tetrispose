@@ -14,8 +14,7 @@ import {
   Dimmer,
   Loader,
   Image as SemanticImage,
-  Segment,
-  ImageGroup
+  Segment
 } from 'semantic-ui-react'
 
 class Camera extends Component {
@@ -107,19 +106,19 @@ class Camera extends Component {
       // const rotations = this.props.currentShape.rotations
       // console.log(this.state.canvasIsPainted)
 
-      // if (!this.state.canvasIsPainted) {
-      this.drawRotations(this.props.currentShape.rotations)
-      // this.setState({canvasIsPainted: true})
+      if (!this.state.canvasIsPainted) {
+        this.drawRotations(this.props.currentShape.rotations)
+        this.setState({canvasIsPainted: true})
+      }
+      //Attempting rotation using throttle
+      // const rotate = throttle(checkRotation, pose, 250)
+      // if (rotate) {
+      //   console.log(this.state.rotationsCounter)
+      //   this.props.rotate(
+      //     this.props.currentShape.rotations,
+      //     this.state.rotationsCounter
+      //   )
     }
-    //Attempting rotation using throttle
-    // const rotate = throttle(checkRotation, pose, 250)
-    // if (rotate) {
-    //   console.log(this.state.rotationsCounter)
-    //   this.props.rotate(
-    //     this.props.currentShape.rotations,
-    //     this.state.rotationsCounter
-    //   )
-    // }
 
     this.setState(prevState => ({
       rotationsCounter: prevState.rotationsCounter + 1
@@ -142,36 +141,17 @@ class Camera extends Component {
   }
 
   drawRotations(rotations) {
-    // console.log('draw triggered! idx =', idx)
-    // console.log(rotations)
     const canvas = this.canvas.getContext('2d')
-    rotations.forEach((rotation, idx) => {
-      const drawPos = 105 + idx * 480 / rotations.length
+    rotations.forEach((rotation, idx, arr) => {
+      const drawPos = 410 * (idx + 1) / arr.length
       const img = new Image()
       img.src = `./assets/rotations/${
         this.props.currentShape.name
       }rot${idx}.png`
-      canvas.drawImage(img, drawPos, 20, img.width / 5, img.height / 5)
+      img.onload = () => {
+        canvas.drawImage(img, drawPos, 20, img.width / 4, img.height / 4)
+      }
     })
-
-    // const context = this.canvas.getContext('2d')
-    // const img = new Image()
-    // img.src = `./assets/${this.props.currentShape.name}.png`
-    // rotations.forEach((rotation, idx) => {
-    //   const drawX = 105 + idx * 480 / rotations.length
-    //   const angle = idx * 0.5 * Math.PI
-    //   context.save()
-    //   context.translate(drawX + img.width / 2, img.height / 2 + 80)
-    //   context.rotate(angle)
-    //   context.drawImage(
-    //     img,
-    //     -(img.width / 2),
-    //     -(img.height / 2),
-    //     img.width / 4,
-    //     img.height / 4
-    //   )
-    //   context.restore()
-    // })
   }
 
   clearCanvas() {
