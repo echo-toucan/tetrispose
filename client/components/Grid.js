@@ -25,13 +25,7 @@ class Grid extends Component {
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      this.drop()
-      this.gameStart()
-    }, 5000)
-  }
-
-  gameStart() {
+    this.drop()
     setTimeout(() => {
       this.spawnShapes(this.props.currentShape)
       this.props.changePhase()
@@ -162,7 +156,7 @@ class Grid extends Component {
   }
 
   render() {
-    let grid = this.props.gameBoard
+    const {gameBoard} = this.props
     return (
       <div>
         {/* <button type="button" onClick={() => this.drop()}>
@@ -175,7 +169,7 @@ class Grid extends Component {
 
         <table className="game-table">
           <tbody>
-            {grid.map((row, rowIdx) => {
+            {gameBoard.map((row, rowIdx) => {
               return (
                 <tr key={rowIdx} className="game-row">
                   {row.map((cell, cellIdx) => {

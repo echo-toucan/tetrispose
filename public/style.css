@@ -105,3 +105,13 @@ video {
   justify-items: center;
   align-items: center;
 }
+
+.camera-loader {
+  width: 640px;
+  height: 480px;
+}
+
+.camera-container {
+  display: flex;
+  justify-content: center;
+}

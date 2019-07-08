@@ -111,9 +111,9 @@ class Camera extends Component {
 
   render() {
     return (
-      <div>
+      <div className="camera-container">
         {this.state.cameraIsLoading ? (
-          <Segment>
+          <Segment className="camera-loader">
             <Dimmer active>
               <Loader indeterminate>Camera Loading</Loader>
             </Dimmer>

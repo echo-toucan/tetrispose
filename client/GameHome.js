@@ -17,11 +17,6 @@ class GameHome extends Component {
     const isX = this.props.currentShape.shape.name === 'X'
     return (
       <Grid padded columns={3}>
-        <Grid.Column width={2} divided="true">
-          <GamePanel />
-          <PreviewShape />
-        </Grid.Column>
-
         <Grid.Column width={8}>
           <Grid.Row>
             <Segment>
@@ -50,6 +45,11 @@ class GameHome extends Component {
               </Grid>
             )}
           </Grid.Row>
+        </Grid.Column>
+
+        <Grid.Column width={2} divided="true">
+          <GamePanel />
+          <PreviewShape />
         </Grid.Column>
 
         <Grid.Column width={6}>

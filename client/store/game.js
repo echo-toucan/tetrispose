@@ -106,7 +106,6 @@ export const loadGame = () => ({
 })
 
 const initialState = createBoard(boardHeight, boardWidth)
-console.log(initialState)
 
 export const gameBoard = (state = initialState, action) => {
   switch (action.type) {
