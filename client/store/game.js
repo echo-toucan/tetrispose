@@ -28,6 +28,8 @@ const MOVE = 'MOVE'
 const ROTATE = 'ROTATE'
 const CLEAR_ROWS = 'CLEAR_ROWS'
 const CHANGE_PHASE = 'CHANGE_PHASE'
+const GAME_LOADED = 'GAME_LOADED'
+const LOAD_GAME = 'LOAD_GAME'
 
 //ACTION CREATORS
 export const newShape = () => ({
@@ -54,9 +56,8 @@ export const changeGameStatus = status => ({
   payload: status
 })
 
-export const startGame = started => ({
-  type: START_GAME,
-  payload: started
+export const startGame = () => ({
+  type: START_GAME
 })
 
 export const changeGameOver = gameOver => ({
@@ -96,8 +97,15 @@ export const changePhase = () => ({
   type: CHANGE_PHASE
 })
 
+export const gameLoaded = () => ({
+  type: GAME_LOADED
+})
+
+export const loadGame = () => ({
+  type: LOAD_GAME
+})
+
 const initialState = createBoard(boardHeight, boardWidth)
-console.log(initialState)
 
 export const gameBoard = (state = initialState, action) => {
   switch (action.type) {
@@ -128,12 +136,17 @@ export const gameBoard = (state = initialState, action) => {
   }
 }
 
-export const gameStarted = (state = false, action) => {
+export const gameState = (state = {started: false, loaded: false}, action) => {
   switch (action.type) {
     case START_GAME:
-      return action.payload
+      console.log('game started')
+      return {...state, started: true}
     case RESET_GAME:
       return true
+    case GAME_LOADED:
+      return {...state, loaded: true}
+    case LOAD_GAME:
+      return {...state, loaded: false}
     default:
       return state
   }

@@ -17,20 +17,20 @@ class CurrentShape extends Component {
               className="animated infinite heartBeat"
             />
           ) : (
-            'Please match this shape'
+            'Loading Shape'
           )}
         </Grid.Column>
         <Grid.Column width={8}>
-          <Countdown />
+          {this.props.gameStarted ? <Countdown /> : ''}
         </Grid.Column>
-        {/* </Container> */}
       </Grid>
     )
   }
 }
 
 const mapStateToProps = state => ({
-  currentShape: state.currentShape
+  currentShape: state.currentShape,
+  gameStarted: state.gameState.started
 })
 
 export default connect(mapStateToProps)(CurrentShape)

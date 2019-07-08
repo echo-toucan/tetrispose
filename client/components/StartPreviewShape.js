@@ -8,7 +8,7 @@ class StartPreviewShape extends Component {
   }
 
   render() {
-    const shapes = this.props.shapes
+    const {shapes} = this.props
     return (
       <div>
         {this.props.shapeAchieved ? (
