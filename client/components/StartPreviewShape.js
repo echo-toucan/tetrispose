@@ -1,16 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {getShape} from './utility'
 import {setFirstShape} from '../store'
 
 class StartPreviewShape extends Component {
-  // constructor() {
-  //   super()
-  //   this.state = {
-  //     currentShape: 'Test'
-  //   }
-  // }
-
   componentDidMount() {
     this.props.setFirstShape()
   }

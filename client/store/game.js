@@ -1,4 +1,3 @@
-import {shapesArray} from '../AllShapes'
 import {moveLeft, moveRight, rotate, move} from '../controls'
 
 const boardHeight = 20

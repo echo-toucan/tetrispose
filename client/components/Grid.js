@@ -1,18 +1,17 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {
+  updateShapes,
   updateBoard,
   movedLeft,
   movedRight,
   rotated,
   changePhase,
-  clearRows
-} from '../store/game'
-import {updateShapes} from '../store'
-import {updateCurrent, gotPenalty} from '../store/currentShape'
+  clearRows,
+  updateCurrent,
+  gotPenalty
+} from '../store'
 import {penalty, colors} from '../AllShapes'
-// import {movementPose, getPose} from './utility'
-// import {Button} from 'semantic-ui-react'
 
 class Grid extends Component {
   constructor() {
@@ -166,16 +165,13 @@ class Grid extends Component {
     let grid = this.props.gameBoard
     return (
       <div>
-        {/* <Button primary onClick={() => this.gameStart()}>
-          Start Game
-        </Button> */}
-        <button type="button" onClick={() => this.drop()}>
+        {/* <button type="button" onClick={() => this.drop()}>
           Drop!
         </button>
         <input onKeyDown={event => this.movement(event)} />
         <button type="button" onClick={() => this.spawnShapes()}>
           Spawn a shape
-        </button>
+        </button> */}
 
         <table className="game-table">
           <tbody>
@@ -217,7 +213,6 @@ const mapDispatchToProps = dispatch => ({
   rotate: (rotations, counter) => dispatch(rotated(rotations, counter)),
   changePhase: () => dispatch(changePhase()),
   clearRows: rows => dispatch(clearRows(rows))
-  //, movementPose: (pose) => dispatch(movementPose(pose))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid)

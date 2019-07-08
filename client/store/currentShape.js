@@ -8,7 +8,6 @@ const GOT_PENALTY = 'GOT_PENALTY'
 const SET_FIRST_SHAPE = 'SET_FIRST_SHAPE'
 const SET_USER_SHAPE = 'SET_USER_SHAPE'
 const GET_USER_SHAPE = 'GET_USER_SHAPE'
-const SET_USER_MOVEMENT = 'SET_USER_MOVEMENT'
 
 //ACTION CREATORS
 
@@ -71,20 +70,6 @@ export const userShape = (state = initialUserShape, action) => {
       }
     case GET_USER_SHAPE:
       return state
-    default:
-      return state
-  }
-}
-
-const initialPosition = {column: 4, rotationCounter: 0}
-export const shapePosition = (state = initialPosition, action) => {
-  switch (action.type) {
-    case MOVE:
-      if (action.payload) {
-        return action.payload
-      } else {
-        return null
-      }
     default:
       return state
   }

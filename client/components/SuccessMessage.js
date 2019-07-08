@@ -8,7 +8,7 @@ const SuccessMessage = props => {
       {props.shapeAchieved ? (
         <Segment>
           <Message
-            header="YEAH! 😀 YOU GOT IT! 🥳"
+            header="😀 YOU GOT IT!"
             color="green"
             size="big"
             className="animated infinite jello"
@@ -27,11 +27,7 @@ const SuccessMessage = props => {
             size="huge"
             className="animated infinite wobble delay-1s"
           />
-          <Message
-            header=" 😂 Out of time! Please match your pose of next pattern. 😤"
-            color="red"
-            size="big"
-          />
+          <Message header="Out of time!" color="red" size="big" />
         </Segment>
       )}
     </div>

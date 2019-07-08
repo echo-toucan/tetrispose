@@ -11,12 +11,6 @@ class Countdown extends Component {
     }
   }
 
-  // componentDidMount() {
-  //   setTimeout(() => {
-  //     this.setState({seconds: 3})
-  //   }, 3000)
-  // }
-
   render() {
     return (
       <ReactCountdownClock

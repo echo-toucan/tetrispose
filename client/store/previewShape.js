@@ -17,7 +17,7 @@ export const previewShape = (state = initialState, action) => {
   switch (action.type) {
     case CREATE_SHAPES: {
       //Creates three random shapes at the beginning of the game
-      //Unavailble shapes (O, J, L, S, Z) are commented out in AllShapes.js and will NOT be selected
+      //Unavailble shapes (O, S, Z) are commented out in AllShapes.js and will NOT be selected
       let shapes = []
       for (let i = 0; i < 3; i++) {
         const newShape = getRandom()

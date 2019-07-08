@@ -17,9 +17,7 @@ class GameHome extends Component {
     return (
       <Grid padded columns={3}>
         <Grid.Column width={2} divided="true">
-          {/* <Segment color="blue" inverted height="100px"> */}
           <PreviewShape />
-          {/* </Segment> */}
         </Grid.Column>
 
         <Grid.Column width={8}>
@@ -37,15 +35,6 @@ class GameHome extends Component {
             ) : (
               <Grid padded columns={2}>
                 <Grid.Column width={8}>
-                  <Message
-                    warning
-                    attached="top"
-                    size="big"
-                    className="animated flash delay-1s"
-                  >
-                    <Icon name="warning" />
-                    DO THIS POSE IN 3 SECOND!
-                  </Message>
                   <Segment color="yellow" inverted secondary raised>
                     <CurrentShape />
                   </Segment>
