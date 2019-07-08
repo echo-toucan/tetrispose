@@ -68,12 +68,25 @@ export const shapesArray = [
 export const getRandom = () =>
   shapesArray[Math.floor(Math.random() * shapesArray.length)]
 
+// export const penalty = {
+//   name: 'X',
+//   shape: [[8, 0, 8], [0, 8, 0], [8, 0, 8]],
+//   rotations: [[[8, 0, 8], [0, 8, 0], [8, 0, 8]]],
+//   topLeft: {row: 0, col: 4},
+//   color: 'white'
+// }
+
 export const penalty = {
-  name: 'X',
-  shape: [[8, 0, 8], [0, 8, 0], [8, 0, 8]],
-  rotations: [[[8, 0, 8], [0, 8, 0], [8, 0, 8]]],
+  name: 'T',
+  shape: [[5, 5, 5], [0, 5, 0]],
+  rotations: [
+    [[0, 5], [5, 5], [0, 5]],
+    [[0, 5, 0], [5, 5, 5]],
+    [[5, 0], [5, 5], [5, 0]],
+    [[5, 5, 5], [0, 5, 0]]
+  ],
   topLeft: {row: 0, col: 4},
-  color: 'white'
+  color: 'purple'
 }
 
 export const colors = [

@@ -17,7 +17,6 @@ const leftKneeIsUp = pose => {
       1.5 &&
     pose.leftKnee.score > 0.85
   ) {
-    console.log('left knee was up')
     return true
   } else return false
 }
@@ -29,15 +28,14 @@ const rightKneeIsUp = pose => {
       1.5 &&
     pose.rightKnee.score > 0.85
   ) {
-    console.log('right knee was up')
     return true
   } else return false
 }
 
 const rightWristIsPerpendicular = pose => {
-  console.log('right Elbow', pose.rightElbow.y, pose.rightElbow.score)
-  console.log('right Shoulder', pose.rightShoulder.y, pose.rightShoulder.score)
-  console.log('right Wrist', pose.rightWrist.y, pose.rightWrist.score)
+  // console.log('right Elbow', pose.rightElbow.y, pose.rightElbow.score)
+  // console.log('right Shoulder', pose.rightShoulder.y, pose.rightShoulder.score)
+  // console.log('right Wrist', pose.rightWrist.y, pose.rightWrist.score)
   if (
     (pose.rightElbow.y / pose.rightShoulder.y > 0.95 ||
       pose.rightElbow.y / pose.rightShoulder.y < 1.05) &&
@@ -167,15 +165,18 @@ export const getPose = rawPose => {
   return movementPose(pose)
 }
 
-export const checkRotation = (rawPose, prevKnee) => {
-  const pose = getObj(rawPose)
-  if (rightWristIsPerpendicular(pose)) {
-    return {rotate: true, knee: 'right'}
-  } else if (prevKnee !== 'left' && leftKneeIsUp(pose)) {
-    return {rotate: true, knee: 'left'}
-  } else return {rotate: false}
-}
+//This is the original function (with knee-raises to rotate)
 
+// export const checkRotation = (rawPose, prevKnee) => {
+//   const pose = getObj(rawPose)
+//   if (rightWristIsPerpendicular(pose)) {
+//     return {rotate: true, knee: 'right'}
+//   } else if (prevKnee !== 'left' && leftKneeIsUp(pose)) {
+//     return {rotate: true, knee: 'left'}
+//   } else return {rotate: false}
+// }
+
+// This function attempts to use a 'target' pose
 // export const checkRotation = rawPose => {
 //   const pose = getObj(rawPose)
 //   const shoulderBreadth = pose.leftShoulder.x - pose.rightShoulder.x
@@ -197,3 +198,29 @@ export const checkPosition = rawPose => {
   else if (nose >= screenWidth - buffer) return 0
   else return Math.ceil(9 - (nose - buffer) / columnWidth)
 }
+
+export const throttle = (callback, pose, limit) => {
+  let wait = false // Initially, we're not waiting
+  return function() {
+    // We return a throttled function
+    if (!wait) {
+      // If we're not waiting
+      callback.call(pose) // Execute users function
+      wait = true // Prevent future invocations
+      setTimeout(function() {
+        // After a period of time
+        wait = false // And allow future invocations
+      }, limit)
+    }
+  }
+}
+
+// Attempting to use throttle to space out rotations
+const checkRotation = rawPose => {
+  const pose = getObj(rawPose)
+  if (rightWristIsPerpendicular(pose)) {
+    return true
+  } else return false
+}
+
+const rotate = throttle(checkRotation)

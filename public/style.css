@@ -105,3 +105,10 @@ video {
   justify-items: center;
   align-items: center;
 }
+
+.canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
