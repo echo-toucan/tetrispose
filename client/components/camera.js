@@ -6,7 +6,9 @@ import {
   changePhase,
   moved,
   shapeAchieved,
-  setUserShape
+  setUserShape,
+  gameLoaded,
+  loadGame
 } from '../store'
 import {getShape, checkRotation, checkPosition} from './utility'
 import {Dimmer, Loader, Image, Segment} from 'semantic-ui-react'
@@ -16,7 +18,7 @@ class Camera extends Component {
     super()
     this.state = {
       prevKnee: '',
-      activeCamera: true,
+      cameraIsLoading: true,
       rotationsCounter: 0
     }
     this.getVideo = this.getVideo.bind(this)
@@ -24,6 +26,7 @@ class Camera extends Component {
 
   async componentDidMount() {
     try {
+      this.props.loadGame()
       console.log('loading posenet...')
       this.posenet = await posenet.load({
         architecture: 'ResNet50',
@@ -55,12 +58,12 @@ class Camera extends Component {
           height: 480
         }
       })
-      this.setState({activeCamera: false})
+      this.setState({cameraIsLoading: false})
       this.video.srcObject = stream
     } catch (err) {
       console.error(err)
     } finally {
-      this.detectPose()
+      this.props.gameLoaded()
     }
   }
 
@@ -109,7 +112,7 @@ class Camera extends Component {
   render() {
     return (
       <div>
-        {this.state.activeCamera ? (
+        {this.state.cameraIsLoading ? (
           <Segment>
             <Dimmer active>
               <Loader indeterminate>Camera Loading</Loader>
@@ -144,7 +147,9 @@ const mapDispatchToProps = dispatch => ({
   changePhase: () => dispatch(changePhase()),
   rotate: (grid, rotations, counter) =>
     dispatch(rotated(grid, rotations, counter)),
-  move: column => dispatch(moved(column))
+  move: column => dispatch(moved(column)),
+  gameLoaded: () => dispatch(gameLoaded()),
+  loadGame: () => dispatch(loadGame())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Camera)
