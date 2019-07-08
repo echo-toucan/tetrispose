@@ -140,6 +140,7 @@ export const gameBoard = (state = initialState, action) => {
 export const gameState = (state = {started: false, loaded: false}, action) => {
   switch (action.type) {
     case START_GAME:
+      console.log('game started')
       return {...state, started: true}
     case RESET_GAME:
       return true

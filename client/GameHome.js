@@ -7,7 +7,8 @@ import {
   GameBoard,
   CurrentShape,
   UserShape,
-  SuccessMessage
+  SuccessMessage,
+  GamePanel
 } from './components'
 
 class GameHome extends Component {
@@ -17,6 +18,7 @@ class GameHome extends Component {
     return (
       <Grid padded columns={3}>
         <Grid.Column width={2} divided="true">
+          <GamePanel />
           <PreviewShape />
         </Grid.Column>
 
