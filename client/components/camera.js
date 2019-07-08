@@ -64,6 +64,7 @@ class Camera extends Component {
       console.error(err)
     } finally {
       this.props.gameLoaded()
+      this.detectPose()
     }
   }
 
@@ -101,8 +102,7 @@ class Camera extends Component {
         // }))
       }
     }
-
-    this.detectPose()
+    setTimeout(this.detectPose(), 100)
   }
 
   getVideo(element) {
