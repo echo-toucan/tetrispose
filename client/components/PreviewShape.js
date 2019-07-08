@@ -16,13 +16,10 @@ class PreviewShape extends Component {
     return (
       <div>
         <Container fixed="top" className="preview-image">
-          {/* <Grid.Row>
-            <h3>Upcoming shapes:</h3>
-          </Grid.Row> */}
           {shapes ? (
             <Grid.Row>
               <Segment textAlign="center">
-                <h3>Follow This Pattern</h3>
+                <h3>Upcoming Shapes</h3>
               </Segment>
               {shapes.map((shape, idx) => {
                 return (

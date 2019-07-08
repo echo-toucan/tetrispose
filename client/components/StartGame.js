@@ -1,5 +1,4 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import React from 'react'
 import Camera from './camera'
 import StartPreviewShape from './StartPreviewShape'
 import {Button, Grid} from 'semantic-ui-react'
