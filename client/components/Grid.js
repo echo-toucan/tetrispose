@@ -64,7 +64,7 @@ class Grid extends Component {
 
   //sets the tetris board speed
   drop() {
-    setInterval(this.updateBoard, 100)
+    setInterval(this.updateBoard, 500)
   }
 
   //it updates the board when an active shape moves down or lands
