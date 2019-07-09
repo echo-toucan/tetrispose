@@ -157,12 +157,28 @@ export const movementPose = pose => {
   }
 }
 
-const checkRotate = pose => {}
+const getHitboxes = rotations => {
+  const hitboxRanges = rotations.map((el, idx, arr) => {
+    const boxStart = (480 + idx * 440) / arr.length
+    return [boxStart, boxStart + 100]
+  })
+  return hitboxRanges
+}
 
-export const getPose = rawPose => {
-  const pose = getObj(rawPose)
+const leftHandIsOnHitbox = (pose, range) => {
+  const leftWristIsUp = pose.leftWrist.y < 150 && pose.leftWrist.score > 0.9
+  const leftWristIsInRange =
+    pose.leftWrist.x > range[0] && pose.leftWrist.x < range[1]
+  if (leftWristIsUp && leftWristIsInRange) return true
+  else return false
+}
 
-  return movementPose(pose)
+const rightHandIsOnHitbox = (pose, range) => {
+  const rightWristIsUp = pose.rightWrist.y < 150 && pose.rightWrist.score > 0.9
+  const rightWristIsInRange =
+    pose.rightWrist.x > range[0] && pose.rightWrist.x < range[1]
+  if (rightWristIsUp && rightWristIsInRange) return true
+  else return false
 }
 
 //This is the original function (with knee-raises to rotate)
@@ -177,16 +193,27 @@ export const getPose = rawPose => {
 // }
 
 // This function attempts to use a 'target' pose
-// export const checkRotation = rawPose => {
-//   const pose = getObj(rawPose)
-//   const shoulderBreadth = pose.leftShoulder.x - pose.rightShoulder.x
-//   const wristExtension = pose.rightShoulder.x - pose.rightWrist.x
-//   if (pose.rightWrist.y > 1.2 * pose.rightShoulder) return 0
-//   if (wristExtension < 0.5 * shoulderBreadth) return 0
-//   else if (wristExtension < 0.8 * shoulderBreadth) return 1
-//   else if (wristExtension < 1.1 * shoulderBreadth) return 2
-//   else return 3
-// }
+export const checkRotation = (rawPose, rotations) => {
+  const pose = getObj(rawPose)
+  const ranges = getHitboxes(rotations)
+  for (let i = 0; i < ranges.length; i++) {
+    if (
+      leftHandIsOnHitbox(pose, ranges[i]) ||
+      rightHandIsOnHitbox(pose, ranges[i])
+    ) {
+      console.log(rotations.length - 1 - i)
+      return rotations.length - 1 - i
+    }
+  }
+  return undefined
+  // const shoulderBreadth = pose.leftShoulder.x - pose.rightShoulder.x
+  // const wristExtension = pose.rightShoulder.x - pose.rightWrist.x
+  // if (pose.rightWrist.y > 1.2 * pose.rightShoulder) return 0
+  // if (wristExtension < 0.5 * shoulderBreadth) return 0
+  // else if (wristExtension < 0.8 * shoulderBreadth) return 1
+  // else if (wristExtension < 1.1 * shoulderBreadth) return 2
+  // else return 3
+}
 
 export const checkPosition = rawPose => {
   const pose = getObj(rawPose)
@@ -198,29 +225,3 @@ export const checkPosition = rawPose => {
   else if (nose >= screenWidth - buffer) return 0
   else return Math.ceil(9 - (nose - buffer) / columnWidth)
 }
-
-export const throttle = (callback, pose, limit) => {
-  let wait = false // Initially, we're not waiting
-  return function() {
-    // We return a throttled function
-    if (!wait) {
-      // If we're not waiting
-      callback.call(pose) // Execute users function
-      wait = true // Prevent future invocations
-      setTimeout(function() {
-        // After a period of time
-        wait = false // And allow future invocations
-      }, limit)
-    }
-  }
-}
-
-// Attempting to use throttle to space out rotations
-const checkRotation = rawPose => {
-  const pose = getObj(rawPose)
-  if (rightWristIsPerpendicular(pose)) {
-    return true
-  } else return false
-}
-
-const rotate = throttle(checkRotation)

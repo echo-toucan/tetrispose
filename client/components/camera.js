@@ -2,13 +2,7 @@ import React, {Component} from 'react'
 import * as posenet from '@tensorflow-models/posenet'
 import {connect} from 'react-redux'
 import {movedLeft, movedRight, rotated, changePhase, moved} from '../store/game'
-import {
-  getShape,
-  getPose,
-  checkRotation,
-  checkPosition,
-  throttle
-} from './utility'
+import {getShape, checkRotation, checkPosition} from './utility'
 import {shapeAchieved, setUserShape} from '../store/currentShape'
 import {
   Dimmer,
@@ -80,7 +74,6 @@ class Camera extends Component {
     if (this.props.phase === 1) {
       if (this.state.canvasIsPainted) {
         this.setState({canvasIsPainted: false})
-        console.log(this.state.canvasIsPainted)
       }
       this.clearCanvas()
       const currentShape = getShape(pose)
@@ -96,6 +89,11 @@ class Camera extends Component {
     }
 
     if (this.props.phase === 2) {
+      if (!this.state.canvasIsPainted) {
+        this.drawRotations(this.props.currentShape.rotations)
+        this.setState({canvasIsPainted: true})
+      }
+
       const column = checkPosition(pose)
       this.props.move(column)
 
@@ -106,10 +104,6 @@ class Camera extends Component {
       // const rotations = this.props.currentShape.rotations
       // console.log(this.state.canvasIsPainted)
 
-      if (!this.state.canvasIsPainted) {
-        this.drawRotations(this.props.currentShape.rotations)
-        this.setState({canvasIsPainted: true})
-      }
       //Attempting rotation using throttle
       // const rotate = throttle(checkRotation, pose, 250)
       // if (rotate) {
@@ -118,6 +112,11 @@ class Camera extends Component {
       //     this.props.currentShape.rotations,
       //     this.state.rotationsCounter
       //   )
+      const rotations = this.props.currentShape.rotations
+      const targetRotation = checkRotation(pose, rotations)
+      if (targetRotation !== undefined) {
+        this.props.rotate(rotations, targetRotation)
+      }
     }
 
     this.setState(prevState => ({
@@ -143,7 +142,7 @@ class Camera extends Component {
   drawRotations(rotations) {
     const canvas = this.canvas.getContext('2d')
     rotations.forEach((rotation, idx, arr) => {
-      const drawPos = 410 * (idx + 1) / arr.length
+      const drawPos = (480 + idx * 440) / arr.length
       const img = new Image()
       img.src = `./assets/rotations/${
         this.props.currentShape.name
