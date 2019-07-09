@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {startGame} from '../store'
+import {startGame, resetGame} from '../store'
 import {Button} from 'semantic-ui-react'
 
 class GamePanel extends Component {
@@ -15,6 +15,14 @@ class GamePanel extends Component {
         >
           Start Game
         </Button>
+        <Button
+          primary
+          size="huge"
+          onClick={() => this.props.resetGame()}
+          disabled={!this.props.gameStarted}
+        >
+          New Game
+        </Button>
       </div>
     )
   }
@@ -26,7 +34,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  startGame: () => dispatch(startGame())
+  startGame: () => dispatch(startGame()),
+  resetGame: () => dispatch(resetGame())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(GamePanel)

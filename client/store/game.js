@@ -129,7 +129,7 @@ export const gameBoard = (state = initialState, action) => {
       }
       return clearedGrid
     case RESET_GAME:
-      return initalState
+      return createBoard(boardHeight, boardWidth)
     default:
       return state
   }
@@ -140,7 +140,7 @@ export const gameState = (state = {started: false, loaded: false}, action) => {
     case START_GAME:
       return {...state, started: true}
     case RESET_GAME:
-      return true
+      return {...state, started: false}
     case GAME_LOADED:
       return {...state, loaded: true}
     case LOAD_GAME:
@@ -157,6 +157,8 @@ export const phase = (state = 1, action) => {
     case CHANGE_PHASE:
       if (state === 1) return 2
       else return 1
+    case RESET_GAME:
+      return 1
     default:
       return state
   }

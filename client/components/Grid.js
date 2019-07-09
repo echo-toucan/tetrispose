@@ -18,7 +18,8 @@ class Grid extends Component {
   constructor() {
     super()
     this.state = {
-      rotationCounter: null
+      rotationCounter: null,
+      isNewGame: true
     }
     this.updateBoard = this.updateBoard.bind(this)
     this.spawnShapes = this.spawnShapes.bind(this)
@@ -64,7 +65,12 @@ class Grid extends Component {
 
   //sets the tetris board speed
   drop() {
-    setInterval(this.updateBoard, 500)
+    console.log('1', this.state.isNewGame)
+    if (this.state.isNewGame) {
+      setInterval(this.updateBoard, 500)
+      this.setState({isNewGame: false})
+      console.log('2', this.state.isNewGame)
+    }
   }
 
   //it updates the board when an active shape moves down or lands
@@ -195,7 +201,8 @@ class Grid extends Component {
 const mapStateToProps = state => ({
   currentShape: state.currentShape,
   gameBoard: state.gameBoard,
-  previewShape: state.previewShape
+  previewShape: state.previewShape,
+  gameStarted: state.gameState.started
 })
 
 const mapDispatchToProps = dispatch => ({

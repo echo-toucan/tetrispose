@@ -5,6 +5,7 @@ import GridPlaceholder from './GridPlaceholder'
 
 const GameBoard = ({gameStarted}) => {
   return <div>{gameStarted ? <Grid /> : <GridPlaceholder />}</div>
+  // return <div>{<Grid />}</div>
 }
 
 const mapStateToProps = state => ({
