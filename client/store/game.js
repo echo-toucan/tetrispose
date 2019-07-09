@@ -83,10 +83,10 @@ export const moved = column => ({
   payload: column
 })
 
-export const rotated = (rotations, counter) => ({
+export const rotated = (rotations, target) => ({
   type: ROTATE,
   rotations,
-  counter
+  target
 })
 
 export const clearRows = rows => ({
@@ -128,7 +128,7 @@ export const gameBoard = (state = initialState, action) => {
     case MOVE:
       return move(state, action.payload)
     case ROTATE:
-      return rotate(state, action.rotations, action.counter)
+      return rotate(state, action.rotations, action.target)
     case CLEAR_ROWS:
       const rowsToRemove = action.payload
       const clearedGrid = state.filter(

@@ -116,9 +116,8 @@ const removeFallingShape = gameBoard => {
 }
 
 //rotations and counter must be passed in when action is dispatched!
-export const rotate = (grid, rotations, counter) => {
-  const rotatedShape = rotations[counter % rotations.length]
-
+export const rotate = (grid, rotations, target) => {
+  const rotatedShape = rotations[target]
   const [pivotRow, pivotCol] = adjustPivot(rotatedShape, grid)
 
   if (canRotate(grid, rotatedShape, pivotRow, pivotCol)) {
@@ -136,11 +135,9 @@ export const rotate = (grid, rotations, counter) => {
     const rowsAbove = oldGrid.slice(0, pivotRow)
     const rowsBelow = oldGrid.slice(pivotRow + newRows.length)
 
-    //increment number of rotations...
-    //Where to track? On state of component that dispatches the action?
     const newGrid = [...rowsAbove, ...newRows, ...rowsBelow]
     return newGrid
-  }
+  } else return grid
 }
 
 export const move = (gameBoard, column) => {

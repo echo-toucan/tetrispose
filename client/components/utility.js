@@ -32,6 +32,20 @@ const rightKneeIsUp = pose => {
   } else return false
 }
 
+const rightWristIsPerpendicular = pose => {
+  // console.log('right Elbow', pose.rightElbow.y, pose.rightElbow.score)
+  // console.log('right Shoulder', pose.rightShoulder.y, pose.rightShoulder.score)
+  // console.log('right Wrist', pose.rightWrist.y, pose.rightWrist.score)
+  if (
+    (pose.rightElbow.y / pose.rightShoulder.y > 0.95 ||
+      pose.rightElbow.y / pose.rightShoulder.y < 1.05) &&
+    pose.rightWrist.y < pose.rightElbow.y
+  ) {
+    console.log('right wrist was perpendicular')
+    return true
+  } else return false
+}
+
 const leftArmIsOut = pose => {
   if (
     Math.abs(pose.leftWrist.y - pose.leftShoulder.y) <
@@ -143,19 +157,61 @@ export const movementPose = pose => {
   }
 }
 
-export const getPose = rawPose => {
-  const pose = getObj(rawPose)
-
-  return movementPose(pose)
+const getHitboxes = rotations => {
+  const hitboxRanges = rotations.map((el, idx, arr) => {
+    const boxStart = (480 + idx * 440) / arr.length
+    return [boxStart, boxStart + 100]
+  })
+  return hitboxRanges
 }
 
-export const checkRotation = (rawPose, prevKnee) => {
+const leftHandIsOnHitbox = (pose, range) => {
+  const leftWristIsUp = pose.leftWrist.y < 150 && pose.leftWrist.score > 0.9
+  const leftWristIsInRange =
+    pose.leftWrist.x > range[0] && pose.leftWrist.x < range[1]
+  if (leftWristIsUp && leftWristIsInRange) return true
+  else return false
+}
+
+const rightHandIsOnHitbox = (pose, range) => {
+  const rightWristIsUp = pose.rightWrist.y < 150 && pose.rightWrist.score > 0.9
+  const rightWristIsInRange =
+    pose.rightWrist.x > range[0] && pose.rightWrist.x < range[1]
+  if (rightWristIsUp && rightWristIsInRange) return true
+  else return false
+}
+
+//This is the original function (with knee-raises to rotate)
+
+// export const checkRotation = (rawPose, prevKnee) => {
+//   const pose = getObj(rawPose)
+//   if (rightWristIsPerpendicular(pose)) {
+//     return {rotate: true, knee: 'right'}
+//   } else if (prevKnee !== 'left' && leftKneeIsUp(pose)) {
+//     return {rotate: true, knee: 'left'}
+//   } else return {rotate: false}
+// }
+
+// This function attempts to use a 'target' pose
+export const checkRotation = (rawPose, rotations) => {
   const pose = getObj(rawPose)
-  if (prevKnee !== 'right' && rightKneeIsUp(pose)) {
-    return {rotate: true, knee: 'right'}
-  } else if (prevKnee !== 'left' && leftKneeIsUp(pose)) {
-    return {rotate: true, knee: 'left'}
-  } else return {rotate: false}
+  const ranges = getHitboxes(rotations)
+  for (let i = 0; i < ranges.length; i++) {
+    if (
+      leftHandIsOnHitbox(pose, ranges[i]) ||
+      rightHandIsOnHitbox(pose, ranges[i])
+    ) {
+      return rotations.length - 1 - i
+    }
+  }
+  return undefined
+  // const shoulderBreadth = pose.leftShoulder.x - pose.rightShoulder.x
+  // const wristExtension = pose.rightShoulder.x - pose.rightWrist.x
+  // if (pose.rightWrist.y > 1.2 * pose.rightShoulder) return 0
+  // if (wristExtension < 0.5 * shoulderBreadth) return 0
+  // else if (wristExtension < 0.8 * shoulderBreadth) return 1
+  // else if (wristExtension < 1.1 * shoulderBreadth) return 2
+  // else return 3
 }
 
 export const checkPosition = rawPose => {

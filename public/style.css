@@ -112,6 +112,12 @@ video {
   align-items: center;
 }
 
+.canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
 .camera-loader {
   width: 640px;
   height: 480px;

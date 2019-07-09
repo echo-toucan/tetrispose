@@ -1,6 +1,15 @@
 import React, {Component} from 'react'
 import * as posenet from '@tensorflow-models/posenet'
 import {connect} from 'react-redux'
+import {movedLeft, movedRight, rotated, changePhase, moved} from '../store/game'
+import {getShape, checkRotation, checkPosition} from './utility'
+import {shapeAchieved, setUserShape} from '../store/currentShape'
+import {
+  Dimmer,
+  Loader,
+  Image as SemanticImage,
+  Segment
+} from 'semantic-ui-react'
 import {
   rotated,
   changePhase,
@@ -17,11 +26,12 @@ class Camera extends Component {
   constructor() {
     super()
     this.state = {
-      prevKnee: '',
+      canvasIsPainted: false,
       cameraIsLoading: true,
       rotationsCounter: 0
     }
     this.getVideo = this.getVideo.bind(this)
+    this.getCanvas = this.getCanvas.bind(this)
   }
 
   async componentDidMount() {
@@ -58,6 +68,7 @@ class Camera extends Component {
           height: 480
         }
       })
+
       this.setState({cameraIsLoading: false})
       this.video.srcObject = stream
     } catch (err) {
@@ -74,6 +85,10 @@ class Camera extends Component {
     })
 
     if (this.props.phase === 1) {
+      if (this.state.canvasIsPainted) {
+        this.setState({canvasIsPainted: false})
+      }
+      this.clearCanvas()
       const currentShape = getShape(pose)
 
       this.props.setUserShape(currentShape)
@@ -87,28 +102,55 @@ class Camera extends Component {
     }
 
     if (this.props.phase === 2) {
+      if (!this.state.canvasIsPainted) {
+        this.drawRotations(this.props.currentShape.rotations)
+        this.setState({canvasIsPainted: true})
+      }
+
       const column = checkPosition(pose)
       this.props.move(column)
 
-      const rotation = checkRotation(pose, this.state.prevKnee)
-      if (rotation.rotate) {
-        this.props.rotate(
-          this.props.currentShape.rotations,
-          this.state.rotationsCounter
-        )
-        // this.setState(prevState => ({
-        //   rotationsCounter: prevState.rotationsCounter + 1,
-        //   prevKnee: rotation.knee
-        // }))
+      const rotations = this.props.currentShape.rotations
+      const targetRotation = checkRotation(pose, rotations)
+      if (targetRotation !== undefined) {
+        this.props.rotate(rotations, targetRotation)
       }
     }
+
+    this.setState(prevState => ({
+      rotationsCounter: prevState.rotationsCounter + 1
+    }))
+
     setTimeout(() => {
       this.detectPose()
     }, 100)
   }
 
+  drawRotations(rotations) {
+    const canvas = this.canvas.getContext('2d')
+    rotations.forEach((rotation, idx, arr) => {
+      const drawPos = (480 + idx * 440) / arr.length
+      const img = new Image()
+      img.src = `./assets/rotations/${
+        this.props.currentShape.name
+      }rot${idx}.png`
+      img.onload = () => {
+        canvas.drawImage(img, drawPos, 20, img.width / 4, img.height / 4)
+      }
+    })
+  }
+
+  clearCanvas() {
+    const canvas = this.canvas.getContext('2d')
+    canvas.clearRect(0, 0, 640, 480)
+  }
+
   getVideo(element) {
     this.video = element
+  }
+
+  getCanvas(element) {
+    this.canvas = element
   }
 
   render() {
@@ -119,15 +161,23 @@ class Camera extends Component {
             <Dimmer active>
               <Loader indeterminate>Camera Loading</Loader>
             </Dimmer>
-            <Image src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
+            <SemanticImage src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
           </Segment>
         ) : (
           <div className="camera-position">
             <video
+              playsInline
+              id="webcam"
               width="640"
               height="480"
               autoPlay={true}
               ref={this.getVideo}
+            />
+            <canvas
+              className="canvas"
+              width="640"
+              height="480"
+              ref={this.getCanvas}
             />
           </div>
         )}
