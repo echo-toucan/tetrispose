@@ -102,7 +102,9 @@ class Camera extends Component {
         // }))
       }
     }
-    setTimeout(this.detectPose(), 100)
+    setTimeout(() => {
+      this.detectPose()
+    }, 100)
   }
 
   getVideo(element) {
