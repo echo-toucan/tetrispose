@@ -12,8 +12,7 @@ import {
   phase,
   gridTimer,
   gameScore,
-  updateRowCount,
-  phase
+  updateRowCount
 } from './game'
 
 import {currentShape, userShape} from './currentShape'
