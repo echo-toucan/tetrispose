@@ -1,15 +1,6 @@
 import React, {Component} from 'react'
 import * as posenet from '@tensorflow-models/posenet'
 import {connect} from 'react-redux'
-import {movedLeft, movedRight, rotated, changePhase, moved} from '../store/game'
-import {getShape, checkRotation, checkPosition} from './utility'
-import {shapeAchieved, setUserShape} from '../store/currentShape'
-import {
-  Dimmer,
-  Loader,
-  Image as SemanticImage,
-  Segment
-} from 'semantic-ui-react'
 import {
   rotated,
   changePhase,
@@ -20,7 +11,12 @@ import {
   loadGame
 } from '../store'
 import {getShape, checkRotation, checkPosition} from './utility'
-import {Dimmer, Loader, Image, Segment} from 'semantic-ui-react'
+import {
+  Dimmer,
+  Loader,
+  Image as SemanticImage,
+  Segment
+} from 'semantic-ui-react'
 
 class Camera extends Component {
   constructor() {

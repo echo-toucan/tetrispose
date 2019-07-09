@@ -184,6 +184,8 @@ export const phase = (state = 1, action) => {
     case CHANGE_PHASE:
       if (state === 1) return 2
       else return 1
+    case RESET_GAME:
+      return 0
     default:
       return state
   }

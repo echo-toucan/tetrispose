@@ -181,18 +181,6 @@ const rightHandIsOnHitbox = (pose, range) => {
   else return false
 }
 
-//This is the original function (with knee-raises to rotate)
-
-// export const checkRotation = (rawPose, prevKnee) => {
-//   const pose = getObj(rawPose)
-//   if (rightWristIsPerpendicular(pose)) {
-//     return {rotate: true, knee: 'right'}
-//   } else if (prevKnee !== 'left' && leftKneeIsUp(pose)) {
-//     return {rotate: true, knee: 'left'}
-//   } else return {rotate: false}
-// }
-
-// This function attempts to use a 'target' pose
 export const checkRotation = (rawPose, rotations) => {
   const pose = getObj(rawPose)
   const ranges = getHitboxes(rotations)
@@ -205,13 +193,6 @@ export const checkRotation = (rawPose, rotations) => {
     }
   }
   return undefined
-  // const shoulderBreadth = pose.leftShoulder.x - pose.rightShoulder.x
-  // const wristExtension = pose.rightShoulder.x - pose.rightWrist.x
-  // if (pose.rightWrist.y > 1.2 * pose.rightShoulder) return 0
-  // if (wristExtension < 0.5 * shoulderBreadth) return 0
-  // else if (wristExtension < 0.8 * shoulderBreadth) return 1
-  // else if (wristExtension < 1.1 * shoulderBreadth) return 2
-  // else return 3
 }
 
 export const checkPosition = rawPose => {
