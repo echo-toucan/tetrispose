@@ -1,10 +1,10 @@
 import React from 'react'
-import {Button, Grid, Card, Image, Popup, Rating, Icon} from 'semantic-ui-react'
+import {Button, Grid, Card, Image, Popup, Rating} from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
 
 const StartGame = () => {
   return (
-    <Grid rows={3} padded>
+    <Grid rows={2} padded>
       <Grid.Row divided>
         <Button animated="fade" primary size="huge" as={Link} to="/gamehome">
           <Button.Content visible>Start Game</Button.Content>
@@ -48,11 +48,6 @@ const StartGame = () => {
             </Card.Content>
           </Card>
         </Card.Group>
-      </Grid.Row>
-
-      <Grid.Row>
-        <Icon name="github" size="big" />
-        <Icon name="linkedin" size="big" />
       </Grid.Row>
     </Grid>
   )
