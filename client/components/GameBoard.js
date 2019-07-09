@@ -3,15 +3,16 @@ import {connect} from 'react-redux'
 import Grid from './Grid'
 import GridPlaceholder from './GridPlaceholder'
 
-const GameBoard = ({gameStarted}) => {
-  return <div>{gameStarted ? <Grid /> : <GridPlaceholder />}</div>
+const GameBoard = ({gameStarted, gamePaused}) => {
+  return (
+    <div>{gameStarted && !gamePaused ? <Grid /> : <GridPlaceholder />}</div>
+  )
   // return <div>{<Grid />}</div>
 }
 
 const mapStateToProps = state => ({
-  currentShape: state.currentShape,
   gameStarted: state.gameState.started,
-  currentRound: state.currentRound
+  gamePaused: state.gameState.paused
 })
 
 export default connect(mapStateToProps)(GameBoard)

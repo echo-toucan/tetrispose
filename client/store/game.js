@@ -31,6 +31,7 @@ const SWITCH_GAME_ON = 'SWITCH_GAME_ON'
 const START_GAME = 'START_GAME'
 const GAME_OVER = 'GAME_OVER'
 const SET_GRID_TIMER = 'SET_GRID_TIMER'
+const PAUSE_GAME = 'PAUSE_GAME'
 
 //ACTION CREATORS
 export const newShape = () => ({
@@ -110,6 +111,10 @@ export const setGridTimer = id => ({
   payload: id
 })
 
+export const pauseGame = () => ({
+  type: PAUSE_GAME
+})
+
 const initialState = createBoard(boardHeight, boardWidth)
 
 export const gameBoard = (state = initialState, action) => {
@@ -142,7 +147,10 @@ export const gameBoard = (state = initialState, action) => {
   }
 }
 
-export const gameState = (state = {started: false, loaded: false, paused: false}, action) => {
+export const gameState = (
+  state = {started: false, loaded: false, paused: false},
+  action
+) => {
   switch (action.type) {
     case START_GAME:
       return {...state, started: true}
@@ -154,12 +162,14 @@ export const gameState = (state = {started: false, loaded: false, paused: false}
       return {...state, loaded: false}
     case GAME_OVER:
       return {...state, started: false}
+    case PAUSE_GAME:
+      return {...state, paused: !state.paused}
     default:
       return state
   }
 }
 
-export const timer = (state = null, action) => {
+export const gridTimer = (state = null, action) => {
   switch (action.type) {
     case SET_GRID_TIMER:
       return action.payload

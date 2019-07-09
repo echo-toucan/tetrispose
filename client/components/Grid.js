@@ -207,7 +207,7 @@ const mapStateToProps = state => ({
   gameBoard: state.gameBoard,
   previewShape: state.previewShape,
   gameStarted: state.gameState.started,
-  timer: state.timer
+  timer: state.gridTimer
 })
 
 const mapDispatchToProps = dispatch => ({

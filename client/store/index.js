@@ -12,7 +12,7 @@ import {
   // gameOver,
   // score,
   phase,
-  timer
+  gridTimer
 } from './game'
 
 import {currentShape, userShape} from './currentShape'
@@ -31,7 +31,7 @@ const reducer = combineReducers({
   previewShape,
   userShape,
   phase,
-  timer
+  gridTimer
 })
 const middleware = composeWithDevTools(
   applyMiddleware(
