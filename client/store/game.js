@@ -120,7 +120,6 @@ const initialState = createBoard(boardHeight, boardWidth)
 export const gameBoard = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_BOARD:
-      console.log('update board')
       return action.payload
     case MOVE_LEFT:
       return moveLeft(state)

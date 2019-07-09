@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 
 import ReactCountdownClock from 'react-countdown-clock'
+import {updateScore} from '../store'
 
 class Countdown extends Component {
   constructor(props) {
@@ -20,7 +21,11 @@ class Countdown extends Component {
         size={150}
         showMilliseconds={true}
         onComplete={() => {
-          console.log("time's up")
+          if (this.props.currentShape.achieved) {
+            this.props.updateScore(10)
+            // } else {
+            //   this.props.updateScore(-5)
+          }
         }}
       />
     )
@@ -31,4 +36,8 @@ const mapStateToProps = state => ({
   currentShape: state.currentShape
 })
 
-export default connect(mapStateToProps)(Countdown)
+const mapDispatchToProps = dispatch => ({
+  updateScore: score => dispatch(updateScore(score))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Countdown)
