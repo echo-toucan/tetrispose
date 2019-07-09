@@ -9,7 +9,8 @@ import {
   changePhase,
   clearRows,
   updateCurrent,
-  gotPenalty
+  gotPenalty,
+  gameOver
 } from '../store'
 import {penalty, colors} from '../AllShapes'
 
@@ -58,12 +59,12 @@ class Grid extends Component {
   }
 
   gameEnd() {
-    console.log('You lose!')
+    this.props.gameOver()
   }
 
   //sets the tetris board speed
   drop() {
-    setInterval(this.updateBoard, 500)
+    setInterval(this.updateBoard, 100)
   }
 
   //it updates the board when an active shape moves down or lands
@@ -206,7 +207,8 @@ const mapDispatchToProps = dispatch => ({
   moveRight: () => dispatch(movedRight()),
   rotate: (rotations, counter) => dispatch(rotated(rotations, counter)),
   changePhase: () => dispatch(changePhase()),
-  clearRows: rows => dispatch(clearRows(rows))
+  clearRows: rows => dispatch(clearRows(rows)),
+  gameOver: () => dispatch(gameOver())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid)

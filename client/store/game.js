@@ -18,9 +18,6 @@ const SPAWN_SHAPE = 'SPAWN_SHAPE'
 const UPDATE_BOARD = 'UPDATE_BOARD'
 const UPDATE_SHAPE = 'UPDATE_SHAPE'
 const UPDATE_SCORE = 'UPDATE_SCORE'
-const SWITCH_GAME_ON = 'SWITCH_GAME_ON'
-const START_GAME = 'START_GAME'
-const SWITCH_GAME_OVER = 'SWITCH_GAME_OVER'
 const RESET_GAME = 'RESET_GAME'
 const MOVE_LEFT = 'MOVE_LEFT'
 const MOVE_RIGHT = 'MOVE_RIGHT'
@@ -30,6 +27,9 @@ const CLEAR_ROWS = 'CLEAR_ROWS'
 const CHANGE_PHASE = 'CHANGE_PHASE'
 const GAME_LOADED = 'GAME_LOADED'
 const LOAD_GAME = 'LOAD_GAME'
+const SWITCH_GAME_ON = 'SWITCH_GAME_ON'
+const START_GAME = 'START_GAME'
+const GAME_OVER = 'GAME_OVER'
 
 //ACTION CREATORS
 export const newShape = () => ({
@@ -60,9 +60,8 @@ export const startGame = () => ({
   type: START_GAME
 })
 
-export const changeGameOver = gameOver => ({
-  type: SWITCH_GAME_OVER,
-  payload: gameOver
+export const gameOver = () => ({
+  type: GAME_OVER
 })
 
 export const resetGame = () => ({
@@ -139,7 +138,6 @@ export const gameBoard = (state = initialState, action) => {
 export const gameState = (state = {started: false, loaded: false}, action) => {
   switch (action.type) {
     case START_GAME:
-      console.log('game started')
       return {...state, started: true}
     case RESET_GAME:
       return true
@@ -147,6 +145,8 @@ export const gameState = (state = {started: false, loaded: false}, action) => {
       return {...state, loaded: true}
     case LOAD_GAME:
       return {...state, loaded: false}
+    case GAME_OVER:
+      return {...state, started: false}
     default:
       return state
   }
