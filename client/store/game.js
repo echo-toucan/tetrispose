@@ -201,13 +201,26 @@ export const phase = (state = 1, action) => {
 //   }
 // }
 
-// export const score = (state = 0, action) => {
-//   switch (action.type) {
-//     case UPDATE_SCORE:
-//       return action.payload
-//     case RESET_GAME:
-//       return 0
-//     default:
-//       return state
-//   }
-// }
+export const gameScore = (state = 0, action) => {
+  switch (action.type) {
+    case UPDATE_SCORE:
+      return action.payload + state
+    case RESET_GAME:
+      return 0
+    default:
+      return state
+  }
+}
+
+const ROW_COUNT = 'ROW_COUNT'
+
+export const updateRow = row => ({type: ROW_COUNT, payload: row})
+
+export const updateRowCount = (state = 0, action) => {
+  switch (action.type) {
+    case ROW_COUNT:
+      return action.payload + state
+    default:
+      return state
+  }
+}

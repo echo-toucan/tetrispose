@@ -8,7 +8,8 @@ import {
   CurrentShape,
   UserShape,
   SuccessMessage,
-  GamePanel
+  GamePanel,
+  Score
 } from './components'
 
 class GameHome extends Component {
@@ -48,8 +49,13 @@ class GameHome extends Component {
         </Grid.Column>
 
         <Grid.Column width={2} divided="true">
-          <GamePanel />
-          <PreviewShape />
+          <Grid.Row width={4}>
+            <Score />
+          </Grid.Row>
+          <Grid.Row width={12}>
+            <GamePanel />
+            <PreviewShape />
+          </Grid.Row>
         </Grid.Column>
 
         <Grid.Column width={6}>

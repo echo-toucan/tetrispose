@@ -11,9 +11,12 @@ import {
   updateCurrent,
   gotPenalty,
   gameOver,
-  setGridTimer
+  setGridTimer,
+  updateScore,
+  updateRow
 } from '../store'
 import {penalty, colors} from '../AllShapes'
+import Score from './Score'
 
 class Grid extends Component {
   constructor() {
@@ -156,6 +159,7 @@ class Grid extends Component {
   deleteRows() {
     const gameBoard = this.props.gameBoard
     let rowsToRemove = []
+
     for (let row = 0; row < gameBoard.length; row++) {
       let rowComplete = true
       for (let col = 0; col < gameBoard[row].length; col++) {
@@ -163,11 +167,17 @@ class Grid extends Component {
       }
       if (rowComplete) rowsToRemove.push(row)
     }
+    let currentScore = rowsToRemove.length * 100
+
+    this.props.updateScore(currentScore)
+    let rows = rowsToRemove.length
+    this.props.updateRow(rows)
     this.props.clearRows(rowsToRemove)
   }
 
   render() {
     const {gameBoard} = this.props
+    const {score} = this.state
     return (
       <div>
         {/* <button type="button" onClick={() => this.drop()}>
@@ -208,6 +218,7 @@ const mapStateToProps = state => ({
   previewShape: state.previewShape,
   gameStarted: state.gameState.started,
   timer: state.gridTimer
+
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -221,7 +232,9 @@ const mapDispatchToProps = dispatch => ({
   changePhase: () => dispatch(changePhase()),
   clearRows: rows => dispatch(clearRows(rows)),
   gameOver: () => dispatch(gameOver()),
-  setGridTimer: id => dispatch(setGridTimer(id))
+  setGridTimer: id => dispatch(setGridTimer(id)),
+  updateScore: score => dispatch(updateScore(score)),
+  updateRow: rows => dispatch(updateRow(rows))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid)
