@@ -9,7 +9,8 @@ import {
   updateBoard,
   updateScore,
   gameState,
-  // gameOver,
+  phase,
+  gridTimer,
   gameScore,
   updateRowCount,
   phase
@@ -25,12 +26,12 @@ const reducer = combineReducers({
   updateBoard,
   updateScore,
   gameState,
-  // gameOver,
   gameScore,
   currentShape,
   previewShape,
   userShape,
   phase,
+  gridTimer,
   updateRowCount
 })
 const middleware = composeWithDevTools(

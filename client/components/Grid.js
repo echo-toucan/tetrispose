@@ -10,6 +10,8 @@ import {
   clearRows,
   updateCurrent,
   gotPenalty,
+  gameOver,
+  setGridTimer,
   updateScore,
   updateRow
 } from '../store'
@@ -20,8 +22,7 @@ class Grid extends Component {
   constructor() {
     super()
     this.state = {
-      rotationCounter: null,
-      score: 0
+      rotationCounter: null
     }
     this.updateBoard = this.updateBoard.bind(this)
     this.spawnShapes = this.spawnShapes.bind(this)
@@ -29,11 +30,20 @@ class Grid extends Component {
   }
 
   componentDidMount() {
-    this.drop()
+    if (this.props.timer) {
+      clearTimeout(this.props.timer)
+    }
     setTimeout(() => {
       this.spawnShapes(this.props.currentShape)
       this.props.changePhase()
     }, 3000)
+    this.drop()
+  }
+
+  componentWillUnmount() {
+    if (this.props.timer) {
+      clearTimeout(this.props.timer)
+    }
   }
 
   spawnShapes() {
@@ -62,12 +72,12 @@ class Grid extends Component {
   }
 
   gameEnd() {
-    console.log('You lose!')
+    this.props.gameOver()
   }
 
   //sets the tetris board speed
   drop() {
-    setInterval(this.updateBoard, 500)
+    this.props.setGridTimer(setInterval(this.updateBoard, 500))
   }
 
   //it updates the board when an active shape moves down or lands
@@ -206,7 +216,9 @@ const mapStateToProps = state => ({
   currentShape: state.currentShape,
   gameBoard: state.gameBoard,
   previewShape: state.previewShape,
-  score: state.score
+  gameStarted: state.gameState.started,
+  timer: state.gridTimer
+
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -219,6 +231,8 @@ const mapDispatchToProps = dispatch => ({
   rotate: (rotations, counter) => dispatch(rotated(rotations, counter)),
   changePhase: () => dispatch(changePhase()),
   clearRows: rows => dispatch(clearRows(rows)),
+  gameOver: () => dispatch(gameOver()),
+  setGridTimer: id => dispatch(setGridTimer(id)),
   updateScore: score => dispatch(updateScore(score)),
   updateRow: rows => dispatch(updateRow(rows))
 })

@@ -8,6 +8,7 @@ const GOT_PENALTY = 'GOT_PENALTY'
 const SET_FIRST_SHAPE = 'SET_FIRST_SHAPE'
 const SET_USER_SHAPE = 'SET_USER_SHAPE'
 const GET_USER_SHAPE = 'GET_USER_SHAPE'
+const RESET_GAME = 'RESET_GAME'
 
 //ACTION CREATORS
 
@@ -54,6 +55,8 @@ export const currentShape = (state = initialState, action) => {
       return {shape: penalty, achieved: false}
     case UPDATE_CURRENT:
       return {shape: action.payload, achieved: false}
+    case RESET_GAME:
+      return {shape: getRandom(), achieved: false}
     default:
       return state
   }

@@ -18,9 +18,6 @@ const SPAWN_SHAPE = 'SPAWN_SHAPE'
 const UPDATE_BOARD = 'UPDATE_BOARD'
 const UPDATE_SHAPE = 'UPDATE_SHAPE'
 const UPDATE_SCORE = 'UPDATE_SCORE'
-const SWITCH_GAME_ON = 'SWITCH_GAME_ON'
-const START_GAME = 'START_GAME'
-const SWITCH_GAME_OVER = 'SWITCH_GAME_OVER'
 const RESET_GAME = 'RESET_GAME'
 const MOVE_LEFT = 'MOVE_LEFT'
 const MOVE_RIGHT = 'MOVE_RIGHT'
@@ -30,6 +27,11 @@ const CLEAR_ROWS = 'CLEAR_ROWS'
 const CHANGE_PHASE = 'CHANGE_PHASE'
 const GAME_LOADED = 'GAME_LOADED'
 const LOAD_GAME = 'LOAD_GAME'
+const SWITCH_GAME_ON = 'SWITCH_GAME_ON'
+const START_GAME = 'START_GAME'
+const GAME_OVER = 'GAME_OVER'
+const SET_GRID_TIMER = 'SET_GRID_TIMER'
+const PAUSE_GAME = 'PAUSE_GAME'
 
 //ACTION CREATORS
 export const newShape = () => ({
@@ -60,9 +62,8 @@ export const startGame = () => ({
   type: START_GAME
 })
 
-export const changeGameOver = gameOver => ({
-  type: SWITCH_GAME_OVER,
-  payload: gameOver
+export const gameOver = () => ({
+  type: GAME_OVER
 })
 
 export const resetGame = () => ({
@@ -105,11 +106,21 @@ export const loadGame = () => ({
   type: LOAD_GAME
 })
 
+export const setGridTimer = id => ({
+  type: SET_GRID_TIMER,
+  payload: id
+})
+
+export const pauseGame = () => ({
+  type: PAUSE_GAME
+})
+
 const initialState = createBoard(boardHeight, boardWidth)
 
 export const gameBoard = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_BOARD:
+      console.log('update board')
       return action.payload
     case MOVE_LEFT:
       return moveLeft(state)
@@ -130,23 +141,38 @@ export const gameBoard = (state = initialState, action) => {
       }
       return clearedGrid
     case RESET_GAME:
-      return initalState
+      return createBoard(boardHeight, boardWidth)
     default:
       return state
   }
 }
 
-export const gameState = (state = {started: false, loaded: false}, action) => {
+export const gameState = (
+  state = {started: false, loaded: false, paused: false},
+  action
+) => {
   switch (action.type) {
     case START_GAME:
-      console.log('game started')
       return {...state, started: true}
     case RESET_GAME:
-      return true
+      return {...state, started: false}
     case GAME_LOADED:
       return {...state, loaded: true}
     case LOAD_GAME:
       return {...state, loaded: false}
+    case GAME_OVER:
+      return {...state, started: false}
+    case PAUSE_GAME:
+      return {...state, paused: !state.paused}
+    default:
+      return state
+  }
+}
+
+export const gridTimer = (state = null, action) => {
+  switch (action.type) {
+    case SET_GRID_TIMER:
+      return action.payload
     default:
       return state
   }
@@ -154,6 +180,8 @@ export const gameState = (state = {started: false, loaded: false}, action) => {
 
 export const phase = (state = 1, action) => {
   switch (action.type) {
+    case START_GAME:
+      return 1
     case CHANGE_PHASE:
       if (state === 1) return 2
       else return 1
