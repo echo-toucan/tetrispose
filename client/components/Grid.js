@@ -13,10 +13,9 @@ import {
   gameOver,
   setGridTimer,
   updateScore,
-  updateRow
+  updateRowCount
 } from '../store'
 import {penalty, colors} from '../AllShapes'
-import Score from './Score'
 
 class Grid extends Component {
   constructor() {
@@ -218,7 +217,6 @@ const mapStateToProps = state => ({
   previewShape: state.previewShape,
   gameStarted: state.gameState.started,
   timer: state.gridTimer
-
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -234,7 +232,7 @@ const mapDispatchToProps = dispatch => ({
   gameOver: () => dispatch(gameOver()),
   setGridTimer: id => dispatch(setGridTimer(id)),
   updateScore: score => dispatch(updateScore(score)),
-  updateRow: rows => dispatch(updateRow(rows))
+  updateRow: rows => dispatch(updateRowCount(rows))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid)
