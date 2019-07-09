@@ -85,12 +85,9 @@ const adjustPivot = (shape, grid) => {
   const [pivotRow, pivotCol] = findPivot(grid)
   let [newPivotRow, newPivotCol] = [pivotRow, pivotCol]
   let offset = 0
-  //Is it necessary to loop through all rows of the rotated shape, or just the first one???
-  //Also, what about empty squares in a shape?? Can they be ignored or must they be counted?
   for (let row = 0; row < shape.length; row++) {
     let rowOffset = 0
     for (let col = 0; col < shape[row].length; col++) {
-      console.log('pivotRow', pivotRow, 'row', row)
       if (
         pivotCol + col >= grid[pivotRow].length ||
         grid[pivotRow + row][pivotCol + col] >= 10
