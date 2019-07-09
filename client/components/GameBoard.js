@@ -1,15 +1,18 @@
-// import {Menu, Container} from 'semantic-ui-react'
-import React, {Component} from 'react'
+import React from 'react'
+import {connect} from 'react-redux'
 import Grid from './Grid'
+import GridPlaceholder from './GridPlaceholder'
 
-class GameBoard extends Component {
-  render() {
-    return (
-      <div>
-        <Grid />
-      </div>
-    )
-  }
+const GameBoard = ({gameStarted, gamePaused}) => {
+  return (
+    <div>{gameStarted && !gamePaused ? <Grid /> : <GridPlaceholder />}</div>
+  )
+  // return <div>{<Grid />}</div>
 }
 
-export default GameBoard
+const mapStateToProps = state => ({
+  gameStarted: state.gameState.started,
+  gamePaused: state.gameState.paused
+})
+
+export default connect(mapStateToProps)(GameBoard)

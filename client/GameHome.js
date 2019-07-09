@@ -7,7 +7,9 @@ import {
   GameBoard,
   CurrentShape,
   UserShape,
-  SuccessMessage
+  SuccessMessage,
+  GamePanel,
+  Score
 } from './components'
 
 class GameHome extends Component {
@@ -16,12 +18,6 @@ class GameHome extends Component {
     const isX = this.props.currentShape.shape.name === 'X'
     return (
       <Grid padded columns={3}>
-        <Grid.Column width={2} divided="true">
-          {/* <Segment color="blue" inverted height="100px"> */}
-          <PreviewShape />
-          {/* </Segment> */}
-        </Grid.Column>
-
         <Grid.Column width={8}>
           <Grid.Row>
             <Segment>
@@ -37,10 +33,6 @@ class GameHome extends Component {
             ) : (
               <Grid padded columns={2}>
                 <Grid.Column width={8}>
-                  <Message warning attached="top">
-                    <Icon name="warning" />
-                    DO THIS POSE IN 3 SECOND!
-                  </Message>
                   <Segment color="yellow" inverted secondary raised>
                     <CurrentShape />
                   </Segment>
@@ -53,6 +45,16 @@ class GameHome extends Component {
                 </Grid.Column>
               </Grid>
             )}
+          </Grid.Row>
+        </Grid.Column>
+
+        <Grid.Column width={2} divided="true">
+          <Grid.Row width={4}>
+            <Score />
+          </Grid.Row>
+          <Grid.Row width={12}>
+            <GamePanel />
+            <PreviewShape />
           </Grid.Row>
         </Grid.Column>
 

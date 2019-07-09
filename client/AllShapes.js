@@ -77,25 +77,15 @@ export const getRandom = () =>
 // }
 
 export const penalty = {
-  name: 'L',
-  shape: [[0, 6, 0], [0, 6, 0], [0, 6, 6]],
-  rotations: [
-    [[6, 6, 6], [6, 0, 0]],
-    [[6, 6], [0, 6], [0, 6]],
-    [[0, 0, 6], [6, 6, 6]],
-    [[0, 6, 0], [0, 6, 0], [0, 6, 6]]
-  ],
-  topLeft: {row: 0, col: 3},
-  color: 'orange'
-}
 
-// export const penalty = {
-//   name: 'I',
-//   shape: [[2, 2, 2, 2]],
-//   rotations: [[[2], [2], [2], [2]], [[2, 2, 2, 2]]],
-//   topLeft: {row: 0, col: 4},
-//   color: 'cyan'
-// }
+  name: 'X',
+  // shape: [[8, 0, 8], [0, 8, 0], [8, 0, 8]],
+  shape: [[2, 2, 2, 2, 2]],
+//   rotations: [[[8, 0, 8], [0, 8, 0], [8, 0, 8]]],
+  rotations: [[[2, 2, 2, 2, 2]]]
+  topLeft: {row: 0, col: 4},
+  color: 'white'
+}
 
 export const colors = [
   'black',

@@ -1,16 +1,21 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {
+  updateShapes,
   updateBoard,
   movedLeft,
   movedRight,
   rotated,
-  changePhase
-} from '../store/game'
-import {updateShapes} from '../store'
-import {updateCurrent, gotPenalty} from '../store/currentShape'
+  changePhase,
+  clearRows,
+  updateCurrent,
+  gotPenalty,
+  gameOver,
+  setGridTimer,
+  updateScore,
+  updateRowCount
+} from '../store'
 import {penalty, colors} from '../AllShapes'
-import {movementPose, getPose} from './utility'
 
 class Grid extends Component {
   constructor() {
@@ -22,12 +27,22 @@ class Grid extends Component {
     this.spawnShapes = this.spawnShapes.bind(this)
     this.movement = this.movement.bind(this)
   }
+
   componentDidMount() {
-    this.drop()
+    if (this.props.timer) {
+      clearTimeout(this.props.timer)
+    }
     setTimeout(() => {
       this.spawnShapes(this.props.currentShape)
       this.props.changePhase()
     }, 3000)
+    this.drop()
+  }
+
+  componentWillUnmount() {
+    if (this.props.timer) {
+      clearTimeout(this.props.timer)
+    }
   }
 
   spawnShapes() {
@@ -56,12 +71,12 @@ class Grid extends Component {
   }
 
   gameEnd() {
-    console.log('You lose!')
+    this.props.gameOver()
   }
 
   //sets the tetris board speed
   drop() {
-    setInterval(this.updateBoard, 750)
+    this.props.setGridTimer(setInterval(this.updateBoard, 500))
   }
 
   //it updates the board when an active shape moves down or lands
@@ -69,6 +84,7 @@ class Grid extends Component {
     const oldGrid = this.props.gameBoard
     if (this.hasCollided()) {
       this.stopDrop()
+      this.deleteRows()
       const newCurrent = this.props.previewShape[0]
       this.props.updateCurrent(newCurrent)
       setTimeout(() => {
@@ -139,21 +155,41 @@ class Grid extends Component {
     this.props.updateBoard(newGrid)
   }
 
+  deleteRows() {
+    const gameBoard = this.props.gameBoard
+    let rowsToRemove = []
+
+    for (let row = 0; row < gameBoard.length; row++) {
+      let rowComplete = true
+      for (let col = 0; col < gameBoard[row].length; col++) {
+        if (gameBoard[row][col] === 0) rowComplete = false
+      }
+      if (rowComplete) rowsToRemove.push(row)
+    }
+    let currentScore = rowsToRemove.length * 100
+
+    this.props.updateScore(currentScore)
+    let rows = rowsToRemove.length
+    this.props.updateRow(rows)
+    this.props.clearRows(rowsToRemove)
+  }
+
   render() {
-    let grid = this.props.gameBoard
+    const {gameBoard} = this.props
+    const {score} = this.state
     return (
       <div>
-        <button type="button" onClick={() => this.drop()}>
+        {/* <button type="button" onClick={() => this.drop()}>
           Drop!
         </button>
         <input onKeyDown={event => this.movement(event)} />
         <button type="button" onClick={() => this.spawnShapes()}>
           Spawn a shape
-        </button>
+        </button> */}
 
         <table className="game-table">
           <tbody>
-            {grid.map((row, rowIdx) => {
+            {gameBoard.map((row, rowIdx) => {
               return (
                 <tr key={rowIdx} className="game-row">
                   {row.map((cell, cellIdx) => {
@@ -178,7 +214,9 @@ class Grid extends Component {
 const mapStateToProps = state => ({
   currentShape: state.currentShape,
   gameBoard: state.gameBoard,
-  previewShape: state.previewShape
+  previewShape: state.previewShape,
+  gameStarted: state.gameState.started,
+  timer: state.gridTimer
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -189,8 +227,12 @@ const mapDispatchToProps = dispatch => ({
   moveLeft: () => dispatch(movedLeft()),
   moveRight: () => dispatch(movedRight()),
   rotate: (rotations, counter) => dispatch(rotated(rotations, counter)),
-  changePhase: () => dispatch(changePhase())
-  //, movementPose: (pose) => dispatch(movementPose(pose))
+  changePhase: () => dispatch(changePhase()),
+  clearRows: rows => dispatch(clearRows(rows)),
+  gameOver: () => dispatch(gameOver()),
+  setGridTimer: id => dispatch(setGridTimer(id)),
+  updateScore: score => dispatch(updateScore(score)),
+  updateRow: rows => dispatch(updateRowCount(rows))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid)

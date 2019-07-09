@@ -1,25 +1,27 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-// import {shapeAchieved} from '../store/currentShape'
-import {Image, Icon, Segment} from 'semantic-ui-react'
+import {Image, Icon, Segment, Message} from 'semantic-ui-react'
 
 class UserShape extends Component {
   render() {
     return (
       <div>
-        {/* <h1>Please match your pose of upcoming shape!</h1> */}
         {this.props.userShape ? (
-          <span>
+          <Segment>
             <Image
               size="small"
               className="checkmark"
               src={`/assets/${this.props.userShape}.png`}
             />
-          </span>
+          </Segment>
         ) : (
           <Segment>
-            <h1>Please match your pose of upcoming shape!</h1>
-            <Icon name="hand point left" size="huge" />
+            <Message header="Match the shape!" size="big" />
+            <Icon
+              className="animated infinite wobble"
+              name="hand point left"
+              size="huge"
+            />
           </Segment>
         )}
       </div>
@@ -31,9 +33,5 @@ const mapStateToProps = state => ({
   userShape: state.userShape,
   gotIt: state.currentShape.achieved
 })
-
-// const mapDispatchToProps = dispatch => ({
-//   shapeAchieved: () => dispatch(shapeAchieved())
-// })
 
 export default connect(mapStateToProps, null)(UserShape)

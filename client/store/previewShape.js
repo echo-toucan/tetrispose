@@ -2,6 +2,7 @@ import {getRandom} from '../AllShapes'
 
 const CREATE_SHAPES = 'CREATE_SHAPES'
 const UPDATE_SHAPES = 'UPDATE_SHAPES'
+const RESET_GAME = 'RESET_GAME'
 
 export const createShapes = () => ({
   type: CREATE_SHAPES
@@ -16,13 +17,7 @@ const initialState = []
 export const previewShape = (state = initialState, action) => {
   switch (action.type) {
     case CREATE_SHAPES: {
-      //Creates three random shapes at the beginning of the game
-      //Unavailble shapes (O, J, L, S, Z) are commented out in AllShapes.js and will NOT be selected
-      let shapes = []
-      for (let i = 0; i < 3; i++) {
-        const newShape = getRandom()
-        shapes.push(newShape)
-      }
+      const shapes = [getRandom()]
       return shapes
     }
     case UPDATE_SHAPES: {
@@ -30,6 +25,8 @@ export const previewShape = (state = initialState, action) => {
       const newShape = getRandom()
       return [...state.slice(1), newShape]
     }
+    case RESET_GAME:
+      return [getRandom()]
     default:
       return state
   }

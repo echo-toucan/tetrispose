@@ -10,15 +10,25 @@ import {
   Image as SemanticImage,
   Segment
 } from 'semantic-ui-react'
+import {
+  rotated,
+  changePhase,
+  moved,
+  shapeAchieved,
+  setUserShape,
+  gameLoaded,
+  loadGame
+} from '../store'
+import {getShape, checkRotation, checkPosition} from './utility'
+import {Dimmer, Loader, Image, Segment} from 'semantic-ui-react'
 
 class Camera extends Component {
   constructor() {
     super()
     this.state = {
-      // prevKnee: '',
-      activeCamera: true,
-      rotationsCounter: 0,
-      canvasIsPainted: false
+      canvasIsPainted: false,
+      cameraIsLoading: true,
+      rotationsCounter: 0
     }
     this.getVideo = this.getVideo.bind(this)
     this.getCanvas = this.getCanvas.bind(this)
@@ -26,6 +36,7 @@ class Camera extends Component {
 
   async componentDidMount() {
     try {
+      this.props.loadGame()
       console.log('loading posenet...')
       this.posenet = await posenet.load({
         architecture: 'ResNet50',
@@ -57,11 +68,13 @@ class Camera extends Component {
           height: 480
         }
       })
-      this.setState({activeCamera: false})
+
+      this.setState({cameraIsLoading: false})
       this.video.srcObject = stream
     } catch (err) {
       console.error(err)
     } finally {
+      this.props.gameLoaded()
       this.detectPose()
     }
   }
@@ -97,21 +110,6 @@ class Camera extends Component {
       const column = checkPosition(pose)
       this.props.move(column)
 
-      // This function attempts to use a 'target' pose
-      // const targetRotation = checkRotation(pose)
-      // this.props.rotate(this.props.currentShape.rotations,
-      //   targetRotation)
-      // const rotations = this.props.currentShape.rotations
-      // console.log(this.state.canvasIsPainted)
-
-      //Attempting rotation using throttle
-      // const rotate = throttle(checkRotation, pose, 250)
-      // if (rotate) {
-      //   console.log(this.state.rotationsCounter)
-      //   this.props.rotate(
-      //     this.props.currentShape.rotations,
-      //     this.state.rotationsCounter
-      //   )
       const rotations = this.props.currentShape.rotations
       const targetRotation = checkRotation(pose, rotations)
       if (targetRotation !== undefined) {
@@ -123,20 +121,9 @@ class Camera extends Component {
       rotationsCounter: prevState.rotationsCounter + 1
     }))
 
-    //This is the original function (with knee-raises to rotate)
-    // const rotation = checkRotation(pose, this.state.prevKnee)
-    // if (rotation.rotate) {
-    //   this.props.rotate(
-    //     this.props.currentShape.rotations,
-    //     this.state.rotationsCounter
-    //   )
-    //   this.setState(prevState => ({
-    //     rotationsCounter: prevState.rotationsCounter + 1,
-    //     prevKnee: rotation.knee
-    //   }))
-    // }
-
-    this.detectPose()
+    setTimeout(() => {
+      this.detectPose()
+    }, 100)
   }
 
   drawRotations(rotations) {
@@ -168,9 +155,9 @@ class Camera extends Component {
 
   render() {
     return (
-      <div>
-        {this.state.activeCamera ? (
-          <Segment>
+      <div className="camera-container">
+        {this.state.cameraIsLoading ? (
+          <Segment className="camera-loader">
             <Dimmer active>
               <Loader indeterminate>Camera Loading</Loader>
             </Dimmer>
@@ -210,11 +197,11 @@ const mapDispatchToProps = dispatch => ({
   shapeAchieved: () => dispatch(shapeAchieved()),
   setUserShape: shape => dispatch(setUserShape(shape)),
   changePhase: () => dispatch(changePhase()),
-  moveLeft: () => dispatch(movedLeft()),
-  moveRight: () => dispatch(movedRight()),
   rotate: (grid, rotations, counter) =>
     dispatch(rotated(grid, rotations, counter)),
-  move: column => dispatch(moved(column))
+  move: column => dispatch(moved(column)),
+  gameLoaded: () => dispatch(gameLoaded()),
+  loadGame: () => dispatch(loadGame())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Camera)

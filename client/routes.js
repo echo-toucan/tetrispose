@@ -6,6 +6,8 @@ import {Login, Signup, UserHome, GameBoard} from './components'
 import {me} from './store'
 import GameHome from './GameHome'
 import HomePage from './HomePage'
+import LandingPage from './LandingPage'
+import Portfolio from './Portfolio'
 
 /**
  * COMPONENT
@@ -24,7 +26,10 @@ class Routes extends Component {
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
 
-        <Route exact path="/" component={HomePage} />
+        <Route exact path="/" component={LandingPage} />
+        <Route exact path="/homepage" component={HomePage} />
+        <Route exact path="/portfolio" component={Portfolio} />
+
         <Route exact path="/gamehome" component={GameHome} />
 
         <Route exact path="/gameboard" component={GameBoard} />

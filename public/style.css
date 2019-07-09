@@ -3,6 +3,12 @@ body {
   display: flex;
   justify-content: space-evenly;
   align-content: center;
+  background: url('https://wallpapercave.com/wp/wp2675338.jpg') no-repeat center
+    center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 a {
@@ -111,4 +117,13 @@ video {
   top: 0;
   left: 0;
   z-index: 10;
+}
+.camera-loader {
+  width: 640px;
+  height: 480px;
+}
+
+.camera-container {
+  display: flex;
+  justify-content: center;
 }
