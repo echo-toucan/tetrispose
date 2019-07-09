@@ -176,7 +176,7 @@ export const phase = (state = 1, action) => {
 export const gameScore = (state = 0, action) => {
   switch (action.type) {
     case UPDATE_SCORE:
-      return action.payload
+      return action.payload + state
     case RESET_GAME:
       return 0
     default:
