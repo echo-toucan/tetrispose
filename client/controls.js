@@ -118,7 +118,6 @@ const removeFallingShape = gameBoard => {
 //rotations and counter must be passed in when action is dispatched!
 export const rotate = (grid, rotations, target) => {
   const rotatedShape = rotations[target]
-  console.log(rotations[0])
   const [pivotRow, pivotCol] = adjustPivot(rotatedShape, grid)
 
   if (canRotate(grid, rotatedShape, pivotRow, pivotCol)) {

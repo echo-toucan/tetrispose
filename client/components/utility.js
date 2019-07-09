@@ -201,7 +201,6 @@ export const checkRotation = (rawPose, rotations) => {
       leftHandIsOnHitbox(pose, ranges[i]) ||
       rightHandIsOnHitbox(pose, ranges[i])
     ) {
-      console.log(rotations.length - 1 - i)
       return rotations.length - 1 - i
     }
   }
