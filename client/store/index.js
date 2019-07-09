@@ -10,7 +10,7 @@ import {
   updateScore,
   gameState,
   // gameOver,
-  // score,
+  gameScore,
   phase
 } from './game'
 
@@ -25,7 +25,7 @@ const reducer = combineReducers({
   updateScore,
   gameState,
   // gameOver,
-  // score,
+  gameScore,
   currentShape,
   previewShape,
   userShape,
