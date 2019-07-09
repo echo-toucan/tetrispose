@@ -19,7 +19,7 @@ class Score extends Component {
 
 const mapStateToProps = state => ({
   score: state.gameScore,
-  rows: state.updateRowCount
+  rows: state.rowScore
 })
 
 export default connect(mapStateToProps)(Score)
