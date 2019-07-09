@@ -10,7 +10,8 @@ import {
   clearRows,
   updateCurrent,
   gotPenalty,
-  gameOver
+  gameOver,
+  setGridTimer
 } from '../store'
 import {penalty, colors} from '../AllShapes'
 
@@ -18,8 +19,7 @@ class Grid extends Component {
   constructor() {
     super()
     this.state = {
-      rotationCounter: null,
-      isNewGame: true
+      rotationCounter: null
     }
     this.updateBoard = this.updateBoard.bind(this)
     this.spawnShapes = this.spawnShapes.bind(this)
@@ -27,11 +27,20 @@ class Grid extends Component {
   }
 
   componentDidMount() {
-    this.drop()
+    if (this.props.timer) {
+      clearTimeout(this.props.timer)
+    }
     setTimeout(() => {
       this.spawnShapes(this.props.currentShape)
       this.props.changePhase()
     }, 3000)
+    this.drop()
+  }
+
+  componentWillUnmount() {
+    if (this.props.timer) {
+      clearTimeout(this.props.timer)
+    }
   }
 
   spawnShapes() {
@@ -65,12 +74,7 @@ class Grid extends Component {
 
   //sets the tetris board speed
   drop() {
-    console.log('1', this.state.isNewGame)
-    if (this.state.isNewGame) {
-      setInterval(this.updateBoard, 500)
-      this.setState({isNewGame: false})
-      console.log('2', this.state.isNewGame)
-    }
+    this.props.setGridTimer(setInterval(this.updateBoard, 500))
   }
 
   //it updates the board when an active shape moves down or lands
@@ -202,7 +206,8 @@ const mapStateToProps = state => ({
   currentShape: state.currentShape,
   gameBoard: state.gameBoard,
   previewShape: state.previewShape,
-  gameStarted: state.gameState.started
+  gameStarted: state.gameState.started,
+  timer: state.timer
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -215,7 +220,8 @@ const mapDispatchToProps = dispatch => ({
   rotate: (rotations, counter) => dispatch(rotated(rotations, counter)),
   changePhase: () => dispatch(changePhase()),
   clearRows: rows => dispatch(clearRows(rows)),
-  gameOver: () => dispatch(gameOver())
+  gameOver: () => dispatch(gameOver()),
+  setGridTimer: id => dispatch(setGridTimer(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid)

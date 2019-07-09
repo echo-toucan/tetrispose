@@ -56,7 +56,7 @@ export const currentShape = (state = initialState, action) => {
     case UPDATE_CURRENT:
       return {shape: action.payload, achieved: false}
     case RESET_GAME:
-      return initialState
+      return {shape: getRandom(), achieved: false}
     default:
       return state
   }

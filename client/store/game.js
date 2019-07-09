@@ -30,6 +30,7 @@ const LOAD_GAME = 'LOAD_GAME'
 const SWITCH_GAME_ON = 'SWITCH_GAME_ON'
 const START_GAME = 'START_GAME'
 const GAME_OVER = 'GAME_OVER'
+const SET_GRID_TIMER = 'SET_GRID_TIMER'
 
 //ACTION CREATORS
 export const newShape = () => ({
@@ -104,11 +105,17 @@ export const loadGame = () => ({
   type: LOAD_GAME
 })
 
+export const setGridTimer = id => ({
+  type: SET_GRID_TIMER,
+  payload: id
+})
+
 const initialState = createBoard(boardHeight, boardWidth)
 
 export const gameBoard = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_BOARD:
+      console.log('update board')
       return action.payload
     case MOVE_LEFT:
       return moveLeft(state)
@@ -135,7 +142,7 @@ export const gameBoard = (state = initialState, action) => {
   }
 }
 
-export const gameState = (state = {started: false, loaded: false}, action) => {
+export const gameState = (state = {started: false, loaded: false, paused: false}, action) => {
   switch (action.type) {
     case START_GAME:
       return {...state, started: true}
@@ -152,13 +159,22 @@ export const gameState = (state = {started: false, loaded: false}, action) => {
   }
 }
 
+export const timer = (state = null, action) => {
+  switch (action.type) {
+    case SET_GRID_TIMER:
+      return action.payload
+    default:
+      return state
+  }
+}
+
 export const phase = (state = 1, action) => {
   switch (action.type) {
+    case START_GAME:
+      return 1
     case CHANGE_PHASE:
       if (state === 1) return 2
       else return 1
-    case RESET_GAME:
-      return 1
     default:
       return state
   }

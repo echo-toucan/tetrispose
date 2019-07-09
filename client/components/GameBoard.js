@@ -10,7 +10,8 @@ const GameBoard = ({gameStarted}) => {
 
 const mapStateToProps = state => ({
   currentShape: state.currentShape,
-  gameStarted: state.gameState.started
+  gameStarted: state.gameState.started,
+  currentRound: state.currentRound
 })
 
 export default connect(mapStateToProps)(GameBoard)
