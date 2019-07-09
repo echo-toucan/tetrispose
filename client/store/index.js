@@ -11,6 +11,7 @@ import {
   gameState,
   // gameOver,
   gameScore,
+  updateRowCount,
   phase
 } from './game'
 
@@ -29,7 +30,8 @@ const reducer = combineReducers({
   currentShape,
   previewShape,
   userShape,
-  phase
+  phase,
+  updateRowCount
 })
 const middleware = composeWithDevTools(
   applyMiddleware(

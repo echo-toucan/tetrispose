@@ -10,7 +10,8 @@ import {
   clearRows,
   updateCurrent,
   gotPenalty,
-  updateScore
+  updateScore,
+  updateRow
 } from '../store'
 import {penalty, colors} from '../AllShapes'
 import Score from './Score'
@@ -159,6 +160,8 @@ class Grid extends Component {
     let currentScore = rowsToRemove.length * 100
 
     this.props.updateScore(currentScore)
+    let rows = rowsToRemove.length
+    this.props.updateRow(rows)
     this.props.clearRows(rowsToRemove)
   }
 
@@ -216,7 +219,8 @@ const mapDispatchToProps = dispatch => ({
   rotate: (rotations, counter) => dispatch(rotated(rotations, counter)),
   changePhase: () => dispatch(changePhase()),
   clearRows: rows => dispatch(clearRows(rows)),
-  updateScore: score => dispatch(updateScore(score))
+  updateScore: score => dispatch(updateScore(score)),
+  updateRow: rows => dispatch(updateRow(rows))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid)

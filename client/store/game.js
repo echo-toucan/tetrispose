@@ -183,3 +183,16 @@ export const gameScore = (state = 0, action) => {
       return state
   }
 }
+
+const ROW_COUNT = 'ROW_COUNT'
+
+export const updateRow = row => ({type: ROW_COUNT, payload: row})
+
+export const updateRowCount = (state = 0, action) => {
+  switch (action.type) {
+    case ROW_COUNT:
+      return action.payload + state
+    default:
+      return state
+  }
+}
