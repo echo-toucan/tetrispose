@@ -18,7 +18,7 @@ class UserShape extends Component {
           <Segment>
             <Message header="Match the shape!" size="big" />
             <Icon
-              className="animated infinite wobble"
+              className="animated bounceInRight"
               name="hand point left"
               size="huge"
             />
