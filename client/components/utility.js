@@ -99,7 +99,6 @@ const wristsAreTogether = pose => {
 
 const rightWristUpLeftWristDown = pose => {
   //right wrist is above shoulders and left wrist is under shoulder
-  console.log('right wrist up')
   if (
     pose.rightWrist.y < pose.rightShoulder.y &&
     pose.leftWrist.y > pose.leftShoulder.y
@@ -114,7 +113,6 @@ const rightWristUpLeftWristDown = pose => {
 
 const leftWristUpRightWristDown = pose => {
   //left wrist is above shoulders and right wrist is under shoulder
-  console.log('left wrist up')
   if (
     pose.rightWrist.y > pose.rightShoulder.y &&
     pose.leftWrist.y < pose.leftShoulder.y
@@ -213,9 +211,12 @@ export const movementPose = pose => {
 }
 
 const getHitboxes = rotations => {
+  const screenWidth = 640
+  const buffer = screenWidth / 6
   const hitboxRanges = rotations.map((el, idx, arr) => {
-    const boxStart = (480 + idx * 440) / arr.length
-    return [boxStart, boxStart + 100]
+    const segmentWidth = (screenWidth - 2 * buffer) / arr.length
+    const boxEnd = screenWidth - buffer - idx * segmentWidth
+    return [boxEnd - segmentWidth, boxEnd]
   })
   return hitboxRanges
 }
@@ -244,7 +245,7 @@ export const checkRotation = (rawPose, rotations) => {
       leftHandIsOnHitbox(pose, ranges[i]) ||
       rightHandIsOnHitbox(pose, ranges[i])
     ) {
-      return rotations.length - 1 - i
+      return i
     }
   }
   return undefined
