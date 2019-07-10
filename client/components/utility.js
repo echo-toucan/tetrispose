@@ -33,10 +33,10 @@ const rightKneeIsUp = pose => {
 }
 
 const rightWristIsPerpendicular = pose => {
-  // console.log('right Elbow', pose.rightElbow.y, pose.rightElbow.score)
-  // console.log('right Shoulder', pose.rightShoulder.y, pose.rightShoulder.score)
-  // console.log('right Wrist', pose.rightWrist.y, pose.rightWrist.score)
   if (
+    // console.log('right Elbow', pose.rightElbow.y, pose.rightElbow.score)
+    // console.log('right Shoulder', pose.rightShoulder.y, pose.rightShoulder.score)
+    // console.log('right Wrist', pose.rightWrist.y, pose.rightWrist.score)
     (pose.rightElbow.y / pose.rightShoulder.y > 0.95 ||
       pose.rightElbow.y / pose.rightShoulder.y < 1.05) &&
     pose.rightWrist.y < pose.rightElbow.y
@@ -103,8 +103,12 @@ const rightWristUpLeftWristDown = pose => {
   if (
     pose.rightWrist.y < pose.rightShoulder.y &&
     pose.leftWrist.y > pose.leftShoulder.y
+    // 1.05 * pose.rightWrist.x > pose.rightShoulder.x &&
+    // 1.05 * pose.leftWrist.x < pose.leftShoulder.x
   ) {
     return true
+  } else {
+    return false
   }
 }
 
@@ -114,9 +118,29 @@ const leftWristUpRightWristDown = pose => {
   if (
     pose.rightWrist.y > pose.rightShoulder.y &&
     pose.leftWrist.y < pose.leftShoulder.y
+    // 1.05 * pose.rightWrist.x > pose.rightShoulder.x &&
+    // 1.05 * pose.leftWrist.x < pose.leftShoulder.x
   ) {
     return true
+  } else {
+    return false
   }
+}
+
+const wristsTogetherElbowTogether = pose => {
+  const shoulderWidthX = pose.rightShoulder.x - pose.leftShoulder.x
+  const wristToWristX = pose.rightWrist.x - pose.leftWrist.x
+  if (
+    // 1.25 * pose.leftShoulder.x - pose.rightShoulder.x >
+    //   pose.leftWrist.x - pose.rightWrist.x &&
+    shoulderWidthX > wristToWristX &&
+    pose.rightWrist.y < pose.rightShoulder.y &&
+    pose.leftWrist.y < pose.leftShoulder.y &&
+    pose.leftElbow.y > pose.leftShoulder.y &&
+    pose.rightElbow.y > pose.rightShoulder.y
+  ) {
+    return true
+  } else return false
 }
 
 const isI = pose => {
@@ -144,6 +168,10 @@ const isZ = pose => {
   if (rightWristUpLeftWristDown(pose)) return 'Z'
 }
 
+const isO = pose => {
+  if (wristsTogetherElbowTogether(pose)) return 'O'
+}
+
 export const getShape = rawPose => {
   const pose = getObj(rawPose)
   if (
@@ -154,7 +182,13 @@ export const getShape = rawPose => {
     return undefined
   }
   return (
-    isI(pose) || isT(pose) || isJ(pose) || isL(pose) || isS(pose) || isZ(pose)
+    isI(pose) ||
+    isT(pose) ||
+    isJ(pose) ||
+    isL(pose) ||
+    isS(pose) ||
+    isZ(pose) ||
+    isO(pose)
   )
 }
 
