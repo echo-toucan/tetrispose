@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {startGame, resetGame, pauseGame} from '../store'
-import {Button} from 'semantic-ui-react'
+import {Button, Container} from 'semantic-ui-react'
 
 class GamePanel extends Component {
   render() {
     return (
-      <div>
+      <Container>
         {this.props.gameStarted ? (
           <Button
             primary
@@ -34,7 +34,7 @@ class GamePanel extends Component {
         >
           {this.props.gamePaused ? 'Resume' : 'Pause'}
         </Button> */}
-      </div>
+      </Container>
     )
   }
 }
