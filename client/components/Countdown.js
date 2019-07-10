@@ -21,11 +21,12 @@ class Countdown extends Component {
         size={150}
         showMilliseconds={true}
         onComplete={() => {
-          if (this.props.currentShape.achieved) {
-            this.props.updateScore(10)
-            // } else {
-            //   this.props.updateScore(-5)
-          }
+          console.log('Time Up!')
+          // if (this.props.currentShape.achieved) {
+          //   this.props.updateScore(10)
+          // } else {
+          //   this.props.updateScore(-5)
+          // }
         }}
       />
     )
