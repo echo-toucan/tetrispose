@@ -4,7 +4,7 @@ import {getRandom, penalty} from '../AllShapes'
 
 const UPDATE_CURRENT = 'UPDATE_CURRENT'
 const SHAPE_ACHIEVED = 'SHAPE_ACHIEVED'
-const GOT_PENALTY = 'GOT_PENALTY'
+// const GOT_PENALTY = 'GOT_PENALTY'
 const SET_FIRST_SHAPE = 'SET_FIRST_SHAPE'
 const SET_USER_SHAPE = 'SET_USER_SHAPE'
 const GET_USER_SHAPE = 'GET_USER_SHAPE'
@@ -21,9 +21,9 @@ export const shapeAchieved = () => ({
   type: SHAPE_ACHIEVED
 })
 
-export const gotPenalty = () => ({
-  type: GOT_PENALTY
-})
+// export const gotPenalty = () => ({
+//   type: GOT_PENALTY
+// })
 
 export const setFirstShape = () => ({
   type: SET_FIRST_SHAPE
@@ -51,8 +51,8 @@ export const currentShape = (state = initialState, action) => {
       return {...state, shape: getRandom()}
     case SHAPE_ACHIEVED:
       return {...state, achieved: true}
-    case GOT_PENALTY:
-      return {shape: penalty, achieved: false}
+    // case GOT_PENALTY:
+    //   return {shape: penalty, achieved: false}
     case UPDATE_CURRENT:
       return {shape: action.payload, achieved: false}
     case RESET_GAME:

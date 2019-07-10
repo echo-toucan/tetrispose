@@ -9,7 +9,6 @@ import {
   changePhase,
   clearRows,
   updateCurrent,
-  gotPenalty,
   gameOver,
   setGridTimer,
   updateScore,
@@ -46,12 +45,11 @@ class Grid extends Component {
   }
 
   spawnShapes() {
-    let shape
-    if (this.props.currentShape.achieved) {
-      shape = this.props.currentShape.shape.shape
+    const shape = this.props.currentShape.shape.shape
+    if (!this.props.currentShape.achieved) {
+      this.props.updateScore(-5)
     } else {
-      this.props.gotPenalty()
-      shape = penalty.shape
+      this.props.updateScore(10)
     }
     let newRows = []
     const oldGrid = this.props.gameBoard
@@ -226,7 +224,6 @@ const mapDispatchToProps = dispatch => ({
   updateBoard: board => dispatch(updateBoard(board)),
   updateCurrent: shape => dispatch(updateCurrent(shape)),
   updateShapes: () => dispatch(updateShapes()),
-  gotPenalty: () => dispatch(gotPenalty()),
   moveLeft: () => dispatch(movedLeft()),
   moveRight: () => dispatch(movedRight()),
   rotate: (rotations, counter) => dispatch(rotated(rotations, counter)),

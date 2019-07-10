@@ -24,7 +24,8 @@ class Camera extends Component {
     this.state = {
       canvasIsPainted: false,
       cameraIsLoading: true,
-      rotationsCounter: 0
+      rotationsCounter: 0,
+      posenetIsLoading: true
     }
     this.getVideo = this.getVideo.bind(this)
     this.getCanvas = this.getCanvas.bind(this)
@@ -40,7 +41,7 @@ class Camera extends Component {
         inputResolution: 193,
         quantBytes: 1
       })
-      if (this.posenet) console.log('posenet loaded!')
+      if (this.posenet) this.setState({posenetIsLoading: false})
     } catch (err) {
       console.error(err)
       throw new Error('Posenet failed to load')
@@ -156,13 +157,16 @@ class Camera extends Component {
   }
 
   render() {
+    const loadingMessage = this.state.posenetIsLoading
+      ? 'Loading PoseNet...'
+      : 'Loading Camera...'
     return (
       <div className="camera-container">
         {this.state.cameraIsLoading ? (
           <Segment className="camera-loader">
             <Dimmer active>
               <Loader indeterminate size="huge">
-                Camera Loading
+                {loadingMessage}
               </Loader>
             </Dimmer>
             <SemanticImage src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />

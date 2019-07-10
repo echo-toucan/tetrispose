@@ -209,8 +209,8 @@ export const phase = (state = 1, action) => {
 //   }
 // }
 
-const SHAPE_ACHIEVED = 'SHAPE_ACHIEVED'
-const GOT_PENALTY = 'GOT_PENALTY'
+// const SHAPE_ACHIEVED = 'SHAPE_ACHIEVED'
+// const GOT_PENALTY = 'GOT_PENALTY'
 
 export const gameScore = (state = 0, action) => {
   switch (action.type) {
@@ -218,10 +218,10 @@ export const gameScore = (state = 0, action) => {
       return action.payload + state
     case RESET_GAME:
       return 0
-    case SHAPE_ACHIEVED:
-      return state + 10
-    case GOT_PENALTY:
-      return state - 5
+    // case SHAPE_ACHIEVED:
+    //   return state + 10
+    // case GOT_PENALTY:
+    //   return state - 5
     default:
       return state
   }
