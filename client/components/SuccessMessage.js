@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Image, Message, Segment, Icon} from 'semantic-ui-react'
+import {Image, Message, Segment} from 'semantic-ui-react'
 
 const SuccessMessage = props => {
   return (
@@ -22,11 +22,6 @@ const SuccessMessage = props => {
         </Segment>
       ) : (
         <Segment>
-          <Icon
-            name="hand point left"
-            size="huge"
-            className="animated infinite wobble delay-1s"
-          />
           <Message header="Out of time!" color="red" size="big" />
         </Segment>
       )}

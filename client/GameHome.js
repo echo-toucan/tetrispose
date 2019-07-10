@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Grid, Segment, Message, Icon} from 'semantic-ui-react'
+import {Grid, Segment} from 'semantic-ui-react'
 import {connect} from 'react-redux'
 import {
   Camera,
@@ -14,8 +14,8 @@ import {
 
 class GameHome extends Component {
   render() {
-    const achieved = this.props.currentShape.achieved
-    const isX = this.props.currentShape.shape.name === 'X'
+    const {achieved, phase} = this.props
+
     return (
       <Grid padded columns={3}>
         <Grid.Column width={8}>
@@ -26,7 +26,7 @@ class GameHome extends Component {
           </Grid.Row>
 
           <Grid.Row>
-            {achieved || isX ? (
+            {achieved || (!achieved && phase === 2) ? (
               <Segment color="orange" inverted secondary textAlign="center">
                 <SuccessMessage />
               </Segment>
@@ -73,7 +73,8 @@ class GameHome extends Component {
 }
 
 const mapStateToProps = state => ({
-  currentShape: state.currentShape
+  achieved: state.currentShape.achieved,
+  phase: state.phase
 })
 
 export default connect(mapStateToProps)(GameHome)
