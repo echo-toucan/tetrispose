@@ -1,16 +1,20 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Segment} from 'semantic-ui-react'
+import {Segment, Label, Header} from 'semantic-ui-react'
 
 class Score extends Component {
   render() {
     return (
       <div>
         <Segment>
-          <h2>Score: {this.props.score}</h2>
+          <Label as="a" color="orange" ribbon>
+            <Header as="h2">Score: {this.props.score}</Header>
+          </Label>
         </Segment>
         <Segment>
-          <h2>Rows: {this.props.rows}</h2>
+          <Label as="a" color="purple" ribbon>
+            <Header as="h2">Rows: {this.props.rows}</Header>
+          </Label>
         </Segment>
       </div>
     )

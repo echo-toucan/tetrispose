@@ -121,7 +121,18 @@ video {
   height: 480px;
 }
 
-/* .camera-container {
+.camera-container {
   display: flex;
   justify-content: center;
-} */
+}
+
+.ui.card {
+  width: 1400px;
+}
+
+.ui.header:last-child {
+  margin-bottom: 0;
+  text-align: center;
+}
+
+

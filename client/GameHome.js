@@ -49,13 +49,17 @@ class GameHome extends Component {
         </Grid.Column>
 
         <Grid.Column width={2} divided="true">
-          <Grid.Row width={4}>
+          <Segment>
+            <GamePanel centered />
+          </Segment>
+
+          <Segment>
             <Score />
-          </Grid.Row>
-          <Grid.Row width={12}>
-            <GamePanel />
+          </Segment>
+
+          <Segment>
             <PreviewShape />
-          </Grid.Row>
+          </Segment>
         </Grid.Column>
 
         <Grid.Column width={6}>

@@ -161,7 +161,9 @@ class Camera extends Component {
         {this.state.cameraIsLoading ? (
           <Segment className="camera-loader">
             <Dimmer active>
-              <Loader indeterminate>Camera Loading</Loader>
+              <Loader indeterminate size="huge">
+                Camera Loading
+              </Loader>
             </Dimmer>
             <SemanticImage src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
           </Segment>

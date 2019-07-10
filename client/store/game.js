@@ -1,4 +1,5 @@
 import {moveLeft, moveRight, rotate, move} from '../controls'
+import cogoToast from 'cogo-toast'
 
 const boardHeight = 20
 const boardWidth = 10
@@ -180,11 +181,17 @@ export const gridTimer = (state = null, action) => {
 export const phase = (state = 1, action) => {
   switch (action.type) {
     case START_GAME:
+      cogoToast.info('Game Starting now', {
+        position: 'top-right'
+      })
       return 1
     case CHANGE_PHASE:
       if (state === 1) return 2
       else return 1
     case RESET_GAME:
+      cogoToast.info('Game Reset', {
+        position: 'top-right'
+      })
       return 0
     default:
       return state
