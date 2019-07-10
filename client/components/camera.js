@@ -162,7 +162,7 @@ class Camera extends Component {
           <Segment className="camera-loader">
             <Dimmer active>
               <Loader indeterminate size="huge">
-                Camera Loading
+                Camera and PoseNet Loading...
               </Loader>
             </Dimmer>
             <SemanticImage src="https://react.semantic-ui.com/images/wireframe/short-paragraph.png" />
