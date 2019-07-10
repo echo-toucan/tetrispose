@@ -35,7 +35,7 @@ class Grid extends Component {
     setTimeout(() => {
       this.spawnShapes(this.props.currentShape)
       this.props.changePhase()
-    }, 3000)
+    }, 5000)
     this.drop()
   }
 
@@ -90,7 +90,7 @@ class Grid extends Component {
       setTimeout(() => {
         this.spawnShapes(this.props.currentShape)
         this.props.changePhase()
-      }, 3000)
+      }, 5000)
       this.props.changePhase()
       this.props.updateShapes()
     } else {
