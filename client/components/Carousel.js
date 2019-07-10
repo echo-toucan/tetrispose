@@ -1,27 +1,38 @@
 import React from 'react'
 import Carousel from 'semantic-ui-carousel-react'
-import {Image} from 'semantic-ui-react'
+import {Image, Container} from 'semantic-ui-react'
 
 const ControlledCarousel = () => {
   let elements = [
     {
       render: () => {
-        return <Image centered width="1000px" src="/assets/showgame.gif" />
+        return <Image width="1000" src="/assets/showgame.gif" />
       }
     },
     {
       render: () => {
-        return <Image centered width="1000px" src="/assets/showgame.gif" />
+        return (
+          <Image width="1000" src="/assets/StickFigures/stickfigure1.jpg" />
+        )
       }
     },
     {
       render: () => {
-        return <Image centered width="1000px" src="/assets/showgame.gif" />
+        return (
+          <Image width="1000" src="/assets/StickFigures/stickfigure2.jpg" />
+        )
+      }
+    },
+    {
+      render: () => {
+        return (
+          <Image width="1000px" src="/assets/StickFigures/stickfigure3.jpg" />
+        )
       }
     }
   ]
   return (
-    <div style={{width: 1000}}>
+    <Container style={{width: 1000}}>
       <Carousel
         elements={elements}
         // duration={3000}
@@ -29,7 +40,7 @@ const ControlledCarousel = () => {
         showNextPrev={true}
         showIndicators={true}
       />
-    </div>
+    </Container>
   )
 }
 
