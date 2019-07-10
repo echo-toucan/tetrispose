@@ -45,6 +45,7 @@
     "@tensorflow/tfjs-converter": "^1.2.2",
     "@tensorflow/tfjs-core": "^1.2.2",
     "axios": "^0.19.0",
+    "cogo-toast": "^3.1.0",
     "compression": "^1.7.3",
     "connect-session-sequelize": "^6.0.0",
     "express": "^4.16.4",
