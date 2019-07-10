@@ -97,6 +97,28 @@ const wristsAreTogether = pose => {
   } else return false
 }
 
+const rightWristUpLeftWristDown = pose => {
+  //right wrist is above shoulders and left wrist is under shoulder
+  console.log('right wrist up')
+  if (
+    pose.rightWrist.y < pose.rightShoulder.y &&
+    pose.leftWrist.y > pose.leftShoulder.y
+  ) {
+    return true
+  }
+}
+
+const leftWristUpRightWristDown = pose => {
+  //left wrist is above shoulders and right wrist is under shoulder
+  console.log('left wrist up')
+  if (
+    pose.rightWrist.y > pose.rightShoulder.y &&
+    pose.leftWrist.y < pose.leftShoulder.y
+  ) {
+    return true
+  }
+}
+
 const isI = pose => {
   if (leftArmIsUp(pose) && rightArmIsUp(pose) && wristsAreTogether(pose))
     return 'I'
@@ -114,13 +136,13 @@ const isL = pose => {
   if (rightArmIsOut(pose) && leftArmIsUp(pose)) return 'L'
 }
 
-// const isS = pose => {
-//   if (leftArmIsUp(pose) && leftKneeIsUp(pose)) return 'S'
-// }
+const isS = pose => {
+  if (leftWristUpRightWristDown(pose)) return 'S'
+}
 
-// const isZ = pose => {
-//   if (rightArmIsUp(pose) && rightKneeIsUp(pose)) return 'Z'
-// }
+const isZ = pose => {
+  if (rightWristUpLeftWristDown(pose)) return 'Z'
+}
 
 export const getShape = rawPose => {
   const pose = getObj(rawPose)
@@ -132,8 +154,7 @@ export const getShape = rawPose => {
     return undefined
   }
   return (
-    isI(pose) || isT(pose) || isJ(pose) || isL(pose)
-    //  || isS(pose) || isZ(pose)
+    isI(pose) || isT(pose) || isJ(pose) || isL(pose) || isS(pose) || isZ(pose)
   )
 }
 
@@ -205,3 +226,22 @@ export const checkPosition = rawPose => {
   else if (nose >= screenWidth - buffer) return 0
   else return Math.ceil(9 - (nose - buffer) / columnWidth)
 }
+
+// Id	Part
+// 0	nose
+// 1	leftEye
+// 2	rightEye
+// 3	leftEar
+// 4	rightEar
+// 5	leftShoulder
+// 6	rightShoulder
+// 7	leftElbow
+// 8	rightElbow
+// 9	leftWrist
+// 10	rightWrist
+// 11	leftHip
+// 12	rightHip
+// 13	leftKnee
+// 14	rightKnee
+// 15	leftAnkle
+// 16	rightAnkle
