@@ -96,9 +96,12 @@ class Grid extends Component {
     } else {
       let newGrid = oldGrid.map((row, rowIdx) => {
         return row.map((cell, colIdx) => {
+          if (cell > 10) return cell
           const cellAbove = rowIdx === 0 ? 0 : oldGrid[rowIdx - 1][colIdx]
           if (cell < 10 && cellAbove < 10) {
             return cellAbove
+          } else if (cellAbove >= 10) {
+            return 0
           } else return cell
         })
       })
