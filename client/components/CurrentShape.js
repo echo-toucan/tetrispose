@@ -9,7 +9,7 @@ class CurrentShape extends Component {
     const shape = this.props.currentShape.shape
     return (
       <Grid column={2} divided>
-        <Grid.Column width={8}>
+        <Grid.Column width={5}>
           {shape.name ? (
             <Image
               size="small"
@@ -20,8 +20,14 @@ class CurrentShape extends Component {
             'Loading Shape'
           )}
         </Grid.Column>
-        <Grid.Column width={8}>
+        <Grid.Column width={5}>
           {this.props.gameStarted ? <Countdown /> : ''}
+        </Grid.Column>
+        <Grid.Column width={6}>
+          <Image
+            size="small"
+            src={`/assets/StickFigures/${shape.name}_Stick.png`}
+          />
         </Grid.Column>
       </Grid>
     )
