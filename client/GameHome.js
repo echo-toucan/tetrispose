@@ -32,13 +32,13 @@ class GameHome extends Component {
               </Segment>
             ) : (
               <Grid padded columns={2}>
-                <Grid.Column width={8}>
+                <Grid.Column width={12}>
                   <Segment color="yellow" inverted secondary raised>
                     <CurrentShape />
                   </Segment>
                 </Grid.Column>
 
-                <Grid.Column width={8}>
+                <Grid.Column width={4}>
                   <Segment color="red" inverted secondary>
                     <UserShape />
                   </Segment>

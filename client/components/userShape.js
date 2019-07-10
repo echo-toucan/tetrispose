@@ -16,7 +16,7 @@ class UserShape extends Component {
           </Segment>
         ) : (
           <Segment>
-            <Message header="Match the shape!" size="big" />
+            <Message header="Match the shape!" size="small" />
             <Icon
               className="animated bounceInRight"
               name="hand point left"

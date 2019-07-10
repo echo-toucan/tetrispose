@@ -85,9 +85,11 @@ const adjustPivot = (shape, grid) => {
   const [pivotRow, pivotCol] = findPivot(grid)
   let [newPivotRow, newPivotCol] = [pivotRow, pivotCol]
   let offset = 0
-  for (let row = 0; row < shape.length; row++) {
+  for (let row = 0; row < shape.length && row + pivotRow < 20; row++) {
     let rowOffset = 0
     for (let col = 0; col < shape[row].length; col++) {
+      if (pivotRow + row > 19) break
+      console.log('updated')
       if (
         pivotCol + col >= grid[pivotRow].length ||
         grid[pivotRow + row][pivotCol + col] >= 10
