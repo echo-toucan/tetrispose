@@ -124,8 +124,14 @@ class Camera extends Component {
 
   drawRotations(rotations) {
     const canvas = this.canvas.getContext('2d')
+
+    const screenWidth = 640
+    const buffer = screenWidth / 6
+
     rotations.forEach((rotation, idx, arr) => {
-      const drawPos = (480 + idx * 440) / arr.length
+      const segmentWidth = (screenWidth - 2 * buffer) / arr.length
+      const drawPos = idx * segmentWidth + (segmentWidth + buffer) / 2
+
       const img = new Image()
       img.src = `./assets/rotations/${
         this.props.currentShape.name

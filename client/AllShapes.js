@@ -1,11 +1,11 @@
 export const shapesArray = [
-  // {
-  //   name: 'O',
-  //   shape: [[1, 1], [1, 1]],
-  //   rotations: [[[1, 1], [1, 1]]],
-  //   topLeft: {row: 0, col: 4},
-  //   color: 'yellow'
-  // },
+  {
+    name: 'O',
+    shape: [[1, 1], [1, 1]],
+    rotations: [[[1, 1], [1, 1]]],
+    topLeft: {row: 0, col: 4},
+    color: 'yellow'
+  },
   {
     name: 'I',
     shape: [[2, 2, 2, 2]],
@@ -13,20 +13,20 @@ export const shapesArray = [
     topLeft: {row: 0, col: 4},
     color: 'cyan'
   },
-  // {
-  //   name: 'Z',
-  //   shape: [[3, 3, 0], [0, 3, 3]],
-  //   rotations: [[[0, 3], [3, 3], [3, 0]], [[3, 3, 0], [0, 3, 3]]],
-  //   topLeft: {row: 0, col: 4},
-  //   color: 'red'
-  // },
-  // {
-  //   name: 'S',
-  //   shape: [[0, 4, 4], [4, 4, 0]],
-  //   rotations: [[[4, 0], [4, 4], [0, 4]], [[0, 4, 4], [4, 4, 0]]],
-  //   topLeft: {row: 0, col: 4},
-  //   color: 'limegreen'
-  // },
+  {
+    name: 'Z',
+    shape: [[0, 3], [3, 3], [3, 0]],
+    rotations: [[[0, 3], [3, 3], [3, 0]], [[3, 3, 0], [0, 3, 3]]],
+    topLeft: {row: 0, col: 4},
+    color: 'red'
+  },
+  {
+    name: 'S',
+    shape: [[4, 0], [4, 4], [0, 4]],
+    rotations: [[[4, 0], [4, 4], [0, 4]], [[0, 4, 4], [4, 4, 0]]],
+    topLeft: {row: 0, col: 4},
+    color: 'limegreen'
+  },
   {
     name: 'T',
     shape: [[5, 5, 5], [0, 5, 0]],

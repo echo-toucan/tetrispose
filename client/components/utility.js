@@ -33,10 +33,10 @@ const rightKneeIsUp = pose => {
 }
 
 const rightWristIsPerpendicular = pose => {
-  // console.log('right Elbow', pose.rightElbow.y, pose.rightElbow.score)
-  // console.log('right Shoulder', pose.rightShoulder.y, pose.rightShoulder.score)
-  // console.log('right Wrist', pose.rightWrist.y, pose.rightWrist.score)
   if (
+    // console.log('right Elbow', pose.rightElbow.y, pose.rightElbow.score)
+    // console.log('right Shoulder', pose.rightShoulder.y, pose.rightShoulder.score)
+    // console.log('right Wrist', pose.rightWrist.y, pose.rightWrist.score)
     (pose.rightElbow.y / pose.rightShoulder.y > 0.95 ||
       pose.rightElbow.y / pose.rightShoulder.y < 1.05) &&
     pose.rightWrist.y < pose.rightElbow.y
@@ -97,6 +97,50 @@ const wristsAreTogether = pose => {
   } else return false
 }
 
+const rightWristUpLeftWristDown = pose => {
+  //right wrist is above shoulders and left wrist is under shoulder
+  if (
+    pose.rightWrist.y < pose.rightShoulder.y &&
+    pose.leftWrist.y > pose.leftShoulder.y
+    // 1.05 * pose.rightWrist.x > pose.rightShoulder.x &&
+    // 1.05 * pose.leftWrist.x < pose.leftShoulder.x
+  ) {
+    return true
+  } else {
+    return false
+  }
+}
+
+const leftWristUpRightWristDown = pose => {
+  //left wrist is above shoulders and right wrist is under shoulder
+  if (
+    pose.rightWrist.y > pose.rightShoulder.y &&
+    pose.leftWrist.y < pose.leftShoulder.y
+    // 1.05 * pose.rightWrist.x > pose.rightShoulder.x &&
+    // 1.05 * pose.leftWrist.x < pose.leftShoulder.x
+  ) {
+    return true
+  } else {
+    return false
+  }
+}
+
+const wristsTogetherElbowTogether = pose => {
+  const shoulderWidthX = pose.rightShoulder.x - pose.leftShoulder.x
+  const wristToWristX = pose.rightWrist.x - pose.leftWrist.x
+  if (
+    // 1.25 * pose.leftShoulder.x - pose.rightShoulder.x >
+    //   pose.leftWrist.x - pose.rightWrist.x &&
+    shoulderWidthX > wristToWristX &&
+    pose.rightWrist.y < pose.rightShoulder.y &&
+    pose.leftWrist.y < pose.leftShoulder.y &&
+    pose.leftElbow.y > pose.leftShoulder.y &&
+    pose.rightElbow.y > pose.rightShoulder.y
+  ) {
+    return true
+  } else return false
+}
+
 const isI = pose => {
   if (leftArmIsUp(pose) && rightArmIsUp(pose) && wristsAreTogether(pose))
     return 'I'
@@ -114,13 +158,17 @@ const isL = pose => {
   if (rightArmIsOut(pose) && leftArmIsUp(pose)) return 'L'
 }
 
-// const isS = pose => {
-//   if (leftArmIsUp(pose) && leftKneeIsUp(pose)) return 'S'
-// }
+const isS = pose => {
+  if (leftWristUpRightWristDown(pose)) return 'S'
+}
 
-// const isZ = pose => {
-//   if (rightArmIsUp(pose) && rightKneeIsUp(pose)) return 'Z'
-// }
+const isZ = pose => {
+  if (rightWristUpLeftWristDown(pose)) return 'Z'
+}
+
+const isO = pose => {
+  if (wristsTogetherElbowTogether(pose)) return 'O'
+}
 
 export const getShape = rawPose => {
   const pose = getObj(rawPose)
@@ -132,8 +180,13 @@ export const getShape = rawPose => {
     return undefined
   }
   return (
-    isI(pose) || isT(pose) || isJ(pose) || isL(pose)
-    //  || isS(pose) || isZ(pose)
+    isI(pose) ||
+    isT(pose) ||
+    isJ(pose) ||
+    isL(pose) ||
+    isS(pose) ||
+    isZ(pose) ||
+    isO(pose)
   )
 }
 
@@ -158,9 +211,12 @@ export const movementPose = pose => {
 }
 
 const getHitboxes = rotations => {
+  const screenWidth = 640
+  const buffer = screenWidth / 6
   const hitboxRanges = rotations.map((el, idx, arr) => {
-    const boxStart = (480 + idx * 440) / arr.length
-    return [boxStart, boxStart + 100]
+    const segmentWidth = (screenWidth - 2 * buffer) / arr.length
+    const boxEnd = screenWidth - buffer - idx * segmentWidth
+    return [boxEnd - segmentWidth, boxEnd]
   })
   return hitboxRanges
 }
@@ -189,7 +245,7 @@ export const checkRotation = (rawPose, rotations) => {
       leftHandIsOnHitbox(pose, ranges[i]) ||
       rightHandIsOnHitbox(pose, ranges[i])
     ) {
-      return rotations.length - 1 - i
+      return i
     }
   }
   return undefined
@@ -205,3 +261,22 @@ export const checkPosition = rawPose => {
   else if (nose >= screenWidth - buffer) return 0
   else return Math.ceil(9 - (nose - buffer) / columnWidth)
 }
+
+// Id	Part
+// 0	nose
+// 1	leftEye
+// 2	rightEye
+// 3	leftEar
+// 4	rightEar
+// 5	leftShoulder
+// 6	rightShoulder
+// 7	leftElbow
+// 8	rightElbow
+// 9	leftWrist
+// 10	rightWrist
+// 11	leftHip
+// 12	rightHip
+// 13	leftKnee
+// 14	rightKnee
+// 15	leftAnkle
+// 16	rightAnkle
