@@ -2,27 +2,40 @@
 
 [![Build Status](https://travis-ci.org/echo-toucan/capstone.svg?branch=master)](https://travis-ci.org/echo-toucan/capstone)
 
-Team Members:
+## https://tetris-pose.herokuapp.com/
 
-Amneet Sandhu : https://github.com/amneet954
-Hari Doshi : https://github.com/hdoshi2
-Sunny Chang : https://github.com/SunnyChangMei
-Terence Helsel: https://github.com/tjhelsel
+## Game Overview
 
-Deployed Site: https://tetris-pose.herokuapp.com/
+> Tetris Pose is a new twist on the classic game. Powered by React, Redux and Google’s TensorFlow technology. Tetris pose lets you use body gesture to control the game!
 
-Tetris Pose is a new twist on the classic game. Powered by React, Redux and Google’s TensorFlow technology, Tetris pose lets you use body gesture to control the game!
+## Team Members
 
-Game Rules:
+[Amneet Sandhu](https://github.com/amneet954)
+| [Hari Doshi](https://github.com/hdoshi2)
+| [Chang 'Sunny' Mei](https://github.com/SunnyChangMei)
+| [Terence Helsel](https://github.com/tjhelsel)
 
-• The user will be shown a current shape in the Current Shape box.
+## Tech Stack
+
+* Tensorflow.js - PoseNet
+  <img src="public/assets/tf_logo_social.png" alt="TensorFlow" width="100" />
+
+* React and Redux
+  <img src="public/assets/react-redux.png" alt="React Redux" width="100" />
+
+* React Semantic UI
+  <img src="public/assets/semantic.png" alt="React Redux" width="50" />
+
+#### Game Rules
+
+1.  The user will be shown a current shape in the Current Shape box.
 
 * This shape will be the first element from the Preview Shape box.
 * Preview Shape contains a randomly selected shape. When shape is passed to the current shape box, it will be removed and a new random shape will appear.
 
-• The user matches the current shape by making the appropriate pose with body gestures.
+2.  The user matches the current shape by making the appropriate pose with body gestures.
 
-• After three seconds, the game will check if the shape has been matched.
+3.  After three seconds, the game will check if the shape has been matched.
 
 * If successfully matched, the shape will spawn at the top of the game board
 * If not, a penalty will be issued.
