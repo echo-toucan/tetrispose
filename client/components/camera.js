@@ -34,7 +34,6 @@ class Camera extends Component {
   async componentDidMount() {
     try {
       this.props.loadGame()
-      console.log('loading posenet...')
       this.posenet = await posenet.load({
         architecture: 'ResNet50',
         outputStride: 32,
