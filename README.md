@@ -1,4 +1,6 @@
-Welcome to Tetris Pose!
+# Welcome to Tetris Pose
+
+[![Build Status](https://travis-ci.org/echo-toucan/capstone.svg?branch=master)](https://travis-ci.org/echo-toucan/capstone)
 
 Team Members:
 
