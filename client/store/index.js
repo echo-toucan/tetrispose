@@ -10,7 +10,7 @@ import {
   updateScore,
   gameState,
   phase,
-  gridTimer,
+  timers,
   gameScore,
   rowScore
 } from './game'
@@ -30,7 +30,7 @@ const reducer = combineReducers({
   previewShape,
   userShape,
   phase,
-  gridTimer,
+  timers,
   rowScore
 })
 const middleware = composeWithDevTools(

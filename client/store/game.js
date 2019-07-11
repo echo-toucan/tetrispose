@@ -31,7 +31,8 @@ const LOAD_GAME = 'LOAD_GAME'
 const SWITCH_GAME_ON = 'SWITCH_GAME_ON'
 const START_GAME = 'START_GAME'
 const GAME_OVER = 'GAME_OVER'
-const SET_GRID_TIMER = 'SET_GRID_TIMER'
+const SET_DROP_TIMER = 'SET_DROP_TIMER'
+const SET_SPAWN_TIMER = 'SET_SPAWN_TIMER'
 const PAUSE_GAME = 'PAUSE_GAME'
 
 //ACTION CREATORS
@@ -107,9 +108,14 @@ export const loadGame = () => ({
   type: LOAD_GAME
 })
 
-export const setGridTimer = id => ({
-  type: SET_GRID_TIMER,
-  payload: id
+export const setGridTimer = timeoutFn => ({
+  type: SET_DROP_TIMER,
+  payload: timeoutFn
+})
+
+export const setSpawnTimer = timeoutFn => ({
+  type: SET_SPAWN_TIMER,
+  payload: timeoutFn
 })
 
 export const pauseGame = () => ({
@@ -169,10 +175,12 @@ export const gameState = (
   }
 }
 
-export const gridTimer = (state = null, action) => {
+export const timers = (state = {drop: null, spawn: null}, action) => {
   switch (action.type) {
-    case SET_GRID_TIMER:
-      return action.payload
+    case SET_DROP_TIMER:
+      return {...state, drop: action.payload}
+    case SET_SPAWN_TIMER:
+      return {...state, spawn: action.payload}
     default:
       return state
   }
