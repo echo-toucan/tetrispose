@@ -24,6 +24,6 @@ before_deploy:
 deploy:
   skip_cleanup: true # prevents travis from deleting the build
   provider: heroku
-  app: Ytetris-pose # see README
+  app: tetris-pose # see README
   api_key:
     secure: btZSpDUQITNnwH2zAHT5Ux6MZ+l1+u6IzDBe6sXm78Jni6Pg+FG8n10hqVRLpTe94fVO/jQmUDstIx4uIG7+opGC7BjQR5fgi29ACPYLa2nREEDShRkKs15D3e5vtxL2mihrryf9Y4gC4l+XiBaELlwt05MKXkSs5uV2OifyEfU+OWky6yCEGdRFaE6sEe1u6neVwcI4dguNmNU2t2SUglZg6nW4VTPkdf+csJYevps2sSXwVM75w7VR5HRFZtrQCopRa/SrqDqRZqtPqQnsm/pjD+ZIVlkqRNl25eujTCTH8np5KCsyIgyScrpTy6FKvfLNURfNZqyj42x3MwQs9xMQDkyghn+WDXbFmMZvELuDort5qPIhxocSH9edm0yFFKw/K7BPPMgkrthOQjwQ1zmOplcEo0+BlpJH4RmnHgqt7hmzNp6TEgXn/VJ8umxgwOFhUpMAcJFafIlY4V5Cxaxzl/+dw6NcyADPeSsbLgr60Md6doUlus/LUvyJZ0clvzTGqES9FWJtZQtjnv2sIeIKQWhJUHTR0+jcZ6i5AC5uqQ/0MuGyt/+Spk+JN6XODtq52SjrWcuA81XCyLgvSTbhEtaet/4avRUuzT3tx7l9XfoFaF9j1Nn7Pz7z7Ea3Buom24KxG12a0yvm+BtgVQnwf8irqxXBa0wr6hBqeXQ= # see README
