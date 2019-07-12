@@ -11,6 +11,7 @@ import {
   updateCurrent,
   gameOver,
   setGridTimer,
+  setSpawnTimer,
   updateScore,
   updateRowCount
 } from '../store'
@@ -28,19 +29,27 @@ class Grid extends Component {
   }
 
   componentDidMount() {
-    if (this.props.timer) {
-      clearTimeout(this.props.timer)
+    if (this.props.dropTimer) {
+      clearTimeout(this.props.dropTimer)
     }
-    setTimeout(() => {
-      this.spawnShapes(this.props.currentShape)
-      this.props.changePhase()
-    }, 5000)
+    if (this.props.spawnTimer) {
+      clearTimeout(this.props.spawnTimer)
+    }
+    this.props.setSpawnTimer(
+      setTimeout(() => {
+        this.spawnShapes(this.props.currentShape)
+        this.props.changePhase()
+      }, 5000)
+    )
     this.drop()
   }
 
   componentWillUnmount() {
-    if (this.props.timer) {
-      clearTimeout(this.props.timer)
+    if (this.props.dropTimer) {
+      clearTimeout(this.props.dropTimer)
+    }
+    if (this.props.spawnTimer) {
+      clearTimeout(this.props.spawnTimer)
     }
   }
 
@@ -85,10 +94,12 @@ class Grid extends Component {
       this.deleteRows()
       const newCurrent = this.props.previewShape[0]
       this.props.updateCurrent(newCurrent)
-      setTimeout(() => {
-        this.spawnShapes(this.props.currentShape)
-        this.props.changePhase()
-      }, 5000)
+      this.props.setSpawnTimer(
+        setTimeout(() => {
+          this.spawnShapes(this.props.currentShape)
+          this.props.changePhase()
+        }, 5000)
+      )
       this.props.changePhase()
       this.props.updateShapes()
     } else {
@@ -217,7 +228,8 @@ const mapStateToProps = state => ({
   gameBoard: state.gameBoard,
   previewShape: state.previewShape,
   gameStarted: state.gameState.started,
-  timer: state.gridTimer
+  dropTimer: state.timers.drop,
+  spawnTimer: state.timers.spawn
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -230,7 +242,8 @@ const mapDispatchToProps = dispatch => ({
   changePhase: () => dispatch(changePhase()),
   clearRows: rows => dispatch(clearRows(rows)),
   gameOver: () => dispatch(gameOver()),
-  setGridTimer: id => dispatch(setGridTimer(id)),
+  setGridTimer: timeoutFn => dispatch(setGridTimer(timeoutFn)),
+  setSpawnTimer: timeoutFn => dispatch(setSpawnTimer(timeoutFn)),
   updateScore: score => dispatch(updateScore(score)),
   updateRow: rows => dispatch(updateRowCount(rows))
 })
