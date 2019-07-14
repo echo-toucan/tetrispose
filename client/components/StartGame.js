@@ -1,13 +1,5 @@
 import React from 'react'
-import {
-  Button,
-  Grid,
-  Card,
-  Image,
-  Popup,
-  Rating,
-  Header
-} from 'semantic-ui-react'
+import {Button, Grid, Card, Image, Header} from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
 import ControlledCarousel from './Carousel'
 

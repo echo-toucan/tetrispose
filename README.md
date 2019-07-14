@@ -1,12 +1,14 @@
 # Welcome to Tetris Pose
 
-[![Build Status](https://travis-ci.org/echo-toucan/capstone.svg?branch=master)](https://travis-ci.org/echo-toucan/capstone)
+[[![Build Status](https://travis-ci.org/echo-toucan/tetrispose.svg?branch=master)](https://travis-ci.org/echo-toucan/tetrispose)
+
+## https://www.tetrispose.com/
 
 ## https://tetris-pose.herokuapp.com/
 
 ## Game Overview
 
-> Tetris Pose is a new twist on the classic game. Powered by React, Redux and Google’s TensorFlow technology. Tetris pose lets you use body gesture to control the game!
+> Tetris Pose is a new twist on the classic game. Powered by React, Redux and Google’s TensorFlow PoseNet technology. Tetris pose lets you use body movements to control the tetris game!
 
 ## Team Members
 

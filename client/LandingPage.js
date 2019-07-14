@@ -17,7 +17,7 @@ const HomepageLayout = ({mobile}) => (
     />
     <Header
       as="h2"
-      content="Welcome to Tetris Pose, a new twist on the classic game. Using Google's TensorFlow technology, Tetris Pose lets you use gestures to control the game!"
+      content="Welcome to Tetris Pose, a new twist on the classic game. Using Google's TensorFlow PoseNet technology, Tetris Pose lets you use body movements to control the tetris game!"
       inverted
       style={{
         fontSize: mobile ? '1.5em' : '1.7em',
