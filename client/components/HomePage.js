@@ -1,0 +1,13 @@
+import React, {Component} from 'react'
+import {Container} from 'semantic-ui-react'
+import {StartGame} from './'
+
+export default class HomePage extends Component {
+  render() {
+    return (
+      <Container padded="true" className="home-page">
+        <StartGame />
+      </Container>
+    )
+  }
+}
