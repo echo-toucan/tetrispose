@@ -1,4 +1,4 @@
-import {getRandom, penalty} from '../AllShapes'
+import {getRandom, penalty} from './Utility/AllShapes'
 
 // ACTION TYPE
 

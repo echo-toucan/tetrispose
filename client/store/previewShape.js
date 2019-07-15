@@ -1,4 +1,4 @@
-import {getRandom} from '../AllShapes'
+import {getRandom} from './Utility/AllShapes'
 
 const CREATE_SHAPES = 'CREATE_SHAPES'
 const UPDATE_SHAPES = 'UPDATE_SHAPES'

@@ -1,4 +1,4 @@
-import {moveLeft, moveRight, rotate, move} from '../controls'
+import {moveLeft, moveRight, rotate, move} from './Utility/controls'
 import cogoToast from 'cogo-toast'
 
 const boardHeight = 20
