@@ -56,42 +56,26 @@ After the game page loads, you will see a camera capture screen at the top left 
 
 Tetris Pose takes place over two phases, which alternate throughout the game.
 
-In the first phase, you will see a shape along with a model of what pose corresponds to the shape. You have five seconds to create the shape by making the correct pose. If you achieve the shape in time, you will gain 10 points; otherwise you will lose 5 points.
+In the first phase, you will see a shape along with a model of what pose corresponds to the shape. You have five seconds to create the shape by making the correct pose.
 
 Regardless of whether you achieved the correct pose, the shape will appear at the top of the game board after 5 seconds, and the second phase will start.
 
 During the second phase, you can manipulate the shape as it falls in two ways:
 
-* left/right movement
-  -rotation
+* Left/Right Movement: The shape left or right on the grid by stepping (or leaning) left or right
 
-...
+* Rotation: The possible rotations of the current shape will appear at the top of the camera capture screen. Lift your hand until it overlaps the image of the desired rotation, and the shape will rotate.
 
-1.  The user will be shown a current shape in the Current Shape box.
+## Goal and scoring
 
-* This shape will be the first element from the Preview Shape box.
-* Preview Shape contains a randomly selected shape. When shape is passed to the current shape box, it will be removed and a new random shape will appear.
+Your goal is to gain as many points as possible by correctly matching your pose to the target shape during the Create Shape phase, and by filling complete rows in the game board with blocks.
 
-2.  The user matches the current shape by making the appropriate pose with body gestures.
+-You _gain 10 points_ if your pose matches the target shape during the Create Shape phase.
 
-3.  After three seconds, the game will check if the shape has been matched.
+-You _lose 5 points_ if you fail to match the pose of the target shape during the Create Shape phase.
 
-* If successfully matched, the shape will spawn at the top of the game board
-* If not, a penalty will be issued.
+-You _gain 100 points_ for each row you complete. (The row will also disappear on completion.)
 
-• As the created shape populates, the user will be able to manipulate the shape's position (rotation and left-right movement) as it falls.
+## Game end
 
-• When the shape lands on another shape or at the bottom of the board, it will freeze in place and can no longer be manipulated.
-
-• If a row is completed from left to right, the row will disappear and all blocks above that row will fall one level.
-
-• The game ends when the new shape cannot populate on the grid.
-
-* Stretch goals:
-  1.  Ability to rotate shapes
-  2.  Rows disappear upon completion
-  3.  Point scoring system
-  4.  Variable of speed of gaming
-  5.  Multiplayer team-mode option
-  6.  Ability to store scores and profiles
-  7.  Calibrate for multiple user sizes
+The game ends when there is no space available at the top of the grid for the shape to spawn. At this point, you can click "New Game" to start again!
