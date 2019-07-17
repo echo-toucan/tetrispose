@@ -13,10 +13,6 @@ import {
   Portfolio
 } from './components'
 import {me} from './store'
-// import GameHome from './GameHome'
-// import HomePage from './HomePage'
-// import LandingPage from './LandingPage'
-// import Portfolio from './Portfolio'
 
 /**
  * COMPONENT
