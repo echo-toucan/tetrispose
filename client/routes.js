@@ -8,12 +8,13 @@ import {
   UserHome,
   GameBoard,
   GameHome,
-  HomePage
+  HomePage,
+  LandingPage
 } from './components'
 import {me} from './store'
 // import GameHome from './GameHome'
 // import HomePage from './HomePage'
-import LandingPage from './LandingPage'
+// import LandingPage from './LandingPage'
 import Portfolio from './Portfolio'
 
 /**
