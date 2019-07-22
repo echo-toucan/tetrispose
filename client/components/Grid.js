@@ -83,13 +83,14 @@ class Grid extends Component {
 
   //sets the tetris board speed
   drop() {
-    this.props.setGridTimer(setInterval(this.updateBoard, 750))
+    this.props.setGridTimer(setInterval(this.updateBoard, 500))
   }
 
   //it updates the board when an active shape moves down or lands
   updateBoard() {
     const oldGrid = this.props.gameBoard
     if (this.hasCollided()) {
+      clearTimeout(this.props.fastDrop)
       this.stopDrop()
       this.deleteRows()
       const newCurrent = this.props.previewShape[0]
@@ -118,23 +119,24 @@ class Grid extends Component {
     }
   }
 
-  movement(event) {
-    if (event.key === 'ArrowLeft') {
-      return this.props.moveLeft()
-    }
-    if (event.key === 'ArrowRight') {
-      return this.props.moveRight()
-    }
-    if (event.key === 'ArrowUp') {
-      const rotations = this.props.currentShape.shape.rotations
-      let rotationCounter
-      if (this.state.rotationCounter === null) {
-        rotationCounter = 0
-      } else rotationCounter = this.state.rotationCounter + 1
-      this.setState({rotationCounter})
-      this.props.rotate(rotations, rotationCounter)
-    }
-  }
+  // // function below works with button pushes
+  // movement(event) {
+  //   if (event.key === 'ArrowLeft') {
+  //     return this.props.moveLeft()
+  //   }
+  //   if (event.key === 'ArrowRight') {
+  //     return this.props.moveRight()
+  //   }
+  //   if (event.key === 'ArrowUp') {
+  //     const rotations = this.props.currentShape.shape.rotations
+  //     let rotationCounter
+  //     if (this.state.rotationCounter === null) {
+  //       rotationCounter = 0
+  //     } else rotationCounter = this.state.rotationCounter + 1
+  //     this.setState({rotationCounter})
+  //     this.props.rotate(rotations, rotationCounter)
+  //   }
+  // }
 
   //checks if the active shape has landed
   hasCollided() {
@@ -188,7 +190,6 @@ class Grid extends Component {
 
   render() {
     const {gameBoard} = this.props
-    const {score} = this.state
     return (
       <div>
         {/* <button type="button" onClick={() => this.drop()}>
@@ -229,7 +230,8 @@ const mapStateToProps = state => ({
   previewShape: state.previewShape,
   gameStarted: state.gameState.started,
   dropTimer: state.timers.drop,
-  spawnTimer: state.timers.spawn
+  spawnTimer: state.timers.spawn,
+  fastDrop: state.timers.fastDrop
 })
 
 const mapDispatchToProps = dispatch => ({

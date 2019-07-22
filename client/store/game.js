@@ -24,6 +24,7 @@ const MOVE_LEFT = 'MOVE_LEFT'
 const MOVE_RIGHT = 'MOVE_RIGHT'
 const MOVE = 'MOVE'
 const ROTATE = 'ROTATE'
+const FAST_DROP = 'FAST_DROP'
 const CLEAR_ROWS = 'CLEAR_ROWS'
 const CHANGE_PHASE = 'CHANGE_PHASE'
 const GAME_LOADED = 'GAME_LOADED'
@@ -91,6 +92,11 @@ export const rotated = (rotations, target) => ({
   target
 })
 
+export const fastDrop = timeoutFn => ({
+  type: FAST_DROP,
+  payload: timeoutFn
+})
+
 export const clearRows = rows => ({
   type: CLEAR_ROWS,
   payload: rows
@@ -128,10 +134,10 @@ export const gameBoard = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_BOARD:
       return action.payload
-    case MOVE_LEFT:
-      return moveLeft(state)
-    case MOVE_RIGHT:
-      return moveRight(state)
+    // case MOVE_LEFT:
+    //   return moveLeft(state)
+    // case MOVE_RIGHT:
+    //   return moveRight(state)
     case MOVE:
       return move(state, action.payload)
     case ROTATE:
@@ -139,7 +145,7 @@ export const gameBoard = (state = initialState, action) => {
     case CLEAR_ROWS:
       const rowsToRemove = action.payload
       const clearedGrid = state.filter(
-        (row, idx) => !action.payload.includes(idx)
+        (row, idx) => !rowsToRemove.includes(idx)
       )
       for (let i = 0; i < rowsToRemove.length; i++) {
         const row = new Array(10).fill(0)
@@ -175,12 +181,17 @@ export const gameState = (
   }
 }
 
-export const timers = (state = {drop: null, spawn: null}, action) => {
+export const timers = (
+  state = {drop: null, spawn: null, fastDrop: null},
+  action
+) => {
   switch (action.type) {
     case SET_DROP_TIMER:
       return {...state, drop: action.payload}
     case SET_SPAWN_TIMER:
       return {...state, spawn: action.payload}
+    case FAST_DROP:
+      return {...state, fastDrop: action.payload}
     default:
       return state
   }
