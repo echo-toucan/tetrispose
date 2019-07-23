@@ -24,7 +24,7 @@ const MOVE_LEFT = 'MOVE_LEFT'
 const MOVE_RIGHT = 'MOVE_RIGHT'
 const MOVE = 'MOVE'
 const ROTATE = 'ROTATE'
-const FAST_DROP = 'FAST_DROP'
+const SET_FAST_DROP = 'SET_FAST_DROP'
 const CLEAR_ROWS = 'CLEAR_ROWS'
 const CHANGE_PHASE = 'CHANGE_PHASE'
 const GAME_LOADED = 'GAME_LOADED'
@@ -92,8 +92,8 @@ export const rotated = (rotations, target) => ({
   target
 })
 
-export const fastDrop = timeoutFn => ({
-  type: FAST_DROP,
+export const setFastDrop = timeoutFn => ({
+  type: SET_FAST_DROP,
   payload: timeoutFn
 })
 
@@ -114,7 +114,7 @@ export const loadGame = () => ({
   type: LOAD_GAME
 })
 
-export const setGridTimer = timeoutFn => ({
+export const setDropTimer = timeoutFn => ({
   type: SET_DROP_TIMER,
   payload: timeoutFn
 })
@@ -190,7 +190,7 @@ export const timers = (
       return {...state, drop: action.payload}
     case SET_SPAWN_TIMER:
       return {...state, spawn: action.payload}
-    case FAST_DROP:
+    case SET_FAST_DROP:
       return {...state, fastDrop: action.payload}
     default:
       return state

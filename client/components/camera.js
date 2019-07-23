@@ -24,7 +24,6 @@ class Camera extends Component {
     this.state = {
       canvasIsPainted: false,
       cameraIsLoading: true,
-      rotationsCounter: 0,
       posenetIsLoading: true
     }
     this.getVideo = this.getVideo.bind(this)
@@ -86,7 +85,6 @@ class Camera extends Component {
       }
       this.clearCanvas()
       const currentShape = getShape(pose)
-
       this.props.setUserShape(currentShape)
 
       if (
@@ -97,7 +95,7 @@ class Camera extends Component {
       }
     }
 
-    if (this.props.phase === 2) {
+    if (this.props.phase === 2 && !this.props.fastDropTimer) {
       if (!this.state.canvasIsPainted) {
         this.drawRotations(this.props.currentShape.rotations)
         this.setState({canvasIsPainted: true})
@@ -112,10 +110,6 @@ class Camera extends Component {
         this.props.rotate(rotations, targetRotation)
       }
     }
-
-    this.setState(prevState => ({
-      rotationsCounter: prevState.rotationsCounter + 1
-    }))
 
     setTimeout(() => {
       this.detectPose()
@@ -197,7 +191,8 @@ const mapStateToProps = state => ({
   currentShape: state.currentShape.shape,
   userShape: state.userShape,
   phase: state.phase,
-  gameBoard: state.gameBoard
+  gameBoard: state.gameBoard,
+  fastDropTimer: state.timers.fastDrop
 })
 
 const mapDispatchToProps = dispatch => ({

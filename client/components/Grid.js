@@ -10,12 +10,13 @@ import {
   clearRows,
   updateCurrent,
   gameOver,
-  setGridTimer,
+  setDropTimer,
   setSpawnTimer,
+  setFastDrop,
   updateScore,
   updateRowCount
 } from '../store'
-import {penalty, colors} from '../AllShapes'
+import {colors} from '../AllShapes'
 
 class Grid extends Component {
   constructor() {
@@ -25,7 +26,8 @@ class Grid extends Component {
     }
     this.updateBoard = this.updateBoard.bind(this)
     this.spawnShapes = this.spawnShapes.bind(this)
-    this.movement = this.movement.bind(this)
+    // this.movement = this.movement.bind(this)
+    this.fastDrop = this.fastDrop.bind(this)
   }
 
   componentDidMount() {
@@ -41,7 +43,7 @@ class Grid extends Component {
         this.props.changePhase()
       }, 5000)
     )
-    this.drop()
+    // this.drop()
   }
 
   componentWillUnmount() {
@@ -54,6 +56,7 @@ class Grid extends Component {
   }
 
   spawnShapes() {
+    this.props.setDropTimer(setInterval(this.updateBoard, 750))
     const shape = this.props.currentShape.shape.shape
     if (!this.props.currentShape.achieved) {
       this.props.updateScore(-5)
@@ -81,16 +84,20 @@ class Grid extends Component {
     this.props.gameOver()
   }
 
-  //sets the tetris board speed
-  drop() {
-    this.props.setGridTimer(setInterval(this.updateBoard, 500))
-  }
+  // //sets the tetris board speed
+  // drop() {
+  //   this.props.setDropTimer(setInterval(this.updateBoard, 500))
+  // }
 
   //it updates the board when an active shape moves down or lands
   updateBoard() {
     const oldGrid = this.props.gameBoard
     if (this.hasCollided()) {
-      clearTimeout(this.props.fastDrop)
+      clearTimeout(this.props.dropTimer)
+      if (this.props.fastDropTimer) {
+        clearTimeout(this.props.fastDropTimer)
+        this.props.setFastDrop(null)
+      }
       this.stopDrop()
       this.deleteRows()
       const newCurrent = this.props.previewShape[0]
@@ -188,6 +195,11 @@ class Grid extends Component {
     this.props.clearRows(rowsToRemove)
   }
 
+  fastDrop() {
+    clearTimeout(this.props.dropTimer)
+    this.props.setDropTimer(setInterval(this.updateBoard, 10))
+  }
+
   render() {
     const {gameBoard} = this.props
     return (
@@ -199,7 +211,9 @@ class Grid extends Component {
         <button type="button" onClick={() => this.spawnShapes()}>
           Spawn a shape
         </button> */}
-
+        <button type="button" onClick={() => this.fastDrop()}>
+          Fast drop
+        </button>
         <table className="game-table">
           <tbody>
             {gameBoard.map((row, rowIdx) => {
@@ -231,7 +245,7 @@ const mapStateToProps = state => ({
   gameStarted: state.gameState.started,
   dropTimer: state.timers.drop,
   spawnTimer: state.timers.spawn,
-  fastDrop: state.timers.fastDrop
+  fastDropTimer: state.timers.fastDrop
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -244,8 +258,9 @@ const mapDispatchToProps = dispatch => ({
   changePhase: () => dispatch(changePhase()),
   clearRows: rows => dispatch(clearRows(rows)),
   gameOver: () => dispatch(gameOver()),
-  setGridTimer: timeoutFn => dispatch(setGridTimer(timeoutFn)),
+  setDropTimer: timeoutFn => dispatch(setDropTimer(timeoutFn)),
   setSpawnTimer: timeoutFn => dispatch(setSpawnTimer(timeoutFn)),
+  setFastDrop: timeoutFn => dispatch(setFastDrop(timeoutFn)),
   updateScore: score => dispatch(updateScore(score)),
   updateRow: rows => dispatch(updateRowCount(rows))
 })
