@@ -12,10 +12,10 @@ import {
   gameOver,
   setDropTimer,
   setSpawnTimer,
-  setFastDrop,
   updateScore,
   updateRowCount
 } from '../store'
+import {drop} from '../controls'
 import {colors} from '../AllShapes'
 
 class Grid extends Component {
@@ -26,8 +26,6 @@ class Grid extends Component {
     }
     this.updateBoard = this.updateBoard.bind(this)
     this.spawnShapes = this.spawnShapes.bind(this)
-    // this.movement = this.movement.bind(this)
-    this.fastDrop = this.fastDrop.bind(this)
   }
 
   componentDidMount() {
@@ -94,10 +92,6 @@ class Grid extends Component {
     const oldGrid = this.props.gameBoard
     if (this.hasCollided()) {
       clearTimeout(this.props.dropTimer)
-      if (this.props.fastDropTimer) {
-        clearTimeout(this.props.fastDropTimer)
-        this.props.setFastDrop(null)
-      }
       this.stopDrop()
       this.deleteRows()
       const newCurrent = this.props.previewShape[0]
@@ -111,18 +105,7 @@ class Grid extends Component {
       this.props.changePhase()
       this.props.updateShapes()
     } else {
-      let newGrid = oldGrid.map((row, rowIdx) => {
-        return row.map((cell, colIdx) => {
-          if (cell > 10) return cell
-          const cellAbove = rowIdx === 0 ? 0 : oldGrid[rowIdx - 1][colIdx]
-          if (cell < 10 && cellAbove < 10) {
-            return cellAbove
-          } else if (cellAbove >= 10) {
-            return 0
-          } else return cell
-        })
-      })
-      this.props.updateBoard(newGrid)
+      this.props.updateBoard(drop(oldGrid))
     }
   }
 
@@ -195,11 +178,6 @@ class Grid extends Component {
     this.props.clearRows(rowsToRemove)
   }
 
-  fastDrop() {
-    clearTimeout(this.props.dropTimer)
-    this.props.setDropTimer(setInterval(this.updateBoard, 10))
-  }
-
   render() {
     const {gameBoard} = this.props
     return (
@@ -211,9 +189,6 @@ class Grid extends Component {
         <button type="button" onClick={() => this.spawnShapes()}>
           Spawn a shape
         </button> */}
-        <button type="button" onClick={() => this.fastDrop()}>
-          Fast drop
-        </button>
         <table className="game-table">
           <tbody>
             {gameBoard.map((row, rowIdx) => {
@@ -244,8 +219,7 @@ const mapStateToProps = state => ({
   previewShape: state.previewShape,
   gameStarted: state.gameState.started,
   dropTimer: state.timers.drop,
-  spawnTimer: state.timers.spawn,
-  fastDropTimer: state.timers.fastDrop
+  spawnTimer: state.timers.spawn
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -260,7 +234,7 @@ const mapDispatchToProps = dispatch => ({
   gameOver: () => dispatch(gameOver()),
   setDropTimer: timeoutFn => dispatch(setDropTimer(timeoutFn)),
   setSpawnTimer: timeoutFn => dispatch(setSpawnTimer(timeoutFn)),
-  setFastDrop: timeoutFn => dispatch(setFastDrop(timeoutFn)),
+  fastDrop: () => dispatch(fastDrop()),
   updateScore: score => dispatch(updateScore(score)),
   updateRow: rows => dispatch(updateRowCount(rows))
 })

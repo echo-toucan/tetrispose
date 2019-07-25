@@ -125,6 +125,10 @@ const leftWristUpRightWristDown = pose => {
   }
 }
 
+const headIsDown = pose => {
+  return pose.nose.y > 320
+}
+
 const wristsTogetherElbowTogether = pose => {
   const shoulderWidthX = pose.rightShoulder.x - pose.leftShoulder.x
   const wristToWristX = pose.rightWrist.x - pose.leftWrist.x
@@ -260,6 +264,11 @@ export const checkPosition = rawPose => {
   if (nose <= buffer) return 9
   else if (nose >= screenWidth - buffer) return 0
   else return Math.ceil(9 - (nose - buffer) / columnWidth)
+}
+
+export const fastDropIsActive = rawPose => {
+  const pose = getObj(rawPose)
+  return headIsDown(pose)
 }
 
 // Id	Part

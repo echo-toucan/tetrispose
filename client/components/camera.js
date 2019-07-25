@@ -8,9 +8,15 @@ import {
   shapeAchieved,
   setUserShape,
   gameLoaded,
-  loadGame
+  loadGame,
+  setFastDrop
 } from '../store'
-import {getShape, checkRotation, checkPosition} from './utility'
+import {
+  getShape,
+  checkRotation,
+  checkPosition,
+  fastDropIsActive
+} from './utility'
 import {
   Dimmer,
   Loader,
@@ -24,7 +30,8 @@ class Camera extends Component {
     this.state = {
       canvasIsPainted: false,
       cameraIsLoading: true,
-      posenetIsLoading: true
+      posenetIsLoading: true,
+      fastDrop: false
     }
     this.getVideo = this.getVideo.bind(this)
     this.getCanvas = this.getCanvas.bind(this)
@@ -75,45 +82,59 @@ class Camera extends Component {
   }
 
   async detectPose() {
+    const {phase} = this.props
     let pose = await this.posenet.estimateSinglePose(this.video, {
       flipHorizontal: false
     })
 
-    if (this.props.phase === 1) {
-      if (this.state.canvasIsPainted) {
-        this.setState({canvasIsPainted: false})
-      }
-      this.clearCanvas()
-      const currentShape = getShape(pose)
-      this.props.setUserShape(currentShape)
-
-      if (
-        this.props.currentShape.name &&
-        this.props.currentShape.name === this.props.userShape
-      ) {
-        this.props.shapeAchieved()
-      }
+    if (phase === 1) {
+      this.setState({fastDrop: false})
+      this.handleShapeCreation(pose)
     }
 
-    if (this.props.phase === 2 && !this.props.fastDropTimer) {
-      if (!this.state.canvasIsPainted) {
-        this.drawRotations(this.props.currentShape.rotations)
-        this.setState({canvasIsPainted: true})
-      }
-
-      const column = checkPosition(pose)
-      this.props.move(column)
-
-      const rotations = this.props.currentShape.rotations
-      const targetRotation = checkRotation(pose, rotations)
-      if (targetRotation !== undefined) {
-        this.props.rotate(rotations, targetRotation)
-      }
+    if (phase === 2 && !this.state.fastDrop) {
+      this.handleShapeManipulation(pose)
     }
 
     setTimeout(() => {
       this.detectPose()
     }, 100)
+  }
+
+  handleShapeCreation(pose) {
+    const {currentShape, userShape} = this.props
+    if (this.state.canvasIsPainted) {
+      this.setState({canvasIsPainted: false})
+    }
+    this.clearCanvas()
+    const currentUserShape = getShape(pose)
+    this.props.setUserShape(currentUserShape)
+
+    if (currentShape.name && currentShape.name === userShape) {
+      this.props.shapeAchieved()
+    }
+  }
+
+  handleShapeManipulation(pose) {
+    const {currentShape} = this.props
+    if (!this.state.canvasIsPainted) {
+      this.drawRotations(currentShape.rotations)
+      this.setState({canvasIsPainted: true})
+    }
+    if (fastDropIsActive(pose)) {
+      this.props.fastDrop()
+      this.setState({fastDrop: true})
+    } else {
+      const column = checkPosition(pose)
+      console.log('column:', column, 'phase:', this.props.phase)
+      this.props.move(column)
+
+      const rotations = currentShape.rotations
+      const targetRotation = checkRotation(pose, rotations)
+      if (targetRotation !== undefined) {
+        this.props.rotate(rotations, targetRotation)
+      }
+    }
   }
 
   drawRotations(rotations) {
@@ -191,8 +212,7 @@ const mapStateToProps = state => ({
   currentShape: state.currentShape.shape,
   userShape: state.userShape,
   phase: state.phase,
-  gameBoard: state.gameBoard,
-  fastDropTimer: state.timers.fastDrop
+  gameBoard: state.gameBoard
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -202,6 +222,7 @@ const mapDispatchToProps = dispatch => ({
   rotate: (grid, rotations, counter) =>
     dispatch(rotated(grid, rotations, counter)),
   move: column => dispatch(moved(column)),
+  fastDrop: () => dispatch(setFastDrop()),
   gameLoaded: () => dispatch(gameLoaded()),
   loadGame: () => dispatch(loadGame())
 })

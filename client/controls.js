@@ -89,7 +89,6 @@ const adjustPivot = (shape, grid) => {
     let rowOffset = 0
     for (let col = 0; col < shape[row].length; col++) {
       if (pivotRow + row > 19) break
-      console.log('updated')
       if (
         pivotCol + col >= grid[pivotRow].length ||
         grid[pivotRow + row][pivotCol + col] >= 10
@@ -146,5 +145,72 @@ export const move = (gameBoard, column) => {
     return moveLeft(gameBoard)
   } else if (column > shapeCol) {
     return moveRight(gameBoard)
-  } else return gameBoard
+  } else {
+    console.log('move triggered')
+    return gameBoard
+  }
+}
+
+// const columnHeights = gameBoard => {
+//   let heights = new Array(10).fill(19)
+//   for (let row = 0; row < gameBoard.length; row++) {
+//     for (let col = 0; col < gameBoard[row].length; col++) {
+//       if (gameBoard[row][col] >= 10) heights[col] = row
+//     }
+//   }
+//   return heights
+// }
+
+// const distanceToFall = gameBoard => {
+//   let spaceBelow = Infinity
+//   const heights = columnHeights(gameBoard)
+//   for (let row = 0; row < gameBoard.length; row++) {
+//     for (let col = 0; col < gameBoard[row].length; col++) {
+//       const current = gameBoard[row][col]
+//       const isFalling = current > 0 && current < 10
+//       const colSpaceBelow = heights[col] - row
+//       if (isFalling && colSpaceBelow < spaceBelow) {
+//         spaceBelow = colSpaceBelow
+//       }
+//     }
+//   }
+//   return spaceBelow
+// }
+
+const hasCollided = gameBoard => {
+  for (let row = 0; row < gameBoard.length; row++) {
+    for (let col = 0; col < gameBoard[row].length; col++) {
+      const current = gameBoard[row][col]
+      const isFalling = current > 0 && current < 10
+      const hasFloorBelow = !gameBoard[row + 1] || gameBoard[row + 1][col] >= 10
+      if (isFalling && hasFloorBelow) {
+        return true
+      }
+    }
+  }
+  return false
+}
+
+export const drop = gameBoard => {
+  if (hasCollided(gameBoard)) return gameBoard
+  return gameBoard.map((row, rowIdx, oldGrid) => {
+    return row.map((cell, colIdx) => {
+      if (cell > 10) return cell
+      const cellAbove = rowIdx === 0 ? 0 : oldGrid[rowIdx - 1][colIdx]
+      if (cell < 10 && cellAbove < 10) {
+        return cellAbove
+      } else if (cellAbove >= 10) {
+        return 0
+      } else return cell
+    })
+  })
+}
+
+export const fastDrop = gameBoard => {
+  let newBoard = gameBoard
+  while (!hasCollided(newBoard)) {
+    newBoard = drop(newBoard)
+  }
+  console.log('fastDrop')
+  return newBoard
 }

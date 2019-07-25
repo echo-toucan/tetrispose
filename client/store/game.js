@@ -1,4 +1,4 @@
-import {moveLeft, moveRight, rotate, move} from '../controls'
+import {moveLeft, moveRight, rotate, move, fastDrop} from '../controls'
 import cogoToast from 'cogo-toast'
 
 const boardHeight = 20
@@ -24,7 +24,7 @@ const MOVE_LEFT = 'MOVE_LEFT'
 const MOVE_RIGHT = 'MOVE_RIGHT'
 const MOVE = 'MOVE'
 const ROTATE = 'ROTATE'
-const SET_FAST_DROP = 'SET_FAST_DROP'
+const FAST_DROP = 'FAST_DROP'
 const CLEAR_ROWS = 'CLEAR_ROWS'
 const CHANGE_PHASE = 'CHANGE_PHASE'
 const GAME_LOADED = 'GAME_LOADED'
@@ -92,9 +92,8 @@ export const rotated = (rotations, target) => ({
   target
 })
 
-export const setFastDrop = timeoutFn => ({
-  type: SET_FAST_DROP,
-  payload: timeoutFn
+export const setFastDrop = () => ({
+  type: FAST_DROP
 })
 
 export const clearRows = rows => ({
@@ -142,6 +141,8 @@ export const gameBoard = (state = initialState, action) => {
       return move(state, action.payload)
     case ROTATE:
       return rotate(state, action.rotations, action.target)
+    case FAST_DROP:
+      return fastDrop(state)
     case CLEAR_ROWS:
       const rowsToRemove = action.payload
       const clearedGrid = state.filter(
@@ -181,17 +182,12 @@ export const gameState = (
   }
 }
 
-export const timers = (
-  state = {drop: null, spawn: null, fastDrop: null},
-  action
-) => {
+export const timers = (state = {drop: null, spawn: null}, action) => {
   switch (action.type) {
     case SET_DROP_TIMER:
       return {...state, drop: action.payload}
     case SET_SPAWN_TIMER:
       return {...state, spawn: action.payload}
-    case SET_FAST_DROP:
-      return {...state, fastDrop: action.payload}
     default:
       return state
   }
