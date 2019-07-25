@@ -30,8 +30,7 @@ class Camera extends Component {
     this.state = {
       canvasIsPainted: false,
       cameraIsLoading: true,
-      posenetIsLoading: true,
-      fastDrop: false
+      posenetIsLoading: true
     }
     this.getVideo = this.getVideo.bind(this)
     this.getCanvas = this.getCanvas.bind(this)
@@ -88,11 +87,10 @@ class Camera extends Component {
     })
 
     if (phase === 1) {
-      this.setState({fastDrop: false})
       this.handleShapeCreation(pose)
     }
 
-    if (phase === 2 && !this.state.fastDrop) {
+    if (phase === 2) {
       this.handleShapeManipulation(pose)
     }
 
@@ -121,19 +119,18 @@ class Camera extends Component {
       this.drawRotations(currentShape.rotations)
       this.setState({canvasIsPainted: true})
     }
+
+    const column = checkPosition(pose)
+    this.props.move(column)
+
+    const rotations = currentShape.rotations
+    const targetRotation = checkRotation(pose, rotations)
+    if (targetRotation !== undefined) {
+      this.props.rotate(rotations, targetRotation)
+    }
+
     if (fastDropIsActive(pose)) {
       this.props.fastDrop()
-      this.setState({fastDrop: true})
-    } else {
-      const column = checkPosition(pose)
-      console.log('column:', column, 'phase:', this.props.phase)
-      this.props.move(column)
-
-      const rotations = currentShape.rotations
-      const targetRotation = checkRotation(pose, rotations)
-      if (targetRotation !== undefined) {
-        this.props.rotate(rotations, targetRotation)
-      }
     }
   }
 

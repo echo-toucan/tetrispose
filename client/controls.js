@@ -79,6 +79,7 @@ const findPivot = grid => {
       if (grid[i][j] > 0 && grid[i][j] < 10) return [i, j]
     }
   }
+  return [0, 0]
 }
 
 const adjustPivot = (shape, grid) => {
@@ -146,7 +147,6 @@ export const move = (gameBoard, column) => {
   } else if (column > shapeCol) {
     return moveRight(gameBoard)
   } else {
-    console.log('move triggered')
     return gameBoard
   }
 }
@@ -211,6 +211,5 @@ export const fastDrop = gameBoard => {
   while (!hasCollided(newBoard)) {
     newBoard = drop(newBoard)
   }
-  console.log('fastDrop')
   return newBoard
 }
