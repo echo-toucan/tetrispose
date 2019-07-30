@@ -14,7 +14,7 @@ import {
   getShape,
   checkRotation,
   checkPosition
-} from '../store/utility/poseControls.js'
+} from '../store/utility/poseControls'
 import {
   Dimmer,
   Loader,

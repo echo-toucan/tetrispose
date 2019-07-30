@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Dimmer, Segment, Header, Icon} from 'semantic-ui-react'
-import {colors} from '../store/Utility/AllShapes'
+import {colors} from '../store/utility/AllShapes'
 
 const GridPlaceholder = ({gameBoard}) => {
   return (
