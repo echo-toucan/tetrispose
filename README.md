@@ -8,7 +8,7 @@
 
 ## Game Overview
 
-> Tetris Pose is a new twist on the classic game. Powered by React, Redux and Google’s TensorFlow PoseNet technology. Tetris pose lets you use body movements to control the tetris game!
+> Tetris Pose is a new twist on the classic game. Powered by React, Redux and Google’s TensorFlow PoseNet technology, Tetris pose lets you use body movements to control the tetris game!
 
 ## Team Members
 
