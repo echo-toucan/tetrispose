@@ -1,11 +1,12 @@
+const isFalling = current => {
+  return current > 0 && current < 10
+}
+
 const hasLeftBorder = gameBoard => {
-  const grid = gameBoard
-  for (let row = 0; row < grid.length; row++) {
-    for (let col = 0; col < grid[row].length; col++) {
-      const current = grid[row][col]
-      const isFalling = current > 0 && current < 10
-      const hasLeftWall = col === 0 || grid[row][col - 1] >= 10
-      if (isFalling && hasLeftWall) {
+  for (let row = 0; row < gameBoard.length; row++) {
+    for (let col = 0; col < gameBoard[row].length; col++) {
+      const hasLeftWall = col === 0 || gameBoard[row][col - 1] >= 10
+      if (isFalling(gameBoard[row][col]) && hasLeftWall) {
         return true
       }
     }
@@ -34,11 +35,9 @@ export const moveLeft = gameBoard => {
 const hasRightBorder = gameBoard => {
   for (let row = 0; row < gameBoard.length; row++) {
     for (let col = 0; col < gameBoard[row].length; col++) {
-      const current = gameBoard[row][col]
-      const isFalling = current > 0 && current < 10
       const hasRightWall =
         col + 1 === gameBoard[row].length || gameBoard[row][col + 1] >= 10
-      if (isFalling && hasRightWall) {
+      if (isFalling(gameBoard[row][col]) && hasRightWall) {
         return true
       }
     }
@@ -151,39 +150,20 @@ export const move = (gameBoard, column) => {
   }
 }
 
-// const columnHeights = gameBoard => {
-//   let heights = new Array(10).fill(19)
-//   for (let row = 0; row < gameBoard.length; row++) {
-//     for (let col = 0; col < gameBoard[row].length; col++) {
-//       if (gameBoard[row][col] >= 10) heights[col] = row
-//     }
-//   }
-//   return heights
-// }
-
-// const distanceToFall = gameBoard => {
-//   let spaceBelow = Infinity
-//   const heights = columnHeights(gameBoard)
-//   for (let row = 0; row < gameBoard.length; row++) {
-//     for (let col = 0; col < gameBoard[row].length; col++) {
-//       const current = gameBoard[row][col]
-//       const isFalling = current > 0 && current < 10
-//       const colSpaceBelow = heights[col] - row
-//       if (isFalling && colSpaceBelow < spaceBelow) {
-//         spaceBelow = colSpaceBelow
-//       }
-//     }
-//   }
-//   return spaceBelow
-// }
+const shapeIsFalling = gameBoard => {
+  for (let row = 0; row < gameBoard.length; row++) {
+    for (let col = 0; col < gameBoard[row].length; col++) {
+      if (isFalling(gameBoard[row][col])) return true
+    }
+  }
+  return false
+}
 
 const hasCollided = gameBoard => {
   for (let row = 0; row < gameBoard.length; row++) {
     for (let col = 0; col < gameBoard[row].length; col++) {
-      const current = gameBoard[row][col]
-      const isFalling = current > 0 && current < 10
       const hasFloorBelow = !gameBoard[row + 1] || gameBoard[row + 1][col] >= 10
-      if (isFalling && hasFloorBelow) {
+      if (isFalling(gameBoard[row][col]) && hasFloorBelow) {
         return true
       }
     }
@@ -208,7 +188,7 @@ export const drop = gameBoard => {
 
 export const fastDrop = gameBoard => {
   let newBoard = gameBoard
-  while (!hasCollided(newBoard)) {
+  while (!hasCollided(newBoard) && shapeIsFalling(newBoard)) {
     newBoard = drop(newBoard)
   }
   return newBoard
