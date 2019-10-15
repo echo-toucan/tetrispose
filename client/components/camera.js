@@ -10,7 +10,11 @@ import {
   gameLoaded,
   loadGame
 } from '../store'
-import {getShape, checkRotation, checkPosition} from './utility'
+import {
+  getShape,
+  checkRotation,
+  checkPosition
+} from '../store/utility/poseControls'
 import {
   Dimmer,
   Loader,

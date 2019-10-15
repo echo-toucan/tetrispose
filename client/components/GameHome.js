@@ -10,7 +10,7 @@ import {
   SuccessMessage,
   GamePanel,
   Score
-} from './components'
+} from './'
 
 class GameHome extends Component {
   render() {

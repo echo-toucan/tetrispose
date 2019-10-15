@@ -1,6 +1,6 @@
 # Welcome to Tetris Pose
 
-[[![Build Status](https://travis-ci.org/echo-toucan/tetrispose.svg?branch=master)](https://travis-ci.org/echo-toucan/tetrispose)
+[![Build Status](https://travis-ci.org/echo-toucan/tetrispose.svg?branch=master)](https://travis-ci.org/echo-toucan/tetrispose)
 
 ## https://www.tetrispose.com/
 

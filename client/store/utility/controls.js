@@ -1,3 +1,5 @@
+//controls.js file contains helper functions related to tetris gaming theory.
+
 const hasLeftBorder = gameBoard => {
   const grid = gameBoard
   for (let row = 0; row < grid.length; row++) {

@@ -15,7 +15,7 @@ import {
   updateScore,
   updateRowCount
 } from '../store'
-import {penalty, colors} from '../AllShapes'
+import {penalty, colors} from '../store/utility/AllShapes'
 
 class Grid extends Component {
   constructor() {

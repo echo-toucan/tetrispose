@@ -2,12 +2,17 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {Login, Signup, UserHome, GameBoard} from './components'
+import {
+  Login,
+  Signup,
+  UserHome,
+  GameBoard,
+  GameHome,
+  HomePage,
+  LandingPage,
+  Portfolio
+} from './components'
 import {me} from './store'
-import GameHome from './GameHome'
-import HomePage from './HomePage'
-import LandingPage from './LandingPage'
-import Portfolio from './Portfolio'
 
 /**
  * COMPONENT

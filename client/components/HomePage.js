@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {Container} from 'semantic-ui-react'
-import StartGame from './components/StartGame'
+import {StartGame} from './'
 
 export default class HomePage extends Component {
   render() {
